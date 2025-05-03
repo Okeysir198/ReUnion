@@ -1,0 +1,161 @@
+/* Responsive Styles */
+
+/* Large Screens */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+/* Medium Screens */
+@media (max-width: 992px) {
+    .container {
+        max-width: 720px;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1.2rem;
+    }
+    
+    .time-section span {
+        font-size: 2rem;
+    }
+    
+    .schedule-item {
+        flex-direction: column;
+    }
+    
+    .day, .activity {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Small Screens */
+@media (max-width: 768px) {
+    .container {
+        max-width: 540px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+    
+    /* Navigation */
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: white;
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        padding: 20px 0;
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    .nav-menu li {
+        margin: 15px 0;
+    }
+    
+    .hamburger {
+        display: block;
+    }
+    
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+    
+    /* Hero Section */
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 100px 20px 50px;
+    }
+    
+    /* Countdown */
+    .time-section span {
+        font-size: 1.5rem;
+    }
+    
+    .time-section p {
+        font-size: 0.8rem;
+    }
+    
+    /* Where Are We Now */
+    .spotlight-item {
+        min-width: 100%;
+    }
+    
+    /* Price Cards */
+    .price-card {
+        min-width: 100%;
+    }
+}
+
+/* Extra Small Screens */
+@media (max-width: 576px) {
+    .container {
+        width: 100%;
+        padding: 0 15px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .event-date, .event-location {
+        font-size: 1rem;
+    }
+    
+    .cta-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    
+    #countdown {
+        flex-wrap: wrap;
+    }
+    
+    .time-section {
+        width: 50%;
+        margin-bottom: 15px;
+    }
+    
+    .then-item {
+        min-width: 100%;
+    }
+}

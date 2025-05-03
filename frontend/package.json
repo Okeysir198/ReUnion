@@ -1,0 +1,19 @@
+{
+  "name": "reunion-website-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for 20 Year High School Reunion Website",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -p 3000",
+    "build": "mkdir -p dist && cp -R css/ js/ images/ *.html dist/"
+  },
+  "author": "Reunion Committee",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.0"
+  },
+  "dependencies": {
+    "chart.js": "^3.7.0",
+    "leaflet": "^1.7.1"
+  }
+}

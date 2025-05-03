@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Class of 2005 Reunion</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div class="logo">
+            <img src="images/logo.svg" alt="Class of 2005 Logo" style="height:40px">
+        </div>
+        <h1>Admin Dashboard</h1>
+        <div class="admin-user">
+            <span id="admin-username">Admin</span>
+            <button id="logout-btn" class="secondary-button">Logout</button>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <nav class="admin-sidebar">
+            <ul>
+                <li><a href="#dashboard" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#registrations" data-section="registrations"><i class="fas fa-users"></i> Registrations</a></li>
+                <li><a href="#photos" data-section="photos"><i class="fas fa-images"></i> Photos</a></li>
+                <li><a href="#volunteers" data-section="volunteers"><i class="fas fa-hands-helping"></i> Volunteers</a></li>
+                <li><a href="#settings" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <div class="admin-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section active">
+                <h2>Dashboard</h2>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <div class="card-content">
+                            <h3>Total Registrations</h3>
+                            <div class="card-value" id="total-registrations">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="card-content">
+                            <h3>Total Revenue</h3>
+                            <div class="card-value" id="total-revenue">$0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-images"></i></div>
+                        <div class="card-content">
+                            <h3>Pending Photos</h3>
+                            <div class="card-value" id="pending-photos">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-hands-helping"></i></div>
+                        <div class="card-content">
+                            <h3>Volunteers</h3>
+                            <div class="card-value" id="total-volunteers">0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Registration Timeline</h3>
+                        <canvas id="registration-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Ticket Types</h3>
+                        <canvas id="ticket-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Registrations Section -->
+            <section id="registrations" class="admin-section">
+                <h2>Registrations</h2>
+                <div class="admin-controls">
+                    <div class="search-box">
+                        <input type="text" id="registration-search" placeholder="Search by name or email...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-controls">
+                        <select id="payment-filter">
+                            <option value="all">All Payments</option>
+                            <option value="completed">Paid</option>
+                            <option value="pending">Pending</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                        <select id="ticket-filter">
+                            <option value="all">All Tickets</option>
+                            <option value="early">Early Bird</option>
+                            <option value="regular">Regular</option>
+                        </select>
+                    </div>
+                    <button id="export-csv" class="secondary-button"><i class="fas fa-download"></i> Export CSV</button>
+                </div>
+                
+                <div class="registrations-table-container">
+                    <table class="data-table" id="registrations-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Ticket Type</th>
+                                <th>Guests</th>
+                                <th>Total</th>
+                                <th>Payment Status</th>
+                                <th>Date Registered</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Registration data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button id="prev-page" disabled><i class="fas fa-chevron-left"></i></button>
+                    <span id="page-info">Page 1 of 1</span>
+                    <button id="next-page" disabled><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+
+            <!-- Photos Section -->
+            <section id="photos" class="admin-section">
+                <h2>Photo Management</h2>
+                <div class="admin-controls">
+                    <div class="filter-controls">
+                        <select id="photo-status-filter">
+                            <option value="pending">Pending Approval</option>
+                            <option value="approved">Approved Photos</option>
+                            <option value="all">All Photos</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="photos-grid" id="photos-container">
+                    <!-- Photos will be populated here -->
+                </div>
+                
+                <div class="photo-preview-modal" id="photo-preview-modal">
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <img id="preview-image" src="" alt="Photo preview">
+                        <div class="photo-info">
+                            <p><strong>Uploader:</strong> <span id="preview-uploader"></span></p>
+                            <p><strong>Caption:</strong> <span id="preview-caption"></span></p>
+                            <p><strong>Date Uploaded:</strong> <span id="preview-date"></span></p>
+                        </div>
+                        <div class="photo-actions">
+                            <button id="approve-photo" class="cta-button">Approve Photo</button>
+                            <button id="reject-photo" class="danger-button">Reject & Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Volunteers Section -->
+            <section id="volunteers" class="admin-section">
+                <h2>Volunteer Management</h2>
+                <div class="admin-controls">
+                    <button id="assign-tasks" class="secondary-button"><i class="fas fa-tasks"></i> Assign Tasks</button>
+                    <button id="email-volunteers" class="secondary-button"><i class="fas fa-envelope"></i> Email All</button>
+                </div>
+                
+                <div class="volunteer-roles">
+                    <div class="role-card">
+                        <h3>Decorations</h3>
+                        <div class="volunteers-list" data-role="decorations">
+                            <!-- Volunteer data will be populated here -->
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <h3>Registration Table</h3>
+                        <div class="volunteers-list" data-role="registration">
+                            <!-- Volunteer data will be populated here -->
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <h3>Photography</h3>
+                        <div class="volunteers-list" data-role="photography">
+                            <!-- Volunteer data will be populated here -->
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <h3>Music and AV</h3>
+                        <div class="volunteers-list" data-role="music">
+                            <!-- Volunteer data will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section">
+                <h2>Settings</h2>
+                <div class="settings-container">
+                    <div class="settings-card">
+                        <h3>Admin Account</h3>
+                        <form id="admin-password-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" required>
+                            </div>
+                            <button type="submit" class="cta-button">Update Password</button>
+                        </form>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3>Email Settings</h3>
+                        <form id="email-settings-form">
+                            <div class="form-group">
+                                <label for="smtp-host">SMTP Host</label>
+                                <input type="text" id="smtp-host">
+                            </div>
+                            <div class="form-group">
+                                <label for="smtp-port">SMTP Port</label>
+                                <input type="number" id="smtp-port">
+                            </div>
+                            <div class="form-group">
+                                <label for="smtp-user">SMTP Username</label>
+                                <input type="text" id="smtp-user">
+                            </div>
+                            <div class="form-group">
+                                <label for="smtp-pass">SMTP Password</label>
+                                <input type="password" id="smtp-pass">
+                            </div>
+                            <div class="form-group">
+                                <label for="from-email">From Email</label>
+                                <input type="email" id="from-email">
+                            </div>
+                            <button type="submit" class="cta-button">Save Email Settings</button>
+                            <button type="button" id="test-email" class="secondary-button">Send Test Email</button>
+                        </form>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3>Website Settings</h3>
+                        <form id="website-settings-form">
+                            <div class="form-group">
+                                <label for="reunion-date">Reunion Date</label>
+                                <input type="date" id="reunion-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="reunion-start-time">Start Time</label>
+                                <input type="time" id="reunion-start-time">
+                            </div>
+                            <div class="form-group">
+                                <label for="early-bird-date">Early Bird Deadline</label>
+                                <input type="date" id="early-bird-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="early-bird-price">Early Bird Price ($)</label>
+                                <input type="number" id="early-bird-price">
+                            </div>
+                            <div class="form-group">
+                                <label for="regular-price">Regular Price ($)</label>
+                                <input type="number" id="regular-price">
+                            </div>
+                            <div class="form-group">
+                                <label for="guest-price">Guest Ticket Price ($)</label>
+                                <input type="number" id="guest-price">
+                            </div>
+                            <button type="submit" class="cta-button">Save Website Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

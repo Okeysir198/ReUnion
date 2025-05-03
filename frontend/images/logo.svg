@@ -1,0 +1,67 @@
+<svg viewBox="0 0 500 500" width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Modern gradient background with plum red colors -->
+  <defs>
+    <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#720d4d" />
+      <stop offset="50%" stop-color="#9e1c5a" />
+      <stop offset="100%" stop-color="#c32c6a" />
+    </linearGradient>
+    
+    <!-- Glow effect for the center text -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <!-- Shine effect for the mathematical symbols -->
+    <linearGradient id="symbolGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffebcc" />
+      <stop offset="100%" stop-color="#ffd699" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer circle with gradient -->
+  <circle cx="250" cy="250" r="240" fill="url(#backgroundGradient)" />
+  
+  <!-- Decorative inner ring with animation-ready styling -->
+  <circle cx="250" cy="250" r="210" fill="none" stroke="#ffebcc" stroke-width="2" stroke-dasharray="5,3" opacity="0.7" />
+  
+  <!-- Outer elegant ring -->
+  <circle cx="250" cy="250" r="225" fill="none" stroke="#ffd699" stroke-width="4" />
+  
+  <!-- Mathematical symbols around the circle - now with improved spacing and styling -->
+  <!-- Top symbols -->
+  <text x="250" y="80" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">∫</text>
+  <text x="340" y="110" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">Σ</text>
+  <text x="410" y="175" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">π</text>
+  <text x="430" y="260" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">∞</text>
+  
+  <!-- Right symbols -->
+  <text x="405" y="345" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">√</text>
+  <text x="350" y="410" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">θ</text>
+  
+  <!-- Bottom symbols -->
+  <text x="250" y="440" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">±</text>
+  <text x="150" y="410" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">÷</text>
+  
+  <!-- Left symbols -->
+  <text x="90" y="345" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">×</text>
+  <text x="70" y="260" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">λ</text>
+  <text x="90" y="175" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">α</text>
+  <text x="150" y="110" fill="url(#symbolGradient)" font-family="Verdana" font-size="32" font-weight="bold" text-anchor="middle" filter="url(#glow)">∇</text>
+ 
+  <!-- Enhanced "12" digit with dramatic styling -->
+  <text x="250" y="240" fill="#ffd699" font-family="Montserrat, Arial" font-size="130" font-weight="bold" text-anchor="middle" filter="url(#glow)">12</text>
+  
+  <!-- Class text - with improved font and spacing -->
+  <text x="250" y="310" fill="#ffebcc" font-family="Montserrat, Arial" font-size="38" font-weight="bold" text-anchor="middle" letter-spacing="2">MATH CLASS</text>
+  
+  <!-- Years - with clear styling -->
+  <text x="250" y="360" fill="#ffebcc" font-family="Montserrat, Arial" font-size="34" font-weight="bold" text-anchor="middle">2003 - 2005</text>
+  
+  <!-- Decorative elements -->
+  <polygon points="210,395 250,380 290,395 250,410" fill="#ffebcc" opacity="0.7" />
+  
+  <!-- Additional subtle decorative elements -->
+  <circle cx="250" cy="250" r="180" fill="none" stroke="#ffebcc" stroke-width="1" opacity="0.3" />
+</svg>

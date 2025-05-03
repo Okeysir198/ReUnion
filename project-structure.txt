@@ -1,0 +1,43 @@
+reunion-website/
+├── frontend/
+│   ├── index.html                     # Main website homepage
+│   ├── admin.html                     # Admin dashboard
+│   ├── login.html                     # Admin login page
+│   ├── css/
+│   │   ├── style.css                  # Main stylesheet
+│   │   ├── responsive.css             # Responsive design styles
+│   │   ├── admin.css                  # Admin dashboard styles
+│   │   └── login.css                  # Login page styles
+│   ├── js/
+│   │   ├── main.js                    # Main website JavaScript
+│   │   ├── countdown.js               # Countdown timer functionality
+│   │   └── admin.js                   # Admin dashboard functionality
+│   ├── images/
+│   │   ├── hero-image.jpg             # Hero section background
+│   │   ├── logo.png                   # School/reunion logo
+│   │   └── placeholder/               # Placeholder images
+│   ├── uploads/                       # Directory for uploaded photos
+│   └── package.json                   # Frontend dependencies
+│
+├── backend/
+│   ├── server.js                      # Main server file
+│   ├── routes/
+│   │   ├── api.js                     # API routes
+│   │   └── auth.js                    # Authentication routes
+│   ├── controllers/
+│   │   ├── registrationController.js  # Registration handling
+│   │   └── photoController.js         # Photo upload handling
+│   ├── models/
+│   │   ├── User.js                    # User/registration model
+│   │   └── Photo.js                   # Photo model
+│   ├── config/
+│   │   └── db.js                      # Database configuration
+│   └── utils/
+│       └── emailUtils.js              # Email functionality
+│
+├── node_modules/                      # Node.js dependencies (generated)
+├── .env                               # Environment variables
+├── .gitignore                         # Git ignore file
+├── package.json                       # Project dependencies
+├── README.md                          # Project documentation
+└── DEPLOYMENT_GUIDE.md                # Deployment instructions
