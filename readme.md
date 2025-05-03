@@ -1,34 +1,36 @@
 # High School Reunion Website
 
-A complete, customizable website for a 20-year high school reunion, featuring event details, registration, photo sharing, and an administrative interface.
+A complete, customizable website for a 20-year high school reunion, featuring event details, registration, photo sharing, event voting, budget planning, and an administrative interface.
 
-![High School Reunion Banner](frontend/images/logo.png)
+![High School Reunion Banner](frontend/images/logo.svg)
 
 ## 🌟 Features
 
 - **Responsive Design**: Mobile-friendly interface that works on all devices
-- **Dynamic Content**: Countdown timer, photo gallery, and interactive map
+- **Dynamic Content**: Countdown timer, photo gallery, and interactive venue map
 - **Online Registration**: Early bird and regular pricing with guest options
 - **Photo Sharing**: Allow classmates to upload and share photos
+- **Event Voting**: Vote on reunion dates and express budget preferences
+- **Budget Planning**: Input budget preferences and offer sponsorships
+- **Dashboard**: Track registrations, website visits, budget, and more
+- **Admin Dashboard**: Secure interface for managing all aspects of the reunion
 - **Payment Integration**: Ready to connect with payment processors
-- **Admin Dashboard**: Secure interface for managing registrations, photos, and event settings
 - **Email Notifications**: Automated emails for registrations and updates
 
 ## 📋 Project Structure
 
-The project follows a modern full-stack JavaScript architecture:
+The project follows a modern JavaScript architecture:
 
 - **Frontend**: HTML, CSS, and vanilla JavaScript for a lightweight experience
 - **Backend**: Node.js with Express for the API server
-- **Database**: MongoDB for data storage
+- **Data Storage**: Local JSON file-based storage for easy deployment
 - **Authentication**: JWT-based authentication for admin access
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js (v14+)
-- MongoDB (local or Atlas)
+- Node.js (v16+)
 - npm or yarn
 
 ### Installation
@@ -39,23 +41,15 @@ The project follows a modern full-stack JavaScript architecture:
    cd reunion-website
    ```
 
-2. **Install backend dependencies**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Install frontend dependencies**
-   ```bash
-   cd frontend
-   npm install
-   cd ..
-   ```
-
-4. **Configure environment variables**
+3. **Configure environment variables**
    Create a `.env` file in the root directory with the following variables:
    ```
    PORT=5000
-   MONGO_URI=mongodb://localhost:27017/reunion-website
    JWT_SECRET=your_jwt_secret
    EMAIL_HOST=smtp.example.com
    EMAIL_PORT=587
@@ -64,19 +58,14 @@ The project follows a modern full-stack JavaScript architecture:
    EMAIL_FROM=reunion@classof2005.com
    ```
 
-5. **Start the development server**
+4. **Start the development server**
    ```bash
-   # Start backend server
    npm run dev
-   
-   # In a separate terminal, start frontend server
-   cd frontend
-   npm start
    ```
 
-6. **Access the application**
-   - Main website: http://localhost:3000
-   - Admin login: http://localhost:3000/login.html
+5. **Access the application**
+   - Main website: http://localhost:5000
+   - Admin login: http://localhost:5000/login.html (username: admin, password: reunion2025)
 
 ## 🎨 Customization
 
@@ -107,22 +96,6 @@ The project follows a modern full-stack JavaScript architecture:
 3. **Payment Integration**
    - Implement a payment gateway in `backend/controllers/registrationController.js`
 
-## 👩‍💻 Admin Access
-
-The admin dashboard provides tools to manage all aspects of the reunion:
-
-1. **Default Login Credentials**
-   - Username: `admin`
-   - Password: `reunion2025`
-   - **Important**: Change these credentials before deployment!
-
-2. **Dashboard Features**
-   - View and manage registrations
-   - Approve uploaded photos
-   - Organize volunteer assignments
-   - Configure website settings
-   - Export registration data to CSV
-
 ## 📱 Mobile Responsiveness
 
 The website is fully responsive and optimized for:
@@ -143,6 +116,36 @@ The system can send automated emails for:
 
 To enable emails, configure the SMTP settings in the `.env` file.
 
+## 🌐 Heroku Deployment
+
+This project is ready for deployment on Heroku:
+
+1. **Create a Heroku account**
+   Sign up at [heroku.com](https://heroku.com) if you don't have an account.
+
+2. **Install Heroku CLI**
+   Follow the instructions at [devcenter.heroku.com/articles/heroku-cli](https://devcenter.heroku.com/articles/heroku-cli).
+
+3. **Login to Heroku**
+   ```bash
+   heroku login
+   ```
+
+4. **Create a new Heroku app**
+   ```bash
+   heroku create your-reunion-app-name
+   ```
+
+5. **Push to Heroku**
+   ```bash
+   git push heroku main
+   ```
+
+6. **Open your app**
+   ```bash
+   heroku open
+   ```
+
 ## 🔐 Security Considerations
 
 1. **Authentication**: JWT-based admin authentication
@@ -151,15 +154,7 @@ To enable emails, configure the SMTP settings in the `.env` file.
 4. **Environment Variables**: Sensitive configuration stored in `.env`
 5. **Photo Approval**: Admin review required before photos are public
 
-## 📦 Deployment
-
-See the [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed instructions on deploying to:
-- Traditional web hosting
-- Heroku
-- DigitalOcean
-- AWS
-
-## 🧩 Technology Stack
+## 📦 Technology Stack
 
 - **Frontend**:
   - HTML5
@@ -171,7 +166,7 @@ See the [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed instructions on 
 - **Backend**:
   - Node.js
   - Express.js
-  - MongoDB with Mongoose
+  - JSON file-based data storage
   - JWT for authentication
   - Multer for file uploads
   - Nodemailer for emails
@@ -184,9 +179,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 🙏 Acknowledgements
+## 👥 Admin Access
 
-- [Font Awesome](https://fontawesome.com/) for icons
-- [Chart.js](https://www.chartjs.org/) for data visualization
-- [Leaflet](https://leafletjs.com/) for maps
-- [Multer](https://github.com/expressjs/multer) for file uploads
+Default login credentials:
+- Username: `admin`
+- Password: `reunion2025`
+
+**Important**: Change these credentials before deployment!
