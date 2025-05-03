@@ -1,7 +1,6 @@
 // Photo Controller
 const Photo = require('../models/Photo');
-const fs = require('fs');
-const path = require('path');
+const { cloudinary } = require('../config/cloudinary');
 
 // Upload photos
 exports.uploadPhotos = async (req, res) => {
@@ -31,9 +30,9 @@ exports.uploadPhotos = async (req, res) => {
       const photo = new Photo({
         uploaderName: name,
         uploaderEmail: email,
-        filename: file.filename,
         originalName: file.originalname,
-        path: file.path,
+        cloudinaryId: file.filename,
+        cloudinaryUrl: file.path,
         mimetype: file.mimetype,
         size: file.size,
         caption: caption || '',
@@ -66,10 +65,8 @@ exports.uploadPhotos = async (req, res) => {
 // Get all approved photos
 exports.getAllApprovedPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find({ approved: true });
-    
-    // Sort by upload date, newest first
-    photos.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+    const photos = await Photo.find({ approved: true })
+      .sort({ uploadDate: -1 });
     
     res.status(200).json({
       success: true,
@@ -90,10 +87,8 @@ exports.getAllApprovedPhotos = async (req, res) => {
 // Get pending photos (admin only)
 exports.getPendingPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find({ approved: false });
-    
-    // Sort by upload date, newest first
-    photos.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+    const photos = await Photo.find({ approved: false })
+      .sort({ uploadDate: -1 });
     
     res.status(200).json({
       success: true,
@@ -155,21 +150,15 @@ exports.deletePhoto = async (req, res) => {
       });
     }
     
-    // Delete the file from storage
-    const filePath = photo.path;
-    fs.unlink(filePath, async (err) => {
-      if (err) {
-        console.error('File deletion error:', err);
-        // Continue with database record deletion even if file deletion fails
-      }
-      
-      // Delete the database record
-      await photo.remove();
-      
-      res.status(200).json({
-        success: true,
-        message: 'Photo deleted'
-      });
+    // Delete the image from Cloudinary
+    await cloudinary.uploader.destroy(photo.cloudinaryId);
+    
+    // Delete the photo from the database
+    await photo.deleteOne();
+    
+    res.status(200).json({
+      success: true,
+      message: 'Photo deleted'
     });
     
   } catch (err) {

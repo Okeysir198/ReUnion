@@ -4,7 +4,7 @@ const Stats = require('../models/Stats');
 // Record a visitor
 exports.recordVisitor = async (req, res) => {
   try {
-    const stats = Stats.incrementVisitors();
+    const stats = await Stats.incrementVisitors();
     
     res.status(200).json({
       success: true,
@@ -24,7 +24,7 @@ exports.recordVisitor = async (req, res) => {
 // Get dashboard stats
 exports.getDashboardStats = async (req, res) => {
   try {
-    const stats = Stats.getDashboardStats();
+    const stats = await Stats.getDashboardStats();
     
     res.status(200).json({
       success: true,

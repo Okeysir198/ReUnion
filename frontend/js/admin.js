@@ -326,9 +326,9 @@ function displayRegistrations(registrations) {
             <td>${formattedDate}</td>
             <td>
                 <div class="action-buttons">
-                    <button class="view-btn" data-id="${reg.id}" title="View Details"><i class="fas fa-eye"></i></button>
-                    <button class="edit-btn" data-id="${reg.id}" title="Edit"><i class="fas fa-edit"></i></button>
-                    <button class="delete-btn" data-id="${reg.id}" title="Delete"><i class="fas fa-trash"></i></button>
+                    <button class="view-btn" data-id="${reg._id}" title="View Details"><i class="fas fa-eye"></i></button>
+                    <button class="edit-btn" data-id="${reg._id}" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="delete-btn" data-id="${reg._id}" title="Delete"><i class="fas fa-trash"></i></button>
                 </div>
             </td>
         `;
@@ -354,7 +354,7 @@ function displayRegistrations(registrations) {
 function displayMockRegistrations() {
     const mockRegistrations = [
         {
-            id: '1',
+            _id: '1',
             name: 'John Smith',
             email: 'john@example.com',
             phone: '(555) 123-4567',
@@ -365,7 +365,7 @@ function displayMockRegistrations() {
             createdAt: '2025-04-15T14:30:00'
         },
         {
-            id: '2',
+            _id: '2',
             name: 'Lisa Johnson',
             email: 'lisa@example.com',
             phone: '(555) 987-6543',
@@ -376,7 +376,7 @@ function displayMockRegistrations() {
             createdAt: '2025-04-18T09:15:00'
         },
         {
-            id: '3',
+            _id: '3',
             name: 'Michael Brown',
             email: 'michael@example.com',
             phone: '(555) 456-7890',
@@ -387,7 +387,7 @@ function displayMockRegistrations() {
             createdAt: '2025-04-20T16:45:00'
         },
         {
-            id: '4',
+            _id: '4',
             name: 'Sarah Wilson',
             email: 'sarah@example.com',
             phone: '(555) 555-5555',
@@ -398,7 +398,7 @@ function displayMockRegistrations() {
             createdAt: '2025-04-22T11:20:00'
         },
         {
-            id: '5',
+            _id: '5',
             name: 'David Lee',
             email: 'david@example.com',
             phone: '(555) 333-4444',
@@ -456,14 +456,12 @@ function displayPhotos(photos, filterType) {
         
         const photoCard = document.createElement('div');
         photoCard.className = 'photo-card';
-        photoCard.setAttribute('data-id', photo.id);
+        photoCard.setAttribute('data-id', photo._id);
         
-        // Get the photo path
-        const photoPath = photo.path.replace(/^.*[\\\/]/, '/uploads/');
-        
+        // Use Cloudinary URL
         photoCard.innerHTML = `
             <div style="position: relative;">
-                <img src="${photoPath}" alt="${photo.caption || 'Uploaded photo'}">
+                <img src="${photo.cloudinaryUrl}" alt="${photo.caption || 'Uploaded photo'}">
                 <span class="status-badge status-${photo.approved ? 'approved' : 'pending'}">
                     ${photo.approved ? 'Approved' : 'Pending'}
                 </span>
@@ -487,54 +485,54 @@ function displayPhotos(photos, filterType) {
 function displayMockPhotos(filterType) {
     const mockPhotos = [
         {
-            id: '1',
-            filename: 'photo-1.jpg',
+            _id: '1',
+            cloudinaryId: 'photo-1',
+            cloudinaryUrl: 'https://via.placeholder.com/300x200?text=Graduation+Day',
             uploaderName: 'John Smith',
             uploaderEmail: 'john@example.com',
             caption: 'Graduation day 2005',
             uploadDate: '2025-04-15T14:30:00',
-            approved: false,
-            path: 'https://via.placeholder.com/300x200?text=Graduation+Day'
+            approved: false
         },
         {
-            id: '2',
-            filename: 'photo-2.jpg',
+            _id: '2',
+            cloudinaryId: 'photo-2',
+            cloudinaryUrl: 'https://via.placeholder.com/300x200?text=Football+Game',
             uploaderName: 'Lisa Johnson',
             uploaderEmail: 'lisa@example.com',
             caption: 'Football game vs. Central High',
             uploadDate: '2025-04-18T09:15:00',
-            approved: true,
-            path: 'https://via.placeholder.com/300x200?text=Football+Game'
+            approved: true
         },
         {
-            id: '3',
-            filename: 'photo-3.jpg',
+            _id: '3',
+            cloudinaryId: 'photo-3',
+            cloudinaryUrl: 'https://via.placeholder.com/300x200?text=Senior+Prom',
             uploaderName: 'Michael Brown',
             uploaderEmail: 'michael@example.com',
             caption: 'Senior prom group photo',
             uploadDate: '2025-04-20T16:45:00',
-            approved: false,
-            path: 'https://via.placeholder.com/300x200?text=Senior+Prom'
+            approved: false
         },
         {
-            id: '4',
-            filename: 'photo-4.jpg',
+            _id: '4',
+            cloudinaryId: 'photo-4',
+            cloudinaryUrl: 'https://via.placeholder.com/300x200?text=School+Trip',
             uploaderName: 'Sarah Wilson',
             uploaderEmail: 'sarah@example.com',
             caption: 'School trip to Washington D.C.',
             uploadDate: '2025-04-22T11:20:00',
-            approved: true,
-            path: 'https://via.placeholder.com/300x200?text=School+Trip'
+            approved: true
         },
         {
-            id: '5',
-            filename: 'photo-5.jpg',
+            _id: '5',
+            cloudinaryId: 'photo-5',
+            cloudinaryUrl: 'https://via.placeholder.com/300x200?text=Spirit+Week',
             uploaderName: 'David Lee',
             uploaderEmail: 'david@example.com',
             caption: 'Spirit week costume day',
             uploadDate: '2025-04-23T13:10:00',
-            approved: false,
-            path: 'https://via.placeholder.com/300x200?text=Spirit+Week'
+            approved: false
         }
     ];
     
@@ -556,8 +554,8 @@ function showPhotoPreview(photo) {
     const approveBtn = document.getElementById('approve-photo');
     const rejectBtn = document.getElementById('reject-photo');
     
-    // Set preview data
-    previewImage.src = photo.path.includes('http') ? photo.path : photo.path.replace(/^.*[\\\/]/, '/uploads/');
+    // Set preview data - Use Cloudinary URL
+    previewImage.src = photo.cloudinaryUrl;
     previewUploader.textContent = `${photo.uploaderName} (${photo.uploaderEmail})`;
     previewCaption.textContent = photo.caption || 'No caption provided';
     
@@ -575,11 +573,11 @@ function showPhotoPreview(photo) {
         approveBtn.style.display = 'none';
     } else {
         approveBtn.style.display = 'block';
-        approveBtn.onclick = () => approvePhoto(photo.id);
+        approveBtn.onclick = () => approvePhoto(photo._id);
     }
     
     // Set reject button action
-    rejectBtn.onclick = () => rejectPhoto(photo.id);
+    rejectBtn.onclick = () => rejectPhoto(photo._id);
     
     // Show modal
     modal.style.display = 'block';
@@ -1194,7 +1192,7 @@ function displayRegistrationDetails(registration) {
     
     modal.querySelector('.edit-registration').addEventListener('click', () => {
         document.body.removeChild(modal);
-        editRegistration(registration.id);
+        editRegistration(registration._id);
     });
     
     // Close modal when clicking outside the content
@@ -1233,7 +1231,7 @@ function displayEditRegistrationForm(registration) {
             <span class="close-modal">&times;</span>
             <h3>Edit Registration</h3>
             <form id="edit-registration-form">
-                <input type="hidden" id="edit-id" value="${registration.id}">
+                <input type="hidden" id="edit-id" value="${registration._id}">
                 
                 <div class="form-group">
                     <label for="edit-name">Name</label>

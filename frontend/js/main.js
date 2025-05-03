@@ -222,6 +222,7 @@ function loadVoteResults() {
                 resultsList.className = 'vote-results-list';
                 
                 // Sort dates by vote count (highest first)
+                // Sort dates by vote count (highest first)
                 const dateOptions = Object.entries(dateVotes)
                     .sort((a, b) => b[1] - a[1]);
                 
@@ -400,7 +401,8 @@ function loadPhotoGallery() {
                         galleryItem.className = 'gallery-item';
                         
                         const img = document.createElement('img');
-                        img.src = photo.path.replace(/^.*[\\\/]/, '/uploads/');
+                        // Use Cloudinary URL instead of local path
+                        img.src = photo.cloudinaryUrl;
                         img.alt = photo.caption || 'Class photo';
                         
                         galleryItem.appendChild(img);

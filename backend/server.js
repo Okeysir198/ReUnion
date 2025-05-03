@@ -2,15 +2,19 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const dotenv = require('dotenv');
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const { connectDB } = require('./config/db');
+
+// Load environment variables
+dotenv.config();
 
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to database (local JSON files)
+// Connect to MongoDB
 connectDB();
 
 // Middleware
@@ -20,9 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from frontend directory
 app.use(express.static(path.join(__dirname, '../frontend')));
-
-// Make uploads directory accessible
-app.use('/uploads', express.static(path.join(__dirname, '../frontend/uploads')));
 
 // API Routes
 app.use('/api', apiRoutes);

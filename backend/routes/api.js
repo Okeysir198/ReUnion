@@ -1,42 +1,11 @@
 // API Routes for Reunion Website
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
+const { upload } = require('../config/cloudinary');
 const registrationController = require('../controllers/registrationController');
 const photoController = require('../controllers/photoController');
 const voteController = require('../controllers/voteController');
 const statsController = require('../controllers/statsController');
-
-// Configure storage for photo uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../frontend/uploads'));
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, 'photo-' + uniqueSuffix + ext);
-  }
-});
-
-// Create multer upload instance
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 5000000 }, // 5MB limit
-  fileFilter: (req, file, cb) => {
-    // Accept only image files
-    const filetypes = /jpeg|jpg|png|gif/;
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
-
-    if (extname && mimetype) {
-      return cb(null, true);
-    } else {
-      cb(new Error('Error: Images Only!'));
-    }
-  }
-});
 
 // Registration routes
 router.post('/register', registrationController.register);
@@ -45,7 +14,7 @@ router.get('/registration/:id', registrationController.getRegistrationById);
 router.put('/registration/:id', registrationController.updateRegistration);
 router.delete('/registration/:id', registrationController.deleteRegistration);
 
-// Payment routes (these would connect to a payment gateway in production)
+// Payment routes
 router.post('/payment', registrationController.processPayment);
 router.get('/payment-status/:id', registrationController.getPaymentStatus);
 

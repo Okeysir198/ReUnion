@@ -1,6 +1,5 @@
 // Registration Controller
 const User = require('../models/User');
-const Stats = require('../models/Stats');
 
 // Register a new attendee
 exports.register = async (req, res) => {
@@ -35,7 +34,7 @@ exports.register = async (req, res) => {
       success: true,
       message: 'Registration successful',
       data: {
-        userId: user.id,
+        userId: user._id,
         ticketType: user.ticketType,
         totalAmount: user.paymentAmount,
         paymentStatus: user.paymentStatus
@@ -55,10 +54,8 @@ exports.register = async (req, res) => {
 // Get all registrations (admin only)
 exports.getAllRegistrations = async (req, res) => {
   try {
-    const registrations = await User.find();
-    
-    // Sort by creation date, newest first
-    registrations.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const registrations = await User.find()
+      .sort({ createdAt: -1 });
     
     res.status(200).json({
       success: true,
@@ -128,9 +125,6 @@ exports.updateRegistration = async (req, res) => {
     if (dietary) user.dietary = dietary;
     if (paymentStatus) user.paymentStatus = paymentStatus;
     
-    // Recalculate payment amount
-    user.paymentAmount = user.calculatePaymentAmount();
-    
     await user.save();
     
     res.status(200).json({
@@ -162,7 +156,7 @@ exports.deleteRegistration = async (req, res) => {
       });
     }
     
-    await user.remove();
+    await user.deleteOne();
     
     res.status(200).json({
       success: true,
@@ -248,7 +242,7 @@ exports.getPaymentStatus = async (req, res) => {
     res.status(200).json({
       success: true,
       data: {
-        userId: user.id,
+        userId: user._id,
         paymentStatus: user.paymentStatus,
         paymentAmount: user.paymentAmount
       }

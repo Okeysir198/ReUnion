@@ -14,16 +14,14 @@ exports.submitVote = async (req, res) => {
     }
     
     // Check if this email has already voted
-    const existingVote = await Vote.findByEmail(email);
+    let vote = await Vote.findOne({ email });
     
-    let vote;
-    if (existingVote) {
+    if (vote) {
       // Update existing vote
-      existingVote.name = name;
-      existingVote.dateVote = dateVote;
-      existingVote.budgetAmount = parseFloat(budgetAmount) || 0;
-      existingVote.sponsorAmount = parseFloat(sponsorAmount) || 0;
-      vote = new Vote(existingVote);
+      vote.name = name;
+      if (dateVote) vote.dateVote = dateVote;
+      if (budgetAmount !== undefined) vote.budgetAmount = parseFloat(budgetAmount) || 0;
+      if (sponsorAmount !== undefined) vote.sponsorAmount = parseFloat(sponsorAmount) || 0;
     } else {
       // Create new vote
       vote = new Vote({
@@ -39,7 +37,7 @@ exports.submitVote = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      message: existingVote ? 'Vote updated successfully' : 'Vote submitted successfully',
+      message: vote.isNew ? 'Vote submitted successfully' : 'Vote updated successfully',
       data: vote
     });
     
@@ -58,7 +56,7 @@ exports.getVoteByEmail = async (req, res) => {
   try {
     const { email } = req.params;
     
-    const vote = await Vote.findByEmail(email);
+    const vote = await Vote.findOne({ email });
     
     if (!vote) {
       return res.status(404).json({
@@ -85,7 +83,7 @@ exports.getVoteByEmail = async (req, res) => {
 // Get vote statistics
 exports.getVoteStats = async (req, res) => {
   try {
-    const stats = Vote.getStats();
+    const stats = await Vote.getStats();
     
     res.status(200).json({
       success: true,
@@ -105,7 +103,8 @@ exports.getVoteStats = async (req, res) => {
 // Get all votes (admin only)
 exports.getAllVotes = async (req, res) => {
   try {
-    const votes = Vote.find();
+    const votes = await Vote.find()
+      .sort({ createdAt: -1 });
     
     res.status(200).json({
       success: true,

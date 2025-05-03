@@ -16,6 +16,8 @@ A complete, customizable website for a 20-year high school reunion, featuring ev
 - **Admin Dashboard**: Secure interface for managing all aspects of the reunion
 - **Payment Integration**: Ready to connect with payment processors
 - **Email Notifications**: Automated emails for registrations and updates
+- **Persistent Data Storage**: MongoDB integration for reliable data storage
+- **Cloud Image Storage**: Cloudinary integration for scalable image hosting
 
 ## 📋 Project Structure
 
@@ -23,7 +25,8 @@ The project follows a modern JavaScript architecture:
 
 - **Frontend**: HTML, CSS, and vanilla JavaScript for a lightweight experience
 - **Backend**: Node.js with Express for the API server
-- **Data Storage**: Local JSON file-based storage for easy deployment
+- **Data Storage**: MongoDB for database storage (replaces local JSON files)
+- **Image Storage**: Cloudinary for cloud-based image storage
 - **Authentication**: JWT-based authentication for admin access
 
 ## 🚀 Quick Start
@@ -32,6 +35,8 @@ The project follows a modern JavaScript architecture:
 
 - Node.js (v16+)
 - npm or yarn
+- MongoDB Atlas account (free tier available)
+- Cloudinary account (free tier available)
 
 ### Installation
 
@@ -50,7 +55,11 @@ The project follows a modern JavaScript architecture:
    Create a `.env` file in the root directory with the following variables:
    ```
    PORT=5000
+   MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
+   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+   CLOUDINARY_API_KEY=your_cloudinary_api_key
+   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
    EMAIL_HOST=smtp.example.com
    EMAIL_PORT=587
    EMAIL_USER=reunion@example.com
@@ -118,7 +127,7 @@ To enable emails, configure the SMTP settings in the `.env` file.
 
 ## 🌐 Heroku Deployment
 
-This project is ready for deployment on Heroku:
+This project is ready for deployment on Heroku with MongoDB Atlas:
 
 1. **Create a Heroku account**
    Sign up at [heroku.com](https://heroku.com) if you don't have an account.
@@ -136,15 +145,27 @@ This project is ready for deployment on Heroku:
    heroku create your-reunion-app-name
    ```
 
-5. **Push to Heroku**
+5. **Configure environment variables on Heroku**
+   ```bash
+   heroku config:set MONGODB_URI=your_mongodb_connection_string
+   heroku config:set JWT_SECRET=your_jwt_secret
+   heroku config:set CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+   heroku config:set CLOUDINARY_API_KEY=your_cloudinary_api_key
+   heroku config:set CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+   heroku config:set NODE_ENV=production
+   ```
+
+6. **Push to Heroku**
    ```bash
    git push heroku main
    ```
 
-6. **Open your app**
+7. **Open your app**
    ```bash
    heroku open
    ```
+
+For more detailed deployment instructions, see the [Deployment Guide](DEPLOYMENT.md).
 
 ## 🔐 Security Considerations
 
@@ -166,9 +187,11 @@ This project is ready for deployment on Heroku:
 - **Backend**:
   - Node.js
   - Express.js
-  - JSON file-based data storage
+  - MongoDB
+  - Mongoose ODM
   - JWT for authentication
   - Multer for file uploads
+  - Cloudinary for image storage
   - Nodemailer for emails
 
 ## 📄 License
