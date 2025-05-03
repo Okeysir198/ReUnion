@@ -1,53 +1,47 @@
 reunion-website/
 ├── backend/
 │   ├── config/
-│   │   └── db.js           # Database configuration (using local storage)
+│   │   ├── cloudinary.js       # Cloudinary configuration
+│   │   └── db.js               # MongoDB connection setup
 │   ├── controllers/
-│   │   ├── photoController.js        # Photo upload handling
-│   │   ├── registrationController.js # Registration handling
-│   │   ├── statsController.js        # Statistics handling (NEW)
-│   │   └── voteController.js         # Voting handling (NEW)
-│   ├── data/
-│   │   ├── .gitkeep                  # Ensures directory exists in git
-│   │   ├── users.json                # Stores registration data
-│   │   ├── photos.json               # Stores photo metadata
-│   │   ├── votes.json                # Stores voting data (NEW)
-│   │   └── stats.json                # Stores site statistics (NEW)
+│   │   ├── photoController.js  # Photo upload and management
+│   │   ├── registrationController.js # User registration
+│   │   ├── statsController.js  # Website statistics
+│   │   └── voteController.js   # Event date and budget voting
+│   ├── data/                   # (Legacy folder, no longer used)
 │   ├── models/
-│   │   ├── Photo.js                  # Photo model (file-based)
-│   │   ├── Stats.js                  # Stats model (NEW)
-│   │   ├── User.js                   # User/registration model (file-based)
-│   │   └── Vote.js                   # Vote model (NEW)
+│   │   ├── Photo.js            # Photo MongoDB schema
+│   │   ├── Stats.js            # Stats MongoDB schema
+│   │   ├── User.js             # User registration MongoDB schema
+│   │   └── Vote.js             # Vote MongoDB schema
 │   ├── routes/
-│   │   ├── api.js                    # API routes
-│   │   └── auth.js                   # Authentication routes
+│   │   ├── api.js              # API routes
+│   │   └── auth.js             # Authentication routes
 │   ├── utils/
-│   │   └── emailUtils.js             # Email functionality
-│   └── server.js                     # Main server file
-│
+│   │   ├── auth.js             # Authentication utilities
+│   │   └── emailUtils.js       # Email sending utilities
+│   └── server.js               # Main Express server
 ├── frontend/
 │   ├── css/
-│   │   ├── admin.css                 # Admin dashboard styles
-│   │   ├── login.css                 # Login page styles
-│   │   ├── responsive.css            # Responsive design styles
-│   │   └── style.css                 # Main stylesheet (updated with voting styles)
+│   │   ├── admin.css           # Admin dashboard styles
+│   │   └── style.css           # Main website styles
 │   ├── images/
-│   │   ├── logo.svg                  # School/reunion logo
-│   │   ├── logo-500.svg              # Larger version of logo
-│   │   └── hero-image.jpg            # Hero section background
+│   │   ├── bg-hero.jpg         # Hero background image
+│   │   ├── logo.svg            # School logo
+│   │   └── ... (other images)
 │   ├── js/
-│   │   ├── admin.js                  # Admin dashboard functionality (updated)
-│   │   ├── countdown.js              # Countdown timer functionality
-│   │   └── main.js                   # Main website JavaScript (updated)
-│   ├── uploads/
-│   │   └── .gitkeep                  # Ensures directory exists in git
-│   ├── admin.html                    # Admin dashboard (updated)
-│   ├── index.html                    # Main website homepage (updated)
-│   └── login.html                    # Admin login page
-│
-├── node_modules/                     # Node.js dependencies (generated)
-├── .env                              # Environment variables
-├── .gitignore                        # Git ignore file (updated)
-├── package.json                      # Project dependencies (updated for Heroku)
-├── Procfile                          # Heroku deployment configuration (NEW)
-└── README.md                         # Project documentation
+│   │   ├── admin.js            # Admin dashboard functionality
+│   │   ├── countdown.js        # Countdown timer logic
+│   │   └── main.js             # Main website functionality
+│   ├── admin.html              # Admin dashboard HTML
+│   ├── index.html              # Main website HTML
+│   └── login.html              # Admin login HTML
+├── node_modules/               # npm packages (not tracked in git)
+├── .env                        # Environment variables (not tracked in git)
+├── .env.example                # Example environment variables template
+├── .gitignore                  # Git ignore configuration
+├── DEPLOYMENT.md               # Deployment guide
+├── LICENSE                     # Project license
+├── package.json                # npm dependencies and scripts
+├── package-lock.json           # npm lock file
+└── README.md                   # Project documentation
