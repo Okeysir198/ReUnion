@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
     <header>
@@ -18,7 +19,8 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#event-details">Event Details</a></li>
                 <li><a href="#memory-lane">Memory Lane</a></li>
-                <li><a href="#where-are-we">Where Are We Now</a></li>
+                <li><a href="#voting">Event Voting</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
                 <li><a href="#get-involved">Get Involved</a></li>
                 <li><a href="#register" class="cta-button">Register Now</a></li>
             </ul>
@@ -37,7 +39,7 @@
                 <h1>Class of 2005: Celebrating 20 Years!</h1>
                 <p>Join us for a weekend of reconnecting, reminiscing, and celebrating two decades since we walked the halls of Central High.</p>
                 <div class="event-date">
-                    <i class="fas fa-calendar"></i> September 24-26, 2025
+                    <i class="fas fa-calendar"></i> July 25, 2025 (Tentative - Vote below!)
                 </div>
                 <div class="event-location">
                     <i class="fas fa-map-marker-alt"></i> Grand Central Hotel, Downtown
@@ -72,24 +74,24 @@
             <div class="container">
                 <h2>Event Details</h2>
                 <div class="schedule">
-                    <h3>Reunion Schedule</h3>
+                    <h3>Tentative Reunion Schedule</h3>
                     <div class="schedule-item">
-                        <div class="day">Friday, Sept 24</div>
+                        <div class="day">Friday, July 24</div>
                         <div class="activity">Welcome Mixer - 7:00 PM to 10:00 PM</div>
                         <div class="description">Casual gathering with drinks and appetizers</div>
                     </div>
                     <div class="schedule-item">
-                        <div class="day">Saturday, Sept 25</div>
+                        <div class="day">Saturday, July 25</div>
                         <div class="activity">Campus Tour - 10:00 AM to 12:00 PM</div>
                         <div class="description">Visit our old classrooms and see what's changed</div>
                     </div>
                     <div class="schedule-item">
-                        <div class="day">Saturday, Sept 25</div>
+                        <div class="day">Saturday, July 25</div>
                         <div class="activity">Main Event - 6:00 PM to 11:00 PM</div>
                         <div class="description">Dinner, dancing, and awards ceremony</div>
                     </div>
                     <div class="schedule-item">
-                        <div class="day">Sunday, Sept 26</div>
+                        <div class="day">Sunday, July 26</div>
                         <div class="activity">Farewell Brunch - 10:00 AM to 1:00 PM</div>
                         <div class="description">One last chance to say goodbye</div>
                     </div>
@@ -161,28 +163,142 @@
             </div>
         </section>
 
-        <!-- Where Are We Now Section -->
-        <section id="where-are-we" class="where-are-we">
+        <!-- Voting Section (NEW) -->
+        <section id="voting" class="voting">
             <div class="container">
-                <h2>Where Are We Now</h2>
-                <div class="spotlight">
-                    <h3>Classmate Spotlights</h3>
-                    <div class="spotlight-container">
-                        <!-- Spotlights will be dynamically loaded here -->
+                <h2>Event Voting</h2>
+                <div class="date-voting">
+                    <h3>Vote for Reunion Date</h3>
+                    <p>We want to make sure as many classmates as possible can attend. Please vote for your preferred date:</p>
+                    
+                    <form id="date-vote-form">
+                        <div class="form-group">
+                            <label for="vote-name">Name</label>
+                            <input type="text" id="vote-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vote-email">Email</label>
+                            <input type="email" id="vote-email" name="email" required>
+                        </div>
+                        
+                        <div class="vote-options">
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="July 25-27, 2025">
+                                    July 25-27, 2025
+                                </label>
+                            </div>
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="August 15-17, 2025">
+                                    August 15-17, 2025
+                                </label>
+                            </div>
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="September 5-7, 2025">
+                                    September 5-7, 2025
+                                </label>
+                            </div>
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="September 26-28, 2025">
+                                    September 26-28, 2025
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="vote-status" class="vote-status"></div>
+                        
+                        <button type="submit" class="secondary-button">Submit Vote</button>
+                    </form>
+                    
+                    <div class="vote-results-container">
+                        <h4 class="vote-results-title">Current Voting Results</h4>
+                        <div id="vote-results">
+                            <!-- Results will be loaded here -->
+                            <p>Loading results...</p>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="world-map">
-                    <h3>Around the World</h3>
-                    <div id="classmate-map" class="map-container">
-                        <!-- Map will be loaded here -->
+                <div class="budget-voting">
+                    <h3>Budget Planning</h3>
+                    <div class="budget-description">
+                        <p>We want to make this reunion affordable for everyone. Please indicate what budget per person you are comfortable with and whether you would be willing to sponsor classmates who may need financial assistance.</p>
+                    </div>
+                    
+                    <form id="budget-vote-form">
+                        <div class="form-group">
+                            <label for="budget-name">Name</label>
+                            <input type="text" id="budget-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget-email">Email</label>
+                            <input type="email" id="budget-email" name="email" required>
+                        </div>
+                        
+                        <div class="budget-form-group">
+                            <label for="budget-amount">What is your comfortable budget per person? ($)</label>
+                            <input type="number" id="budget-amount" name="budgetAmount" min="0" placeholder="e.g., 100">
+                        </div>
+                        
+                        <div class="budget-form-group">
+                            <label for="sponsor-amount">Optional: Amount you can contribute to sponsor others ($)</label>
+                            <input type="number" id="sponsor-amount" name="sponsorAmount" min="0" placeholder="e.g., 50">
+                        </div>
+                        
+                        <div id="budget-status" class="vote-status"></div>
+                        
+                        <button type="submit" class="secondary-button">Submit Budget Info</button>
+                    </form>
+                    
+                    <div class="vote-results-container">
+                        <h4 class="vote-results-title">Current Budget Results</h4>
+                        <div id="budget-results">
+                            <!-- Results will be loaded here -->
+                            <p>Loading results...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section (NEW) -->
+        <section id="dashboard" class="dashboard">
+            <div class="container">
+                <h2>Reunion Dashboard</h2>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <div class="card-title">Registrations</div>
+                        <div class="card-value" id="registration-count">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-eye"></i></div>
+                        <div class="card-title">Website Visitors</div>
+                        <div class="card-value" id="visitor-count">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="card-title">Total Budget</div>
+                        <div class="card-value" id="total-budget">$0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                        <div class="card-title">Sponsorships</div>
+                        <div class="card-value" id="sponsorship-amount">$0</div>
                     </div>
                 </div>
                 
-                <div class="career-fields">
-                    <h3>Career Fields</h3>
-                    <div class="career-chart">
-                        <!-- Chart will be loaded here -->
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Registration Progress</h3>
+                        <canvas id="registration-chart" class="dashboard-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Budget Sources</h3>
+                        <canvas id="budget-chart" class="dashboard-chart"></canvas>
                     </div>
                 </div>
             </div>
@@ -224,8 +340,26 @@
                     <h3>Photo Submission</h3>
                     <p>Share your photos for our reunion slideshow</p>
                     <form id="photo-form" class="photo-form">
-                        <input type="file" id="photo-upload" accept="image/*" multiple>
-                        <label for="photo-upload" class="upload-label">Choose Files</label>
+                        <div class="form-group">
+                            <label for="photo-name">Your Name</label>
+                            <input type="text" id="photo-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-email">Your Email</label>
+                            <input type="email" id="photo-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-caption">Photo Caption (Optional)</label>
+                            <textarea id="photo-caption" name="caption"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-upload">Select Photos</label>
+                            <div class="file-input-group">
+                                <input type="file" id="photo-upload" name="photos" accept="image/*" multiple>
+                                <label for="photo-upload" class="upload-label">Choose Files</label>
+                                <span class="file-name"></span>
+                            </div>
+                        </div>
                         <button type="submit" class="secondary-button">Upload Photos</button>
                     </form>
                 </div>
@@ -337,7 +471,19 @@
                     </div>
                     <div class="faq-item">
                         <div class="question">Can I get a refund if I can't attend?</div>
-                        <div class="answer">Refunds are available up to August 1, 2025, minus a $25 processing fee.</div>
+                        <div class="answer">Refunds are available up to June 1, 2025, minus a $25 processing fee.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="question">Why are we voting on dates?</div>
+                        <div class="answer">We want to ensure the maximum number of classmates can attend, so we're letting the class vote on the best weekend!</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="question">Why are we voting on dates?</div>
+                        <div class="answer">We want to ensure the maximum number of classmates can attend, so we're letting the class vote on the best weekend!</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="question">How can I contribute to the budget?</div>
+                        <div class="answer">You can indicate your comfortable budget and sponsorship amount in the Event Voting section. This helps us plan an inclusive event for everyone.</div>
                     </div>
                 </div>
             </div>
@@ -356,9 +502,9 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="js/countdown.js"></script>
     <script src="js/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </body>
 </html>

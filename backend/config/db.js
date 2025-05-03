@@ -1,21 +1,40 @@
-// Database Configuration
-const mongoose = require('mongoose');
+// Database Configuration - Using local file storage instead of MongoDB
+const fs = require('fs');
+const path = require('path');
 
-// MongoDB connection string - replace with your actual MongoDB URI
-// For production, this should be stored in environment variables
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/reunion-website';
+// Create data directories if they don't exist
+const dataDir = path.join(__dirname, '../data');
+const uploadsDir = path.join(__dirname, '../../frontend/uploads');
 
-// Connect to MongoDB
+// Database connection function
 const connectDB = async () => {
   try {
-    await mongoose.connect(MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    // Create data directory if it doesn't exist
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir);
+      console.log('Data directory created successfully');
+    }
+    
+    // Create uploads directory if it doesn't exist
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir);
+      console.log('Uploads directory created successfully');
+    }
+    
+    // Create necessary data files if they don't exist
+    const dataFiles = ['users.json', 'photos.json', 'votes.json', 'budget.json', 'stats.json'];
+    
+    dataFiles.forEach(file => {
+      const filePath = path.join(dataDir, file);
+      if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, JSON.stringify([]));
+        console.log(`${file} created successfully`);
+      }
     });
-    console.log('MongoDB connected successfully');
+    
+    console.log('Local database setup successfully');
   } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    // Exit process with failure
+    console.error('Database setup error:', error.message);
     process.exit(1);
   }
 };

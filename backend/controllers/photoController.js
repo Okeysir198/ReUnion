@@ -66,7 +66,10 @@ exports.uploadPhotos = async (req, res) => {
 // Get all approved photos
 exports.getAllApprovedPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find({ approved: true }).sort({ uploadDate: -1 });
+    const photos = await Photo.find({ approved: true });
+    
+    // Sort by upload date, newest first
+    photos.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
     
     res.status(200).json({
       success: true,
@@ -87,7 +90,10 @@ exports.getAllApprovedPhotos = async (req, res) => {
 // Get pending photos (admin only)
 exports.getPendingPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find({ approved: false }).sort({ uploadDate: -1 });
+    const photos = await Photo.find({ approved: false });
+    
+    // Sort by upload date, newest first
+    photos.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
     
     res.status(200).json({
       success: true,
@@ -129,14 +135,6 @@ exports.approvePhoto = async (req, res) => {
   } catch (err) {
     console.error('Approve photo error:', err.message);
     
-    // Check for invalid ID
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({
-        success: false,
-        message: 'Photo not found'
-      });
-    }
-    
     res.status(500).json({
       success: false,
       message: 'Server error',
@@ -176,14 +174,6 @@ exports.deletePhoto = async (req, res) => {
     
   } catch (err) {
     console.error('Delete photo error:', err.message);
-    
-    // Check for invalid ID
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({
-        success: false,
-        message: 'Photo not found'
-      });
-    }
     
     res.status(500).json({
       success: false,

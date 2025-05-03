@@ -530,3 +530,53 @@ body {
 .danger-button:hover {
     background-color: #c82333;
 }
+/* Vote Management */
+.votes-summary {
+    margin-bottom: 30px;
+}
+
+.summary-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.summary-stat {
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 200px;
+}
+
+.stat-label {
+    font-weight: bold;
+    color: #666;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    float: right;
+}
+
+.votes-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.votes-table-container {
+    margin-top: 20px;
+}
+
+.no-content {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+}

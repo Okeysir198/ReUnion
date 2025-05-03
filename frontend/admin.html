@@ -26,6 +26,7 @@
                 <li><a href="#dashboard" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#registrations" data-section="registrations"><i class="fas fa-users"></i> Registrations</a></li>
                 <li><a href="#photos" data-section="photos"><i class="fas fa-images"></i> Photos</a></li>
+                <li><a href="#votes" data-section="votes"><i class="fas fa-vote-yea"></i> Votes</a></li>
                 <li><a href="#volunteers" data-section="volunteers"><i class="fas fa-hands-helping"></i> Volunteers</a></li>
                 <li><a href="#settings" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
             </ul>
@@ -58,21 +59,21 @@
                         </div>
                     </div>
                     <div class="dashboard-card">
-                        <div class="card-icon"><i class="fas fa-hands-helping"></i></div>
+                        <div class="card-icon"><i class="fas fa-eye"></i></div>
                         <div class="card-content">
-                            <h3>Volunteers</h3>
-                            <div class="card-value" id="total-volunteers">0</div>
+                            <h3>Website Visitors</h3>
+                            <div class="card-value" id="total-visitors">0</div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="dashboard-charts">
                     <div class="chart-container">
-                        <h3>Registration Timeline</h3>
+                        <h3>Registration Progress</h3>
                         <canvas id="registration-chart"></canvas>
                     </div>
                     <div class="chart-container">
-                        <h3>Ticket Types</h3>
+                        <h3>Budget Sources</h3>
                         <canvas id="ticket-chart"></canvas>
                     </div>
                 </div>
@@ -161,6 +162,57 @@
                             <button id="reject-photo" class="danger-button">Reject & Delete</button>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- Votes Section (NEW) -->
+            <section id="votes" class="admin-section">
+                <h2>Voting Results</h2>
+                <div class="votes-summary">
+                    <div class="summary-stats">
+                        <div class="summary-stat">
+                            <span class="stat-label">Total Votes:</span>
+                            <span class="stat-value" id="total-votes">0</span>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="stat-label">Average Budget Per Person:</span>
+                            <span class="stat-value" id="average-budget">$0</span>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="stat-label">Total Sponsorship Offered:</span>
+                            <span class="stat-value" id="total-sponsorship">$0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="votes-charts">
+                        <div class="chart-container">
+                            <h3>Date Votes</h3>
+                            <canvas id="votes-chart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Budget Information</h3>
+                            <canvas id="budget-results-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Detailed Vote Submissions</h3>
+                <div class="votes-table-container">
+                    <table class="data-table" id="votes-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Date Vote</th>
+                                <th>Budget Amount</th>
+                                <th>Sponsorship Amount</th>
+                                <th>Date Submitted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Vote data will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
@@ -286,7 +338,7 @@
         </div>
     </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>

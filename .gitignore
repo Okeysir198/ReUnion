@@ -26,6 +26,10 @@ pids
 /frontend/uploads/*
 !/frontend/uploads/.gitkeep
 
+# Data storage files
+/backend/data/*
+!/backend/data/.gitkeep
+
 # Build files
 /frontend/dist
 /dist

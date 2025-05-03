@@ -631,3 +631,247 @@ footer a {
 footer a:hover {
     color: white;
 }
+/* Voting Section Styles */
+.voting {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.date-voting, .budget-voting {
+    margin-bottom: 50px;
+}
+
+.vote-option {
+    margin-bottom: 15px;
+}
+
+.vote-option label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.vote-option label:hover {
+    background-color: #f0f0f0;
+}
+
+.vote-option input[type="radio"] {
+    margin-right: 10px;
+}
+
+.vote-status {
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+    display: none;
+}
+
+.vote-status.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.vote-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.vote-status.info {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.vote-results-container {
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.vote-results-title {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.vote-result-item {
+    margin-bottom: 15px;
+}
+
+.vote-option {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.vote-progress-container {
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.vote-progress {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.vote-count {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.vote-total-info {
+    text-align: right;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.budget-form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.budget-form-group label {
+    flex: 0 0 200px;
+}
+
+.budget-form-group input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.budget-description {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f0f7e6;
+    border-radius: 5px;
+    border-left: 4px solid #28a745;
+}
+
+.budget-summary {
+    margin-top: 20px;
+}
+
+.budget-stat {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Dashboard Section Styles */
+.dashboard {
+    padding: 80px 0;
+    background-color: white;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.dashboard-card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.dashboard-card .card-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.dashboard-card .card-title {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.dashboard-card .card-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+/* Photo submission form updates */
+.photo-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.photo-form .form-group {
+    margin-bottom: 15px;
+}
+
+.photo-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.photo-form input[type="text"],
+.photo-form input[type="email"],
+.photo-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.photo-form .file-input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.photo-form .file-name {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}

@@ -1,9 +1,7 @@
 // Main Server File for Reunion Website
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const multer = require('multer');
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const { connectDB } = require('./config/db');
@@ -12,7 +10,7 @@ const { connectDB } = require('./config/db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to database
+// Connect to database (local JSON files)
 connectDB();
 
 // Middleware
@@ -23,9 +21,12 @@ app.use(express.urlencoded({ extended: false }));
 // Serve static files from frontend directory
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// Make uploads directory accessible
+app.use('/uploads', express.static(path.join(__dirname, '../frontend/uploads')));
+
 // API Routes
 app.use('/api', apiRoutes);
-app.use('/auth', authRoutes);
+app.use('/auth', authRoutes.router);
 
 // Serve the main index.html file for any route not handled by API
 app.get('*', (req, res) => {

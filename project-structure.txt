@@ -1,43 +1,53 @@
 reunion-website/
-├── frontend/
-│   ├── index.html                     # Main website homepage
-│   ├── admin.html                     # Admin dashboard
-│   ├── login.html                     # Admin login page
-│   ├── css/
-│   │   ├── style.css                  # Main stylesheet
-│   │   ├── responsive.css             # Responsive design styles
-│   │   ├── admin.css                  # Admin dashboard styles
-│   │   └── login.css                  # Login page styles
-│   ├── js/
-│   │   ├── main.js                    # Main website JavaScript
-│   │   ├── countdown.js               # Countdown timer functionality
-│   │   └── admin.js                   # Admin dashboard functionality
-│   ├── images/
-│   │   ├── hero-image.jpg             # Hero section background
-│   │   ├── logo.png                   # School/reunion logo
-│   │   └── placeholder/               # Placeholder images
-│   ├── uploads/                       # Directory for uploaded photos
-│   └── package.json                   # Frontend dependencies
-│
 ├── backend/
-│   ├── server.js                      # Main server file
-│   ├── routes/
-│   │   ├── api.js                     # API routes
-│   │   └── auth.js                    # Authentication routes
-│   ├── controllers/
-│   │   ├── registrationController.js  # Registration handling
-│   │   └── photoController.js         # Photo upload handling
-│   ├── models/
-│   │   ├── User.js                    # User/registration model
-│   │   └── Photo.js                   # Photo model
 │   ├── config/
-│   │   └── db.js                      # Database configuration
-│   └── utils/
-│       └── emailUtils.js              # Email functionality
+│   │   └── db.js           # Database configuration (using local storage)
+│   ├── controllers/
+│   │   ├── photoController.js        # Photo upload handling
+│   │   ├── registrationController.js # Registration handling
+│   │   ├── statsController.js        # Statistics handling (NEW)
+│   │   └── voteController.js         # Voting handling (NEW)
+│   ├── data/
+│   │   ├── .gitkeep                  # Ensures directory exists in git
+│   │   ├── users.json                # Stores registration data
+│   │   ├── photos.json               # Stores photo metadata
+│   │   ├── votes.json                # Stores voting data (NEW)
+│   │   └── stats.json                # Stores site statistics (NEW)
+│   ├── models/
+│   │   ├── Photo.js                  # Photo model (file-based)
+│   │   ├── Stats.js                  # Stats model (NEW)
+│   │   ├── User.js                   # User/registration model (file-based)
+│   │   └── Vote.js                   # Vote model (NEW)
+│   ├── routes/
+│   │   ├── api.js                    # API routes
+│   │   └── auth.js                   # Authentication routes
+│   ├── utils/
+│   │   └── emailUtils.js             # Email functionality
+│   └── server.js                     # Main server file
 │
-├── node_modules/                      # Node.js dependencies (generated)
-├── .env                               # Environment variables
-├── .gitignore                         # Git ignore file
-├── package.json                       # Project dependencies
-├── README.md                          # Project documentation
-└── DEPLOYMENT_GUIDE.md                # Deployment instructions
+├── frontend/
+│   ├── css/
+│   │   ├── admin.css                 # Admin dashboard styles
+│   │   ├── login.css                 # Login page styles
+│   │   ├── responsive.css            # Responsive design styles
+│   │   └── style.css                 # Main stylesheet (updated with voting styles)
+│   ├── images/
+│   │   ├── logo.svg                  # School/reunion logo
+│   │   ├── logo-500.svg              # Larger version of logo
+│   │   └── hero-image.jpg            # Hero section background
+│   ├── js/
+│   │   ├── admin.js                  # Admin dashboard functionality (updated)
+│   │   ├── countdown.js              # Countdown timer functionality
+│   │   └── main.js                   # Main website JavaScript (updated)
+│   ├── uploads/
+│   │   └── .gitkeep                  # Ensures directory exists in git
+│   ├── admin.html                    # Admin dashboard (updated)
+│   ├── index.html                    # Main website homepage (updated)
+│   └── login.html                    # Admin login page
+│
+├── node_modules/                     # Node.js dependencies (generated)
+├── .env                              # Environment variables
+├── .gitignore                        # Git ignore file (updated)
+├── package.json                      # Project dependencies (updated for Heroku)
+├── Procfile                          # Heroku deployment configuration (NEW)
+└── README.md                         # Project documentation

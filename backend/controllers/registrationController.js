@@ -1,5 +1,6 @@
 // Registration Controller
 const User = require('../models/User');
+const Stats = require('../models/Stats');
 
 // Register a new attendee
 exports.register = async (req, res) => {
@@ -34,7 +35,7 @@ exports.register = async (req, res) => {
       success: true,
       message: 'Registration successful',
       data: {
-        userId: user._id,
+        userId: user.id,
         ticketType: user.ticketType,
         totalAmount: user.paymentAmount,
         paymentStatus: user.paymentStatus
@@ -54,7 +55,10 @@ exports.register = async (req, res) => {
 // Get all registrations (admin only)
 exports.getAllRegistrations = async (req, res) => {
   try {
-    const registrations = await User.find().sort({ createdAt: -1 });
+    const registrations = await User.find();
+    
+    // Sort by creation date, newest first
+    registrations.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     
     res.status(200).json({
       success: true,
@@ -92,14 +96,6 @@ exports.getRegistrationById = async (req, res) => {
   } catch (err) {
     console.error('Get registration error:', err.message);
     
-    // Check for invalid ID
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({
-        success: false,
-        message: 'Registration not found'
-      });
-    }
-    
     res.status(500).json({
       success: false,
       message: 'Server error',
@@ -132,6 +128,9 @@ exports.updateRegistration = async (req, res) => {
     if (dietary) user.dietary = dietary;
     if (paymentStatus) user.paymentStatus = paymentStatus;
     
+    // Recalculate payment amount
+    user.paymentAmount = user.calculatePaymentAmount();
+    
     await user.save();
     
     res.status(200).json({
@@ -142,14 +141,6 @@ exports.updateRegistration = async (req, res) => {
     
   } catch (err) {
     console.error('Update registration error:', err.message);
-    
-    // Check for invalid ID
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({
-        success: false,
-        message: 'Registration not found'
-      });
-    }
     
     res.status(500).json({
       success: false,
@@ -180,14 +171,6 @@ exports.deleteRegistration = async (req, res) => {
     
   } catch (err) {
     console.error('Delete registration error:', err.message);
-    
-    // Check for invalid ID
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({
-        success: false,
-        message: 'Registration not found'
-      });
-    }
     
     res.status(500).json({
       success: false,
@@ -265,7 +248,7 @@ exports.getPaymentStatus = async (req, res) => {
     res.status(200).json({
       success: true,
       data: {
-        userId: user._id,
+        userId: user.id,
         paymentStatus: user.paymentStatus,
         paymentAmount: user.paymentAmount
       }
@@ -273,14 +256,6 @@ exports.getPaymentStatus = async (req, res) => {
     
   } catch (err) {
     console.error('Get payment status error:', err.message);
-    
-    // Check for invalid ID
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({
-        success: false,
-        message: 'Registration not found'
-      });
-    }
     
     res.status(500).json({
       success: false,

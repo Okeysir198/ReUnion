@@ -5,6 +5,8 @@ const multer = require('multer');
 const path = require('path');
 const registrationController = require('../controllers/registrationController');
 const photoController = require('../controllers/photoController');
+const voteController = require('../controllers/voteController');
+const statsController = require('../controllers/statsController');
 
 // Configure storage for photo uploads
 const storage = multer.diskStorage({
@@ -54,6 +56,16 @@ router.get('/photos/pending', photoController.getPendingPhotos);
 router.put('/photo/:id/approve', photoController.approvePhoto);
 router.delete('/photo/:id', photoController.deletePhoto);
 
+// Vote routes
+router.post('/vote', voteController.submitVote);
+router.get('/vote/:email', voteController.getVoteByEmail);
+router.get('/vote-stats', voteController.getVoteStats);
+router.get('/votes', voteController.getAllVotes);
+
+// Stats routes
+router.post('/record-visitor', statsController.recordVisitor);
+router.get('/dashboard-stats', statsController.getDashboardStats);
+
 // Contact and volunteer routes
 router.post('/volunteer', (req, res) => {
   // Handle volunteer sign-ups
@@ -83,34 +95,6 @@ router.post('/memorabilia', (req, res) => {
     success: true, 
     message: 'Memorabilia information received successfully' 
   });
-});
-
-// Stats routes (for displays like the career chart and map)
-router.get('/stats/careers', (req, res) => {
-  // In a real application, this would query the database
-  // For demo purposes, returning hardcoded data
-  
-  const careerStats = {
-    labels: ['Education', 'Healthcare', 'Technology', 'Business', 'Arts', 'Other'],
-    data: [15, 20, 25, 18, 8, 14]
-  };
-  
-  res.status(200).json(careerStats);
-});
-
-router.get('/stats/locations', (req, res) => {
-  // In a real application, this would query the database
-  // For demo purposes, returning hardcoded data
-  
-  const locationStats = [
-    { name: "Sarah Johnson", location: [34.0522, -118.2437], city: "Los Angeles" },
-    { name: "Mike Peterson", location: [40.7128, -74.0060], city: "New York" },
-    { name: "Jessica Lee", location: [51.5074, -0.1278], city: "London" },
-    { name: "David Smith", location: [35.6762, 139.6503], city: "Tokyo" },
-    { name: "Lisa Wong", location: [-33.8688, 151.2093], city: "Sydney" }
-  ];
-  
-  res.status(200).json(locationStats);
 });
 
 // Error handling middleware
