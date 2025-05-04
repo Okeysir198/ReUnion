@@ -85,16 +85,17 @@ exports.getAllPhotos = async (req, res) => {
   }
 };
 
-// Like a photo
+
+// Updated Like a photo function - simplified to only require name
 exports.likePhoto = async (req, res) => {
   try {
     const { photoId } = req.params;
-    const { email } = req.body;
+    const { name } = req.body;
     
-    if (!email) {
+    if (!name) {
       return res.status(400).json({
         success: false,
-        message: 'Email là bắt buộc'
+        message: 'Tên là bắt buộc'
       });
     }
     
@@ -112,11 +113,11 @@ exports.likePhoto = async (req, res) => {
       photo.likedBy = [];
     }
     
-    const alreadyLiked = photo.likedBy.includes(email);
+    const alreadyLiked = photo.likedBy.includes(name);
     
     if (alreadyLiked) {
       // Unlike the photo
-      photo.likedBy = photo.likedBy.filter(likedEmail => likedEmail !== email);
+      photo.likedBy = photo.likedBy.filter(likedName => likedName !== name);
       photo.likes = photo.likedBy.length;
       
       await photo.save();
@@ -131,7 +132,7 @@ exports.likePhoto = async (req, res) => {
       });
     } else {
       // Like the photo
-      photo.likedBy.push(email);
+      photo.likedBy.push(name);
       photo.likes = photo.likedBy.length;
       
       await photo.save();
@@ -155,16 +156,16 @@ exports.likePhoto = async (req, res) => {
   }
 };
 
-// Add a comment to a photo
+// Updated Add a comment to a photo - simplified to only require name
 exports.addComment = async (req, res) => {
   try {
     const { photoId } = req.params;
-    const { name, email, text } = req.body;
+    const { name, text } = req.body;
     
-    if (!name || !email || !text) {
+    if (!name || !text) {
       return res.status(400).json({
         success: false,
-        message: 'Tên, email và nội dung bình luận là bắt buộc'
+        message: 'Tên và nội dung bình luận là bắt buộc'
       });
     }
     
@@ -184,7 +185,6 @@ exports.addComment = async (req, res) => {
     
     const comment = {
       name,
-      email,
       text,
       createdAt: new Date()
     };

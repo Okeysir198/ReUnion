@@ -612,7 +612,7 @@ function displayMockPhotos(filterType) {
     displayPhotos(filteredPhotos, filterType);
 }
 
-// Show photo preview modal
+// Updated showPhotoPreview function for admin panel
 function showPhotoPreview(photo) {
     const modal = document.getElementById('photo-preview-modal');
     const previewImage = document.getElementById('preview-image');
@@ -653,7 +653,7 @@ function showPhotoPreview(photo) {
         minute: '2-digit'
     });
     
-    // Add likes info
+    // Add likes info - showing just the count, not who liked
     document.getElementById('preview-likes').textContent = `${photo.likes || 0} likes`;
     
     // Show comments

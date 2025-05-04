@@ -1,12 +1,8 @@
-// Photo Model for Photo Uploads
+// Updated Photo Model for simplified social interaction
 const mongoose = require('mongoose');
 
 const CommentSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true
-  },
-  email: {
     type: String,
     required: true
   },
@@ -66,7 +62,7 @@ const PhotoSchema = new mongoose.Schema({
     default: 0
   },
   likedBy: {
-    type: [String],
+    type: [String], // Changed to just store names, not emails
     default: []
   },
   comments: {

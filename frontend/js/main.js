@@ -415,6 +415,7 @@ function formatCurrency(amount) {
 }
 
 // Load photo gallery images
+// Updated loadPhotoGallery function with simplified social interactions
 function loadPhotoGallery() {
     const galleryContainer = document.querySelector('.gallery-container');
     
@@ -543,6 +544,7 @@ function loadPhotoGallery() {
             });
     }
 }
+
 
 // Load classmate spotlights
 function loadClassmateSpotlights() {
@@ -882,6 +884,7 @@ function validateEmail(email) {
 }
 
 // Social features for photos
+// Social features for photos with simplified interaction
 function setupPhotoSocialFeatures() {
     // Like button functionality
     document.querySelectorAll('.like-button').forEach(button => {
@@ -895,11 +898,11 @@ function setupPhotoSocialFeatures() {
             // Toggle like status
             const isLiked = heartIcon.classList.contains('fas');
             
-            // Get user email (in a real app, this would be from a logged-in user)
-            const userEmail = prompt('Nhập email của bạn để thích ảnh này:');
+            // Get user name only - simplified interaction
+            const userName = prompt('Nhập tên của bạn để thích ảnh này:');
             
-            if (!userEmail || !validateEmail(userEmail)) {
-                alert('Vui lòng nhập một địa chỉ email hợp lệ.');
+            if (!userName || userName.trim() === '') {
+                alert('Vui lòng nhập tên của bạn.');
                 return;
             }
             
@@ -909,7 +912,7 @@ function setupPhotoSocialFeatures() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: userEmail }),
+                body: JSON.stringify({ name: userName }),
             })
             .then(response => response.json())
             .then(result => {
@@ -964,12 +967,11 @@ function setupPhotoSocialFeatures() {
                 return;
             }
             
-            // Get user info (in a real app, this would be from a logged-in user)
+            // Get user name only - simplified interaction
             const userName = prompt('Nhập tên của bạn để bình luận:');
-            const userEmail = prompt('Nhập email của bạn để bình luận:');
             
-            if (!userName || !userEmail || !validateEmail(userEmail)) {
-                alert('Vui lòng nhập thông tin hợp lệ.');
+            if (!userName || userName.trim() === '') {
+                alert('Vui lòng nhập tên của bạn.');
                 return;
             }
             
@@ -981,7 +983,6 @@ function setupPhotoSocialFeatures() {
                 },
                 body: JSON.stringify({
                     name: userName,
-                    email: userEmail,
                     text: commentText
                 }),
             })
@@ -1037,7 +1038,6 @@ function setupPhotoSocialFeatures() {
         });
     });
 }
-
 
 
 document.addEventListener('DOMContentLoaded', function() {
