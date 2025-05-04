@@ -4,37 +4,36 @@ reunion-website/
 │   │   ├── cloudinary.js       # Cloudinary configuration
 │   │   └── db.js               # MongoDB connection setup
 │   ├── controllers/
-│   │   ├── photoController.js  # Photo upload and management
-│   │   ├── registrationController.js # User registration
-│   │   ├── statsController.js  # Website statistics
-│   │   └── voteController.js   # Event date and budget voting
-│   ├── data/                   # (Legacy folder, no longer used)
+│   │   ├── photoController.js  # Photo upload and social features
+│   │   ├── registrationController.js # User and family registration
+│   │   ├── statsController.js  # Website statistics with improved visitor tracking
+│   │   └── voteController.js   # Event date and budget voting with change tracking
 │   ├── models/
-│   │   ├── Photo.js            # Photo MongoDB schema
-│   │   ├── Stats.js            # Stats MongoDB schema
-│   │   ├── User.js             # User registration MongoDB schema
-│   │   └── Vote.js             # Vote MongoDB schema
+│   │   ├── Photo.js            # Photo MongoDB schema with social features
+│   │   ├── Stats.js            # Stats MongoDB schema with attendee breakdowns
+│   │   ├── User.js             # User registration MongoDB schema with family attendees
+│   │   └── Vote.js             # Vote MongoDB schema with change tracking
 │   ├── routes/
-│   │   ├── api.js              # API routes
+│   │   ├── api.js              # API routes with new social and tracking endpoints
 │   │   └── auth.js             # Authentication routes
 │   ├── utils/
 │   │   ├── auth.js             # Authentication utilities
-│   │   └── emailUtils.js       # Email sending utilities
+│   │   └── emailUtils.js       # Email sending utilities with Vietnamese templates
 │   └── server.js               # Main Express server
 ├── frontend/
 │   ├── css/
 │   │   ├── admin.css           # Admin dashboard styles
-│   │   └── style.css           # Main website styles
+│   │   ├── responsive.css      # Responsive design styles
+│   │   └── style.css           # Main website styles with Vietnamese layout
 │   ├── images/
-│   │   ├── bg-hero.jpg         # Hero background image
-│   │   ├── logo.svg            # School logo
+│   │   ├── logo.svg            # Math class logo
 │   │   └── ... (other images)
 │   ├── js/
 │   │   ├── admin.js            # Admin dashboard functionality
 │   │   ├── countdown.js        # Countdown timer logic
-│   │   └── main.js             # Main website functionality
+│   │   └── main.js             # Main website functionality with VND formatting
 │   ├── admin.html              # Admin dashboard HTML
-│   ├── index.html              # Main website HTML
+│   ├── index.html              # Main website HTML in Vietnamese
 │   └── login.html              # Admin login HTML
 ├── node_modules/               # npm packages (not tracked in git)
 ├── .env                        # Environment variables (not tracked in git)

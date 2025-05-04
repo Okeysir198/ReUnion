@@ -1,7 +1,7 @@
 // Main JavaScript for Reunion Website
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Record visitor
+    // Record visitor with improved tracking
     recordVisitor();
     
     // Mobile Menu Toggle
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupBudgetVoting();
     }
     
-    // Initialize career chart if element exists
+    // Initialize dashboard charts if elements exist
     if (document.querySelector('.dashboard-chart')) {
         initDashboardCharts();
     }
@@ -80,25 +80,38 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Handle form submissions
     setupFormSubmissions();
+    
+    // Photo upload preview
+    setupPhotoUploadPreview();
 });
 
-// Record visitor for statistics
+// Record visitor for statistics with 30-minute inactivity as new visit
 function recordVisitor() {
-    // Send a request to record the visit
-    fetch('/api/record-visitor', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .catch(error => console.error('Error recording visitor:', error));
+    // Check for previous visit time in localStorage
+    const lastVisit = localStorage.getItem('lastVisitTime');
+    const currentTime = Date.now();
+    
+    // If no previous visit or more than 30 minutes since last visit
+    if (!lastVisit || (currentTime - lastVisit) > 30 * 60 * 1000) {
+        // Send a request to record the visit
+        fetch('/api/record-visitor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Lỗi khi ghi lại người truy cập:', error));
+        
+        // Update last visit time
+        localStorage.setItem('lastVisitTime', currentTime);
+    }
 }
 
 // Initialize venue map
 function initMap() {
     // Create a map centered at venue location
-    const venueLocation = [40.7128, -74.0060]; // Replace with actual venue coordinates
+    const venueLocation = [21.0285, 105.8542]; // Hanoi coordinates
     const map = L.map('map').setView(venueLocation, 15);
     
     // Add OpenStreetMap tiles
@@ -109,7 +122,7 @@ function initMap() {
     // Add marker for venue
     L.marker(venueLocation)
         .addTo(map)
-        .bindPopup('Grand Central Hotel<br>123 Main Street')
+        .bindPopup('Khách sạn Grand Central<br>123 Đường Chính')
         .openPopup();
 }
 
@@ -133,12 +146,12 @@ function setupVoting() {
                         }
                         
                         // Show update message
-                        document.getElementById('vote-status').textContent = 'You have already voted. You can update your vote below.';
+                        document.getElementById('vote-status').textContent = 'Bạn đã bình chọn rồi. Bạn có thể cập nhật bình chọn của mình dưới đây.';
                         document.getElementById('vote-status').style.display = 'block';
                         document.getElementById('vote-status').className = 'vote-status info';
                     }
                 })
-                .catch(error => console.error('Error checking previous vote:', error));
+                .catch(error => console.error('Lỗi khi kiểm tra bình chọn trước đó:', error));
         }
     });
     
@@ -151,12 +164,12 @@ function setupVoting() {
         const dateVote = document.querySelector('input[name="dateVote"]:checked')?.value;
         
         if (!name || !email) {
-            alert('Please provide your name and email to vote.');
+            alert('Vui lòng cung cấp tên và email của bạn để bình chọn.');
             return;
         }
         
         if (!dateVote) {
-            alert('Please select a date option to vote.');
+            alert('Vui lòng chọn một ngày để bình chọn.');
             return;
         }
         
@@ -176,18 +189,18 @@ function setupVoting() {
             const result = await response.json();
             
             if (result.success) {
-                document.getElementById('vote-status').textContent = 'Thank you for your vote!';
+                document.getElementById('vote-status').textContent = 'Cảm ơn bạn đã bình chọn!';
                 document.getElementById('vote-status').style.display = 'block';
                 document.getElementById('vote-status').className = 'vote-status success';
                 loadVoteResults();
             } else {
-                document.getElementById('vote-status').textContent = 'Error: ' + result.message;
+                document.getElementById('vote-status').textContent = 'Lỗi: ' + result.message;
                 document.getElementById('vote-status').style.display = 'block';
                 document.getElementById('vote-status').className = 'vote-status error';
             }
         } catch (error) {
-            console.error('Error submitting vote:', error);
-            document.getElementById('vote-status').textContent = 'There was an error processing your vote. Please try again.';
+            console.error('Lỗi khi gửi bình chọn:', error);
+            document.getElementById('vote-status').textContent = 'Đã xảy ra lỗi khi xử lý bình chọn của bạn. Vui lòng thử lại.';
             document.getElementById('vote-status').style.display = 'block';
             document.getElementById('vote-status').className = 'vote-status error';
         }
@@ -212,7 +225,7 @@ function loadVoteResults() {
                 // Get date votes
                 const dateVotes = data.data.dateVotes;
                 if (!dateVotes || Object.keys(dateVotes).length === 0) {
-                    resultsContainer.innerHTML = '<p>No votes yet. Be the first to vote!</p>';
+                    resultsContainer.innerHTML = '<p>Chưa có bình chọn nào. Hãy là người đầu tiên bình chọn!</p>';
                     return;
                 }
                 
@@ -221,7 +234,6 @@ function loadVoteResults() {
                 const resultsList = document.createElement('div');
                 resultsList.className = 'vote-results-list';
                 
-                // Sort dates by vote count (highest first)
                 // Sort dates by vote count (highest first)
                 const dateOptions = Object.entries(dateVotes)
                     .sort((a, b) => b[1] - a[1]);
@@ -236,7 +248,7 @@ function loadVoteResults() {
                         <div class="vote-progress-container">
                             <div class="vote-progress" style="width: ${percentage}%"></div>
                         </div>
-                        <div class="vote-count">${votes} votes (${percentage}%)</div>
+                        <div class="vote-count">${votes} phiếu (${percentage}%)</div>
                     `;
                     
                     resultsList.appendChild(resultItem);
@@ -247,11 +259,11 @@ function loadVoteResults() {
                 // Add total votes info
                 const totalInfo = document.createElement('p');
                 totalInfo.className = 'vote-total-info';
-                totalInfo.textContent = `Total votes: ${totalVotes}`;
+                totalInfo.textContent = `Tổng số phiếu bầu: ${totalVotes}`;
                 resultsContainer.appendChild(totalInfo);
             }
         })
-        .catch(error => console.error('Error loading vote results:', error));
+        .catch(error => console.error('Lỗi khi tải kết quả bình chọn:', error));
 }
 
 // Setup budget voting
@@ -269,16 +281,26 @@ function setupBudgetVoting() {
                     if (data.success && data.data) {
                         // Pre-fill form with existing vote
                         document.getElementById('budget-name').value = data.data.name;
-                        document.getElementById('budget-amount').value = data.data.budgetAmount || '';
+                        
+                        // Check the appropriate radio button based on budget amount
+                        const budgetAmount = data.data.budgetAmount || 0;
+                        if (budgetAmount >= 2000000 && budgetAmount < 3000000) {
+                            document.querySelector('input[name="budgetAmount"][value="2500000"]').checked = true;
+                        } else if (budgetAmount >= 3000000 && budgetAmount < 4000000) {
+                            document.querySelector('input[name="budgetAmount"][value="3500000"]').checked = true;
+                        } else if (budgetAmount >= 4000000) {
+                            document.querySelector('input[name="budgetAmount"][value="5000000"]').checked = true;
+                        }
+                        
                         document.getElementById('sponsor-amount').value = data.data.sponsorAmount || '';
                         
                         // Show update message
-                        document.getElementById('budget-status').textContent = 'You have already submitted budget information. You can update it below.';
+                        document.getElementById('budget-status').textContent = 'Bạn đã gửi thông tin ngân sách. Bạn có thể cập nhật lựa chọn của mình dưới đây.';
                         document.getElementById('budget-status').style.display = 'block';
                         document.getElementById('budget-status').className = 'vote-status info';
                     }
                 })
-                .catch(error => console.error('Error checking previous budget vote:', error));
+                .catch(error => console.error('Lỗi khi kiểm tra thông tin ngân sách trước đó:', error));
         }
     });
     
@@ -288,11 +310,16 @@ function setupBudgetVoting() {
         
         const name = document.getElementById('budget-name').value.trim();
         const email = document.getElementById('budget-email').value.trim();
-        const budgetAmount = document.getElementById('budget-amount').value;
+        const budgetAmount = document.querySelector('input[name="budgetAmount"]:checked')?.value;
         const sponsorAmount = document.getElementById('sponsor-amount').value;
         
         if (!name || !email) {
-            alert('Please provide your name and email to submit budget information.');
+            alert('Vui lòng cung cấp tên và email của bạn để gửi thông tin ngân sách.');
+            return;
+        }
+        
+        if (!budgetAmount) {
+            alert('Vui lòng chọn một mức ngân sách.');
             return;
         }
         
@@ -313,18 +340,18 @@ function setupBudgetVoting() {
             const result = await response.json();
             
             if (result.success) {
-                document.getElementById('budget-status').textContent = 'Thank you for your budget submission!';
+                document.getElementById('budget-status').textContent = 'Cảm ơn bạn đã gửi thông tin ngân sách!';
                 document.getElementById('budget-status').style.display = 'block';
                 document.getElementById('budget-status').className = 'vote-status success';
                 loadBudgetResults();
             } else {
-                document.getElementById('budget-status').textContent = 'Error: ' + result.message;
+                document.getElementById('budget-status').textContent = 'Lỗi: ' + result.message;
                 document.getElementById('budget-status').style.display = 'block';
                 document.getElementById('budget-status').className = 'vote-status error';
             }
         } catch (error) {
-            console.error('Error submitting budget:', error);
-            document.getElementById('budget-status').textContent = 'There was an error processing your submission. Please try again.';
+            console.error('Lỗi khi gửi thông tin ngân sách:', error);
+            document.getElementById('budget-status').textContent = 'Đã xảy ra lỗi khi xử lý thông tin của bạn. Vui lòng thử lại.';
             document.getElementById('budget-status').style.display = 'block';
             document.getElementById('budget-status').className = 'vote-status error';
         }
@@ -352,7 +379,7 @@ function loadBudgetResults() {
                 const totalVotes = data.data.voteCount || 0;
                 
                 if (totalVotes === 0) {
-                    budgetResultsContainer.innerHTML = '<p>No budget submissions yet. Be the first to submit!</p>';
+                    budgetResultsContainer.innerHTML = '<p>Chưa có thông tin ngân sách nào được gửi. Hãy là người đầu tiên gửi!</p>';
                     return;
                 }
                 
@@ -363,23 +390,28 @@ function loadBudgetResults() {
                 budgetSummary.className = 'budget-summary';
                 budgetSummary.innerHTML = `
                     <div class="budget-stat">
-                        <span class="stat-label">Average Budget per Person:</span>
-                        <span class="stat-value">$${averageBudget}</span>
+                        <span class="stat-label">Ngân sách trung bình mỗi người:</span>
+                        <span class="stat-value">${formatCurrency(averageBudget)} VND</span>
                     </div>
                     <div class="budget-stat">
-                        <span class="stat-label">Total Budget Submissions:</span>
+                        <span class="stat-label">Tổng số người gửi thông tin ngân sách:</span>
                         <span class="stat-value">${totalVotes}</span>
                     </div>
                     <div class="budget-stat">
-                        <span class="stat-label">Total Sponsorship Offered:</span>
-                        <span class="stat-value">$${totalSponsorship}</span>
+                        <span class="stat-label">Tổng số tiền tài trợ đã đề xuất:</span>
+                        <span class="stat-value">${formatCurrency(totalSponsorship)} VND</span>
                     </div>
                 `;
                 
                 budgetResultsContainer.appendChild(budgetSummary);
             }
         })
-        .catch(error => console.error('Error loading budget results:', error));
+        .catch(error => console.error('Lỗi khi tải kết quả ngân sách:', error));
+}
+
+// Format currency in Vietnamese format
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN').format(amount);
 }
 
 // Load photo gallery images
@@ -387,7 +419,7 @@ function loadPhotoGallery() {
     const galleryContainer = document.querySelector('.gallery-container');
     
     if (galleryContainer) {
-        // Try to fetch approved photos from the server
+        // Try to fetch photos from the server
         fetch('/api/photos')
             .then(response => response.json())
             .then(data => {
@@ -400,25 +432,73 @@ function loadPhotoGallery() {
                         const galleryItem = document.createElement('div');
                         galleryItem.className = 'gallery-item';
                         
+                        // Create photo element
                         const img = document.createElement('img');
-                        // Use Cloudinary URL instead of local path
                         img.src = photo.cloudinaryUrl;
-                        img.alt = photo.caption || 'Class photo';
+                        img.alt = photo.caption || 'Ảnh lớp học';
                         
+                        // Create caption element if available
+                        if (photo.caption) {
+                            const caption = document.createElement('div');
+                            caption.className = 'gallery-caption';
+                            caption.textContent = photo.caption;
+                            galleryItem.appendChild(caption);
+                        }
+                        
+                        // Create social features
+                        const socialSection = document.createElement('div');
+                        socialSection.className = 'photo-social';
+                        
+                        // Like button
+                        const likeButton = document.createElement('button');
+                        likeButton.className = 'like-button';
+                        likeButton.setAttribute('data-id', photo._id);
+                        likeButton.innerHTML = `
+                            <i class="far fa-heart"></i>
+                            <span class="like-count">${photo.likes || 0}</span>
+                        `;
+                        
+                        // Comment section
+                        const commentSection = document.createElement('div');
+                        commentSection.className = 'comment-section';
+                        commentSection.innerHTML = `
+                            <div class="comments-list" data-id="${photo._id}">
+                                ${photo.comments && photo.comments.length > 0 ? 
+                                    photo.comments.map(comment => `
+                                        <div class="comment">
+                                            <div class="comment-author">${comment.name}</div>
+                                            <div class="comment-text">${comment.text}</div>
+                                        </div>
+                                    `).join('') : 
+                                    '<p>Chưa có bình luận.</p>'
+                                }
+                            </div>
+                            <form class="comment-form" data-id="${photo._id}">
+                                <input type="text" placeholder="Thêm bình luận..." required>
+                                <button type="submit">Gửi</button>
+                            </form>
+                        `;
+                        
+                        socialSection.appendChild(likeButton);
                         galleryItem.appendChild(img);
+                        galleryItem.appendChild(socialSection);
+                        galleryItem.appendChild(commentSection);
                         galleryContainer.appendChild(galleryItem);
                     });
+                    
+                    // Setup social feature interactions
+                    setupPhotoSocialFeatures();
                 } else {
-                    // Use placeholder images if no approved photos
+                    // Use placeholder images if no photos
                     galleryContainer.innerHTML = '';
                     
                     const placeholderImages = [
-                        { src: 'https://via.placeholder.com/300x200?text=Graduation+Day', alt: 'Graduation Day' },
-                        { src: 'https://via.placeholder.com/300x200?text=Senior+Prom', alt: 'Senior Prom' },
-                        { src: 'https://via.placeholder.com/300x200?text=Football+Game', alt: 'Football Game' },
-                        { src: 'https://via.placeholder.com/300x200?text=School+Trip', alt: 'School Trip' },
-                        { src: 'https://via.placeholder.com/300x200?text=Yearbook+Photo', alt: 'Yearbook Photo' },
-                        { src: 'https://via.placeholder.com/300x200?text=Spirit+Week', alt: 'Spirit Week' }
+                        { src: 'https://via.placeholder.com/300x200?text=Lễ+Tốt+Nghiệp', alt: 'Lễ Tốt Nghiệp' },
+                        { src: 'https://via.placeholder.com/300x200?text=Dạ+Hội+Cuối+Năm', alt: 'Dạ Hội Cuối Năm' },
+                        { src: 'https://via.placeholder.com/300x200?text=Trận+Bóng+Đá', alt: 'Trận Bóng Đá' },
+                        { src: 'https://via.placeholder.com/300x200?text=Chuyến+Đi+Trường', alt: 'Chuyến Đi Trường' },
+                        { src: 'https://via.placeholder.com/300x200?text=Hình+Kỷ+Yếu', alt: 'Hình Kỷ Yếu' },
+                        { src: 'https://via.placeholder.com/300x200?text=Tuần+Lễ+Hội', alt: 'Tuần Lễ Hội' }
                     ];
                     
                     placeholderImages.forEach(image => {
@@ -435,16 +515,16 @@ function loadPhotoGallery() {
                 }
             })
             .catch(error => {
-                console.error('Error loading photos:', error);
+                console.error('Lỗi khi tải ảnh:', error);
                 
                 // Use placeholder images on error
                 const placeholderImages = [
-                    { src: 'https://via.placeholder.com/300x200?text=Graduation+Day', alt: 'Graduation Day' },
-                    { src: 'https://via.placeholder.com/300x200?text=Senior+Prom', alt: 'Senior Prom' },
-                    { src: 'https://via.placeholder.com/300x200?text=Football+Game', alt: 'Football Game' },
-                    { src: 'https://via.placeholder.com/300x200?text=School+Trip', alt: 'School Trip' },
-                    { src: 'https://via.placeholder.com/300x200?text=Yearbook+Photo', alt: 'Yearbook Photo' },
-                    { src: 'https://via.placeholder.com/300x200?text=Spirit+Week', alt: 'Spirit Week' }
+                    { src: 'https://via.placeholder.com/300x200?text=Lễ+Tốt+Nghiệp', alt: 'Lễ Tốt Nghiệp' },
+                    { src: 'https://via.placeholder.com/300x200?text=Dạ+Hội+Cuối+Năm', alt: 'Dạ Hội Cuối Năm' },
+                    { src: 'https://via.placeholder.com/300x200?text=Trận+Bóng+Đá', alt: 'Trận Bóng Đá' },
+                    { src: 'https://via.placeholder.com/300x200?text=Chuyến+Đi+Trường', alt: 'Chuyến Đi Trường' },
+                    { src: 'https://via.placeholder.com/300x200?text=Hình+Kỷ+Yếu', alt: 'Hình Kỷ Yếu' },
+                    { src: 'https://via.placeholder.com/300x200?text=Tuần+Lễ+Hội', alt: 'Tuần Lễ Hội' }
                 ];
                 
                 galleryContainer.innerHTML = '';
@@ -469,22 +549,22 @@ function loadClassmateSpotlights() {
     // Sample spotlight data - would be loaded from backend in production
     const spotlights = [
         {
-            name: 'Sarah Johnson',
-            image: 'https://via.placeholder.com/100x100?text=SJ',
-            career: 'School Principal',
-            bio: 'After graduating from UC Berkeley, Sarah became a teacher and recently was promoted to principal at Lincoln Elementary.'
+            name: 'Nguyễn Thị Hương',
+            image: 'https://via.placeholder.com/100x100?text=NTH',
+            career: 'Hiệu trưởng trường học',
+            bio: 'Sau khi tốt nghiệp Đại học Sư phạm Hà Nội, Hương trở thành giáo viên và gần đây được bổ nhiệm làm hiệu trưởng tại Trường Tiểu học Thăng Long.'
         },
         {
-            name: 'Mike Peterson',
-            image: 'https://via.placeholder.com/100x100?text=MP',
-            career: 'Software Engineer',
-            bio: 'Mike founded a successful tech startup after graduating from MIT and now works as a senior developer at Google.'
+            name: 'Trần Văn Minh',
+            image: 'https://via.placeholder.com/100x100?text=TVM',
+            career: 'Kỹ sư phần mềm',
+            bio: 'Minh đã thành lập một công ty khởi nghiệp công nghệ thành công sau khi tốt nghiệp Đại học Bách Khoa và hiện đang làm việc như một nhà phát triển cấp cao tại Google.'
         },
         {
-            name: 'Jessica Lee',
-            image: 'https://via.placeholder.com/100x100?text=JL',
-            career: 'Journalist',
-            bio: 'Jessica has traveled to over 50 countries as an international correspondent for the BBC, covering major world events.'
+            name: 'Hoàng Thị Lan',
+            image: 'https://via.placeholder.com/100x100?text=HTL',
+            career: 'Nhà báo',
+            bio: 'Lan đã đi đến hơn 50 quốc gia với tư cách là phóng viên quốc tế cho VTV, đưa tin về các sự kiện quan trọng trên thế giới.'
         }
     ];
     
@@ -498,7 +578,7 @@ function loadClassmateSpotlights() {
             spotlightItem.innerHTML = `
                 <img src="${spotlight.image}" alt="${spotlight.name}">
                 <h4>${spotlight.name}</h4>
-                <p><strong>Career:</strong> ${spotlight.career}</p>
+                <p><strong>Nghề nghiệp:</strong> ${spotlight.career}</p>
                 <p>${spotlight.bio}</p>
             `;
             
@@ -507,7 +587,39 @@ function loadClassmateSpotlights() {
     }
 }
 
-// Initialize dashboard charts
+// Setup photo upload preview
+function setupPhotoUploadPreview() {
+    const photoUpload = document.getElementById('photo-upload');
+    const previewContainer = document.getElementById('photo-preview-container');
+    
+    if (photoUpload && previewContainer) {
+        photoUpload.addEventListener('change', function() {
+            // Clear previous previews
+            previewContainer.innerHTML = '';
+            
+            if (this.files && this.files.length > 0) {
+                for (let i = 0; i < this.files.length; i++) {
+                    const file = this.files[i];
+                    
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            const preview = document.createElement('img');
+                            preview.src = e.target.result;
+                            preview.className = 'photo-preview';
+                            previewContainer.appendChild(preview);
+                        }
+                        
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Initialize dashboard charts with enhanced attendee metrics
 function initDashboardCharts() {
     fetch('/api/dashboard-stats')
         .then(response => response.json())
@@ -515,20 +627,20 @@ function initDashboardCharts() {
             if (data.success) {
                 const stats = data.data;
                 
-                // Update dashboard counters
-                document.getElementById('visitor-count').textContent = stats.visitors;
-                document.getElementById('registration-count').textContent = stats.registrations;
-                document.getElementById('total-budget').textContent = `$${stats.totalBudget}`;
-                document.getElementById('sponsorship-amount').textContent = `$${stats.totalSponsorshipBudget}`;
+                // Update dashboard counters with attendee breakdown
+                document.getElementById('adult-count').textContent = stats.adultCount || 0;
+                document.getElementById('child-count').textContent = stats.childCount || 0;
+                document.getElementById('infant-count').textContent = stats.infantCount || 0;
+                document.getElementById('visitor-count').textContent = stats.visitors || 0;
                 
                 // Create registration chart
                 const registrationCtx = document.getElementById('registration-chart').getContext('2d');
                 new Chart(registrationCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Registered', 'Expected'],
+                        labels: ['Đã đăng ký', 'Dự kiến'],
                         datasets: [{
-                            label: 'Registrations',
+                            label: 'Số lượng đăng ký',
                             data: [stats.registrations, 100 - stats.registrations], // Assuming 100 expected attendees
                             backgroundColor: [
                                 '#3b5998',
@@ -544,20 +656,20 @@ function initDashboardCharts() {
                             },
                             title: {
                                 display: true,
-                                text: 'Registration Progress'
+                                text: 'Tiến độ đăng ký'
                             }
                         }
                     }
                 });
                 
-                // Create budget chart
+                // Create budget chart with VND formatting
                 const budgetCtx = document.getElementById('budget-chart').getContext('2d');
                 new Chart(budgetCtx, {
                     type: 'bar',
                     data: {
-                        labels: ['Registration Fees', 'Sponsorships'],
+                        labels: ['Phí đăng ký', 'Tài trợ'],
                         datasets: [{
-                            label: 'Budget Sources',
+                            label: 'Nguồn ngân sách',
                             data: [stats.totalRegistrationBudget, stats.totalSponsorshipBudget],
                             backgroundColor: [
                                 '#3b5998',
@@ -573,7 +685,21 @@ function initDashboardCharts() {
                             },
                             title: {
                                 display: true,
-                                text: 'Budget Sources'
+                                text: 'Nguồn ngân sách'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += formatCurrency(context.parsed.y) + ' VND';
+                                        }
+                                        return label;
+                                    }
+                                }
                             }
                         },
                         scales: {
@@ -581,7 +707,7 @@ function initDashboardCharts() {
                                 beginAtZero: true,
                                 ticks: {
                                     callback: function(value) {
-                                        return '$' + value;
+                                        return formatCurrency(value) + ' VND';
                                     }
                                 }
                             }
@@ -590,7 +716,7 @@ function initDashboardCharts() {
                 });
             }
         })
-        .catch(error => console.error('Error loading dashboard stats:', error));
+        .catch(error => console.error('Lỗi khi tải thống kê bảng điều khiển:', error));
 }
 
 // Setup form submissions
@@ -605,6 +731,12 @@ function setupFormSubmissions() {
             const formData = new FormData(registrationForm);
             const formObject = Object.fromEntries(formData.entries());
             
+            // Validate fields
+            if (!formObject.name || !formObject.email || !formObject.adultTickets) {
+                alert('Vui lòng điền đầy đủ các thông tin bắt buộc.');
+                return;
+            }
+            
             try {
                 const response = await fetch('/api/register', {
                     method: 'POST',
@@ -617,17 +749,17 @@ function setupFormSubmissions() {
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Registration submitted successfully! Check your email for confirmation.');
+                    alert('Đăng ký thành công! Kiểm tra email của bạn để xác nhận.');
                     registrationForm.reset();
                     
-                    // Redirect to payment page (in a real app)
-                    // window.location.href = `payment.html?userId=${result.data.userId}`;
+                    // Update dashboard counts immediately
+                    updateDashboardCounts();
                 } else {
-                    alert('Error: ' + result.message);
+                    alert('Lỗi: ' + result.message);
                 }
             } catch (error) {
-                console.error('Error submitting registration:', error);
-                alert('There was an error processing your registration. Please try again.');
+                console.error('Lỗi khi gửi đăng ký:', error);
+                alert('Đã xảy ra lỗi khi xử lý đăng ký của bạn. Vui lòng thử lại.');
             }
         });
     }
@@ -643,7 +775,7 @@ function setupFormSubmissions() {
             const files = fileInput.files;
             
             if (files.length === 0) {
-                alert('Please select at least one photo to upload.');
+                alert('Vui lòng chọn ít nhất một ảnh để tải lên.');
                 return;
             }
             
@@ -652,7 +784,7 @@ function setupFormSubmissions() {
                 const formData = new FormData();
                 
                 // Add user info
-                formData.append('name', document.getElementById('photo-name').value || 'Anonymous');
+                formData.append('name', document.getElementById('photo-name').value || 'Không tên');
                 formData.append('email', document.getElementById('photo-email').value || 'anonymous@example.com');
                 formData.append('caption', document.getElementById('photo-caption').value || '');
                 
@@ -660,6 +792,7 @@ function setupFormSubmissions() {
                 for (let i = 0; i < files.length; i++) {
                     formData.append('photos', files[i]);
                 }
+                
                 const response = await fetch('/api/upload-photos', {
                     method: 'POST',
                     body: formData,
@@ -668,17 +801,21 @@ function setupFormSubmissions() {
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert(`${result.data.length} photo(s) uploaded successfully! They will be visible after approval.`);
+                    alert(`${result.data.length} ảnh đã được tải lên thành công!`);
                     photoForm.reset();
                     
-                    // Clear the file input
+                    // Clear the file input and preview
                     fileInput.value = '';
+                    document.getElementById('photo-preview-container').innerHTML = '';
+                    
+                    // Reload photo gallery to show new photos
+                    loadPhotoGallery();
                 } else {
-                    alert('Error: ' + result.message);
+                    alert('Lỗi: ' + result.message);
                 }
             } catch (error) {
-                console.error('Error uploading photos:', error);
-                alert('There was an error uploading your photos. Please try again.');
+                console.error('Lỗi khi tải ảnh lên:', error);
+                alert('Đã xảy ra lỗi khi tải ảnh của bạn. Vui lòng thử lại.');
             }
         });
     }
@@ -687,11 +824,11 @@ function setupFormSubmissions() {
     const volunteerBtn = document.getElementById('volunteer-btn');
     if (volunteerBtn) {
         volunteerBtn.addEventListener('click', () => {
-            const roles = ['Setting up decorations', 'Registration table', 'Photography', 'Music and AV'];
-            const role = prompt(`Which role would you like to volunteer for?\n\n${roles.join('\n')}`);
+            const roles = ['Trang trí', 'Bàn đăng ký', 'Chụp ảnh', 'Âm nhạc và thiết bị AV'];
+            const role = prompt(`Bạn muốn đăng ký làm tình nguyện viên cho vai trò nào?\n\n${roles.join('\n')}`);
             
             if (role) {
-                alert(`Thank you for volunteering! A committee member will contact you soon about the "${role}" role.`);
+                alert(`Cảm ơn bạn đã đăng ký làm tình nguyện viên! Một thành viên ban tổ chức sẽ liên hệ với bạn sớm về vai trò "${role}".`);
             }
         });
     }
@@ -700,17 +837,191 @@ function setupFormSubmissions() {
     const memorabiliaBtn = document.getElementById('memorabilia-btn');
     if (memorabiliaBtn) {
         memorabiliaBtn.addEventListener('click', () => {
-            const info = prompt('Please describe the memorabilia you would like to share:');
+            const info = prompt('Vui lòng mô tả kỷ vật bạn muốn chia sẻ:');
             
             if (info) {
-                alert('Thank you! A committee member will contact you about your memorabilia contribution.');
+                alert('Cảm ơn bạn! Một thành viên ban tổ chức sẽ liên hệ với bạn về kỷ vật này.');
             }
         });
     }
+}
+
+// Update dashboard counts after registration
+function updateDashboardCounts() {
+    fetch('/api/dashboard-stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const stats = data.data;
+                
+                // Update dashboard counters
+                document.getElementById('adult-count').textContent = stats.adultCount || 0;
+                document.getElementById('child-count').textContent = stats.childCount || 0;
+                document.getElementById('infant-count').textContent = stats.infantCount || 0;
+            }
+        })
+        .catch(error => console.error('Lỗi khi cập nhật số liệu thống kê:', error));
 }
 
 // Helper function to validate email
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+}
+
+// Social features for photos
+function setupPhotoSocialFeatures() {
+    // Like button functionality
+    document.querySelectorAll('.like-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const photoId = this.getAttribute('data-id');
+            const likeCount = this.querySelector('.like-count');
+            const currentLikes = parseInt(likeCount.textContent);
+            const heartIcon = this.querySelector('i');
+            
+            // Toggle like status
+            const isLiked = heartIcon.classList.contains('fas');
+            
+            // Get user email (in a real app, this would be from a logged-in user)
+            const userEmail = prompt('Nhập email của bạn để thích ảnh này:');
+            
+            if (!userEmail || !validateEmail(userEmail)) {
+                alert('Vui lòng nhập một địa chỉ email hợp lệ.');
+                return;
+            }
+            
+            // Send like/unlike request to server
+            fetch(`/api/photo/${photoId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: userEmail }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Update UI based on like status
+                    if (result.data.liked) {
+                        heartIcon.classList.remove('far');
+                        heartIcon.classList.add('fas');
+                        heartIcon.style.color = 'red';
+                    } else {
+                        heartIcon.classList.remove('fas');
+                        heartIcon.classList.add('far');
+                        heartIcon.style.color = '';
+                    }
+                    
+                    // Update like count
+                    likeCount.textContent = result.data.likes;
+                } else {
+                    alert('Lỗi: ' + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi thích/bỏ thích ảnh:', error);
+                
+                // Fallback for demo without backend
+                if (isLiked) {
+                    heartIcon.classList.remove('fas');
+                    heartIcon.classList.add('far');
+                    heartIcon.style.color = '';
+                    likeCount.textContent = currentLikes - 1;
+                } else {
+                    heartIcon.classList.remove('far');
+                    heartIcon.classList.add('fas');
+                    heartIcon.style.color = 'red';
+                    likeCount.textContent = currentLikes + 1;
+                }
+            });
+        });
+    });
+    
+    // Comment submission
+    document.querySelectorAll('.comment-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const photoId = this.getAttribute('data-id');
+            const commentInput = this.querySelector('input');
+            const commentText = commentInput.value.trim();
+            
+            if (!commentText) {
+                return;
+            }
+            
+            // Get user info (in a real app, this would be from a logged-in user)
+            const userName = prompt('Nhập tên của bạn để bình luận:');
+            const userEmail = prompt('Nhập email của bạn để bình luận:');
+            
+            if (!userName || !userEmail || !validateEmail(userEmail)) {
+                alert('Vui lòng nhập thông tin hợp lệ.');
+                return;
+            }
+            
+            // Send comment to server
+            fetch(`/api/photo/${photoId}/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: userName,
+                    email: userEmail,
+                    text: commentText
+                }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Add comment to UI
+                    const commentsContainer = document.querySelector(`.comments-list[data-id="${photoId}"]`);
+                    
+                    // Clear "no comments" message if it exists
+                    if (commentsContainer.innerHTML.includes('Chưa có bình luận.')) {
+                        commentsContainer.innerHTML = '';
+                    }
+                    
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment';
+                    newComment.innerHTML = `
+                        <div class="comment-author">${userName}</div>
+                        <div class="comment-text">${commentText}</div>
+                    `;
+                    
+                    commentsContainer.appendChild(newComment);
+                    
+                    // Clear input
+                    commentInput.value = '';
+                } else {
+                    alert('Lỗi: ' + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi thêm bình luận:', error);
+                
+                // Fallback for demo without backend
+                const commentsContainer = document.querySelector(`.comments-list[data-id="${photoId}"]`);
+                
+                // Clear "no comments" message if it exists
+                if (commentsContainer.innerHTML.includes('Chưa có bình luận.')) {
+                    commentsContainer.innerHTML = '';
+                }
+                
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = `
+                    <div class="comment-author">${userName}</div>
+                    <div class="comment-text">${commentText}</div>
+                `;
+                
+                commentsContainer.appendChild(newComment);
+                
+                // Clear input
+                commentInput.value = '';
+            });
+        });
+    });
 }

@@ -15,16 +15,20 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  ticketType: {
-    type: String,
+  adultTickets: {
+    type: Number,
     required: true,
-    enum: ['early', 'regular']
+    default: 1
   },
-  guestTickets: {
+  childTickets: {
     type: Number,
     default: 0
   },
-  dietary: {
+  infantTickets: {
+    type: Number,
+    default: 0
+  },
+  comments: {
     type: String,
     default: ''
   },
@@ -35,31 +39,63 @@ const UserSchema = new mongoose.Schema({
   },
   paymentAmount: {
     type: Number
-  }
+  },
+  changes: [{
+    field: String,
+    oldValue: mongoose.Schema.Types.Mixed,
+    newValue: mongoose.Schema.Types.Mixed,
+    changedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 }, {
   timestamps: true
 });
 
-// Calculate payment amount based on ticket type and guests
+// Calculate payment amount based on tickets
 UserSchema.pre('save', function(next) {
-  // Early bird: $85, Regular: $120, Guest: $95
-  const ticketPrices = {
-    early: 85,
-    regular: 120
-  };
+  // Adult: 2,000,000 VND, Child (5-12): 1,400,000 VND (70% of adult), Infant (under 5): Free
+  const adultPrice = 2000000;
+  const childPrice = 1400000;
+  const infantPrice = 0;
   
-  const guestPrice = 95;
-  
-  // Calculate base price
-  let total = ticketPrices[this.ticketType];
-  
-  // Add guest tickets cost
-  if (this.guestTickets > 0) {
-    total += (this.guestTickets * guestPrice);
-  }
+  // Calculate total cost
+  let total = (this.adultTickets * adultPrice) + (this.childTickets * childPrice) + (this.infantTickets * infantPrice);
   
   this.paymentAmount = total;
   next();
 });
+
+// Track changes to registration information
+UserSchema.methods.trackChanges = function(updatedFields) {
+  const changes = [];
+  
+  // Compare current values with updated values
+  Object.keys(updatedFields).forEach(field => {
+    // Skip _id and timestamps
+    if (['_id', 'createdAt', 'updatedAt', 'changes'].includes(field)) {
+      return;
+    }
+    
+    // Check if value has changed
+    if (JSON.stringify(this[field]) !== JSON.stringify(updatedFields[field])) {
+      changes.push({
+        field,
+        oldValue: this[field],
+        newValue: updatedFields[field],
+        changedAt: new Date()
+      });
+    }
+  });
+  
+  // Add changes to the history
+  if (changes.length > 0) {
+    this.changes = this.changes || [];
+    this.changes.push(...changes);
+  }
+  
+  return changes.length > 0;
+};
 
 module.exports = mongoose.model('User', UserSchema);

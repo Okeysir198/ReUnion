@@ -1,6 +1,25 @@
 // Photo Model for Photo Uploads
 const mongoose = require('mongoose');
 
+const CommentSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  text: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
 const PhotoSchema = new mongoose.Schema({
   uploaderName: {
     type: String,
@@ -40,7 +59,19 @@ const PhotoSchema = new mongoose.Schema({
   },
   approved: {
     type: Boolean,
-    default: false
+    default: true
+  },
+  likes: {
+    type: Number,
+    default: 0
+  },
+  likedBy: {
+    type: [String],
+    default: []
+  },
+  comments: {
+    type: [CommentSchema],
+    default: []
   }
 }, {
   timestamps: { 

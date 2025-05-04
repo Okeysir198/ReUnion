@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class of 2005: Celebrating 20 Years!</title>
+    <title>Lớp Toán 2005: Kỷ Niệm 20 Năm!</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,16 +13,18 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="images/logo.svg" alt="Class of 2005 Logo" style="height:50px">
+                <img src="images/logo.svg" alt="Logo Lớp Toán 2005" style="height:50px">
             </div>
             <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#event-details">Event Details</a></li>
-                <li><a href="#memory-lane">Memory Lane</a></li>
-                <li><a href="#voting">Event Voting</a></li>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#get-involved">Get Involved</a></li>
-                <li><a href="#register" class="cta-button">Register Now</a></li>
+                <li><a href="#home">Trang Chủ</a></li>
+                <li><a href="#timing">Thời Gian</a></li>
+                <li><a href="#voting">Bình Chọn</a></li>
+                <li><a href="#dashboard">Thống Kê</a></li>
+                <li><a href="#register">Đăng Ký</a></li>
+                <li><a href="#memory-lane">Kỷ Niệm</a></li>
+                <li><a href="#event-details">Chi Tiết Sự Kiện</a></li>
+                <li><a href="#get-involved">Tham Gia</a></li>
+                <li><a href="#register" class="cta-button">Đăng Ký Ngay</a></li>
             </ul>
             <div class="hamburger">
                 <span class="bar"></span>
@@ -36,35 +38,420 @@
         <!-- Hero Section -->
         <section id="home" class="hero">
             <div class="hero-content">
-                <h1>Class of 2005: Celebrating 20 Years!</h1>
-                <p>Join us for a weekend of reconnecting, reminiscing, and celebrating two decades since we walked the halls of Central High.</p>
+                <h1>Lớp Toán 2005: Kỷ Niệm 20 Năm!</h1>
+                <p>Hãy tham gia cùng chúng tôi cho một kỳ nghỉ cuối tuần để gặp gỡ, hồi tưởng và kỷ niệm hai thập kỷ kể từ khi chúng ta rời khỏi giảng đường Trường Trung học.</p>
                 <div class="event-date">
-                    <i class="fas fa-calendar"></i> July 25, 2025 (Tentative - Vote below!)
+                    <i class="fas fa-calendar"></i> Ngày 25 tháng 7 năm 2025 (Dự kiến - Vui lòng bình chọn bên dưới!)
                 </div>
                 <div class="event-location">
-                    <i class="fas fa-map-marker-alt"></i> Grand Central Hotel, Downtown
+                    <i class="fas fa-map-marker-alt"></i> Khách sạn Grand Central, Trung tâm Thành phố
                 </div>
-                <a href="#register" class="cta-button">Early Bird Registration</a>
+                <a href="#register" class="cta-button">Đăng Ký Sớm</a>
             </div>
             <div class="countdown-container">
-                <h3>Countdown to Reunion</h3>
+                <h3>Đếm ngược đến Ngày Hội Ngộ</h3>
                 <div id="countdown">
                     <div class="time-section">
                         <span id="days">00</span>
-                        <p>Days</p>
+                        <p>Ngày</p>
                     </div>
                     <div class="time-section">
                         <span id="hours">00</span>
-                        <p>Hours</p>
+                        <p>Giờ</p>
                     </div>
                     <div class="time-section">
                         <span id="minutes">00</span>
-                        <p>Minutes</p>
+                        <p>Phút</p>
                     </div>
                     <div class="time-section">
                         <span id="seconds">00</span>
-                        <p>Seconds</p>
+                        <p>Giây</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timing Section (NEW) -->
+        <section id="timing" class="timing">
+            <div class="container">
+                <h2>Lịch Trình Quan Trọng</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">31/05/2025</div>
+                        <div class="timeline-content">
+                            <h3>Hạn chót bình chọn ngày</h3>
+                            <p>Thời hạn cuối để bình chọn ngày tổ chức sự kiện.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">15/06/2025</div>
+                        <div class="timeline-content">
+                            <h3>Công bố ngày sự kiện chính thức</h3>
+                            <p>Thông báo kết quả bình chọn ngày tổ chức.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">30/06/2025</div>
+                        <div class="timeline-content">
+                            <h3>Hạn chót bình chọn ngân sách</h3>
+                            <p>Thời hạn cuối để bình chọn mức ngân sách phù hợp.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">10/07/2025</div>
+                        <div class="timeline-content">
+                            <h3>Công bố chi tiết địa điểm</h3>
+                            <p>Chia sẻ thông tin về địa điểm tổ chức và các khách sạn lân cận.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">15/07/2025</div>
+                        <div class="timeline-content">
+                            <h3>Kết thúc đăng ký sớm</h3>
+                            <p>Hạn chót để đăng ký với giá ưu đãi.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">20/07/2025</div>
+                        <div class="timeline-content">
+                            <h3>Công bố lịch trình chi tiết</h3>
+                            <p>Chia sẻ lịch trình đầy đủ của sự kiện.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Voting Section (UPDATED) -->
+        <section id="voting" class="voting">
+            <div class="container">
+                <h2>Bình Chọn Sự Kiện</h2>
+                <div class="date-voting">
+                    <h3>Bình Chọn Ngày Hội Ngộ</h3>
+                    <p>Chúng tôi muốn đảm bảo càng nhiều bạn học cũ có thể tham dự càng tốt. Vui lòng bình chọn ngày phù hợp nhất:</p>
+                    
+                    <form id="date-vote-form">
+                        <div class="form-group">
+                            <label for="vote-name">Họ và tên</label>
+                            <input type="text" id="vote-name" name="name" required placeholder="Nhập họ và tên của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="vote-email">Email</label>
+                            <input type="email" id="vote-email" name="email" required placeholder="Nhập địa chỉ email của bạn">
+                        </div>
+                        
+                        <div class="vote-options">
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="25-27 tháng 7, 2025">
+                                    25-27 tháng 7, 2025
+                                </label>
+                            </div>
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="15-17 tháng 8, 2025">
+                                    15-17 tháng 8, 2025
+                                </label>
+                            </div>
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="5-7 tháng 9, 2025">
+                                    5-7 tháng 9, 2025
+                                </label>
+                            </div>
+                            <div class="vote-option">
+                                <label>
+                                    <input type="radio" name="dateVote" value="26-28 tháng 9, 2025">
+                                    26-28 tháng 9, 2025
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="vote-status" class="vote-status"></div>
+                        
+                        <button type="submit" class="secondary-button">Gửi Bình Chọn</button>
+                    </form>
+                    
+                    <div class="vote-results-container">
+                        <h4 class="vote-results-title">Kết Quả Bình Chọn Hiện Tại</h4>
+                        <div id="vote-results">
+                            <!-- Results will be loaded here -->
+                            <p>Đang tải kết quả...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="budget-voting">
+                    <h3>Kế Hoạch Ngân Sách</h3>
+                    <div class="budget-description">
+                        <p>Chúng tôi muốn tổ chức sự kiện với chi phí hợp lý cho tất cả mọi người. Vui lòng cho biết mức ngân sách bạn cảm thấy phù hợp và liệu bạn có thể tài trợ cho các bạn học cũ gặp khó khăn về tài chính hay không.</p>
+                    </div>
+                    
+                    <form id="budget-vote-form">
+                        <div class="form-group">
+                            <label for="budget-name">Họ và tên</label>
+                            <input type="text" id="budget-name" name="name" required placeholder="Nhập họ và tên của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="budget-email">Email</label>
+                            <input type="email" id="budget-email" name="email" required placeholder="Nhập địa chỉ email của bạn">
+                        </div>
+                        
+                        <div class="budget-form-group">
+                            <label>Mức ngân sách phù hợp cho mỗi người:</label>
+                            <div class="vote-options">
+                                <div class="vote-option">
+                                    <label>
+                                        <input type="radio" name="budgetAmount" value="2500000">
+                                        Lựa chọn 1: 2-3 triệu VND
+                                    </label>
+                                </div>
+                                <div class="vote-option">
+                                    <label>
+                                        <input type="radio" name="budgetAmount" value="3500000">
+                                        Lựa chọn 2: 3-4 triệu VND
+                                    </label>
+                                </div>
+                                <div class="vote-option">
+                                    <label>
+                                        <input type="radio" name="budgetAmount" value="5000000">
+                                        Lựa chọn 3: 4-6 triệu VND
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="budget-form-group">
+                            <label for="sponsor-amount">Số tiền bạn có thể tài trợ cho người khác (VND)</label>
+                            <input type="number" id="sponsor-amount" name="sponsorAmount" min="0" placeholder="Ví dụ: 1,000,000">
+                        </div>
+                        
+                        <div id="budget-status" class="vote-status"></div>
+                        
+                        <button type="submit" class="secondary-button">Gửi Thông Tin Ngân Sách</button>
+                    </form>
+                    
+                    <div class="vote-results-container">
+                        <h4 class="vote-results-title">Kết Quả Ngân Sách Hiện Tại</h4>
+                        <div id="budget-results">
+                            <!-- Results will be loaded here -->
+                            <p>Đang tải kết quả...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section (UPDATED) -->
+        <section id="dashboard" class="dashboard">
+            <div class="container">
+                <h2>Thống Kê Hội Ngộ</h2>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <div class="card-title">Người Lớn</div>
+                        <div class="card-value" id="adult-count">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-child"></i></div>
+                        <div class="card-title">Trẻ Em 5-12 Tuổi</div>
+                        <div class="card-value" id="child-count">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-baby"></i></div>
+                        <div class="card-title">Trẻ Em Dưới 5 Tuổi</div>
+                        <div class="card-value" id="infant-count">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-eye"></i></div>
+                        <div class="card-title">Lượt Truy Cập</div>
+                        <div class="card-value" id="visitor-count">0</div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Tiến Độ Đăng Ký</h3>
+                        <canvas id="registration-chart" class="dashboard-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Nguồn Ngân Sách</h3>
+                        <canvas id="budget-chart" class="dashboard-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Section (UPDATED) -->
+        <section id="register" class="register">
+            <div class="container">
+                <h2>Đăng Ký</h2>
+                <div class="pricing">
+                    <h3>Thông Tin Chi Phí</h3>
+                    <div class="price-cards">
+                        <div class="price-card">
+                            <h4>Người Lớn</h4>
+                            <div class="price">2,000,000 VND</div>
+                            <div class="deadline">Cho mỗi người tham dự</div>
+                            <ul>
+                                <li>Tất cả các sự kiện cuối tuần</li>
+                                <li>Quà lưu niệm</li>
+                                <li>1 phiếu đồ uống cho mỗi sự kiện</li>
+                            </ul>
+                        </div>
+                        <div class="price-card">
+                            <h4>Trẻ Em 5-12 Tuổi</h4>
+                            <div class="price">1,400,000 VND</div>
+                            <div class="deadline">70% giá người lớn</div>
+                            <ul>
+                                <li>Tất cả các sự kiện cuối tuần</li>
+                                <li>Hoạt động dành cho trẻ em</li>
+                                <li>1 phiếu đồ uống không cồn cho mỗi sự kiện</li>
+                            </ul>
+                        </div>
+                        <div class="price-card">
+                            <h4>Trẻ Em Dưới 5 Tuổi</h4>
+                            <div class="price">Miễn Phí</div>
+                            <div class="deadline">Không tính phí</div>
+                            <ul>
+                                <li>Tất cả các sự kiện cuối tuần</li>
+                                <li>Hoạt động dành cho trẻ em</li>
+                                <li>Bữa ăn dành cho trẻ em</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="registration-form">
+                    <h3>Đăng Ký Ngay</h3>
+                    <form id="registration-form">
+                        <div class="form-group">
+                            <label for="name">Họ và tên (bao gồm cả tên thời con gái nếu có)</label>
+                            <input type="text" id="name" name="name" required placeholder="Nhập họ và tên đầy đủ của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="Nhập địa chỉ email của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="adult-tickets">Số lượng người lớn</label>
+                            <select id="adult-tickets" name="adultTickets" required>
+                                <option value="">Chọn số lượng</option>
+                                <option value="1">1 người</option>
+                                <option value="2">2 người</option>
+                                <option value="3">3 người</option>
+                                <option value="4">4 người</option>
+                                <option value="5">5 người</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="child-tickets">Số lượng trẻ em 5-12 tuổi</label>
+                            <select id="child-tickets" name="childTickets">
+                                <option value="0">Không có</option>
+                                <option value="1">1 trẻ</option>
+                                <option value="2">2 trẻ</option>
+                                <option value="3">3 trẻ</option>
+                                <option value="4">4 trẻ</option>
+                                <option value="5">5 trẻ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="infant-tickets">Số lượng trẻ em dưới 5 tuổi</label>
+                            <select id="infant-tickets" name="infantTickets">
+                                <option value="0">Không có</option>
+                                <option value="1">1 trẻ</option>
+                                <option value="2">2 trẻ</option>
+                                <option value="3">3 trẻ</option>
+                                <option value="4">4 trẻ</option>
+                                <option value="5">5 trẻ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comments">Ghi chú</label>
+                            <textarea id="comments" name="comments" placeholder="Nhập các thông tin bổ sung, yêu cầu đặc biệt hoặc câu hỏi"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="cta-button">Hoàn Tất Đăng Ký</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Memory Lane Section (UPDATED) -->
+        <section id="memory-lane" class="memory-lane">
+            <div class="container">
+                <h2>Đường Ký Ức</h2>
+                <div class="photo-gallery">
+                    <h3>Nhớ Khi Xưa...</h3>
+                    <div class="gallery-container">
+                        <!-- Images will be dynamically loaded here -->
+                    </div>
+                </div>
+                
+                <div class="photo-submission">
+                    <h3>Chia Sẻ Ảnh Kỷ Niệm</h3>
+                    <p>Chia sẻ hình ảnh của bạn cho trình chiếu hội ngộ</p>
+                    <form id="photo-form" class="photo-form">
+                        <div class="form-group">
+                            <label for="photo-name">Họ và tên</label>
+                            <input type="text" id="photo-name" name="name" required placeholder="Nhập họ và tên của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-email">Email</label>
+                            <input type="email" id="photo-email" name="email" required placeholder="Nhập email của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-caption">Chú thích ảnh</label>
+                            <textarea id="photo-caption" name="caption" placeholder="Mô tả về hình ảnh"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-upload">Chọn ảnh</label>
+                            <div class="file-input-group">
+                                <input type="file" id="photo-upload" name="photos" accept="image/*" multiple>
+                                <label for="photo-upload" class="upload-label">Chọn Tệp</label>
+                                <span class="file-name"></span>
+                            </div>
+                        </div>
+                        <div class="photo-preview-container" id="photo-preview-container">
+                            <!-- Photo previews will be displayed here -->
+                        </div>
+                        <button type="submit" class="secondary-button">Tải Ảnh Lên</button>
+                    </form>
+                </div>
+                
+                <div class="back-then">
+                    <h3>Chúng Ta Khi Đó</h3>
+                    <div class="then-items">
+                        <div class="then-item">
+                            <i class="fas fa-music"></i>
+                            <h4>Bài Hát Hàng Đầu</h4>
+                            <p>Chúng ta đã nhảy theo "Hollaback Girl" và "Gold Digger"</p>
+                        </div>
+                        <div class="then-item">
+                            <i class="fas fa-film"></i>
+                            <h4>Phim Ảnh</h4>
+                            <p>Chúng ta đã xem "Star Wars: Revenge of the Sith" và "Batman Begins"</p>
+                        </div>
+                        <div class="then-item">
+                            <i class="fas fa-tv"></i>
+                            <h4>Chương Trình TV</h4>
+                            <p>Chúng ta đã mê mẩn "Grey's Anatomy" và "Lost"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="school-achievements">
+                    <h3>Thành Tựu Của Chúng Ta</h3>
+                    <ul>
+                        <li>Vô địch Bóng rổ Toàn quốc</li>
+                        <li>Giải thưởng Hội chợ Khoa học Quốc gia</li>
+                        <li>Phá kỷ lục gây quỹ cho tổ chức từ thiện địa phương</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -72,378 +459,84 @@
         <!-- Event Details Section -->
         <section id="event-details" class="event-details">
             <div class="container">
-                <h2>Event Details</h2>
+                <h2>Chi Tiết Sự Kiện</h2>
                 <div class="schedule">
-                    <h3>Tentative Reunion Schedule</h3>
+                    <h3>Lịch Trình Hội Ngộ Dự Kiến</h3>
                     <div class="schedule-item">
-                        <div class="day">Friday, July 24</div>
-                        <div class="activity">Welcome Mixer - 7:00 PM to 10:00 PM</div>
-                        <div class="description">Casual gathering with drinks and appetizers</div>
+                        <div class="day">Thứ Sáu, 24 tháng 7</div>
+                        <div class="activity">Tiệc Chào Mừng - 19:00 đến 22:00</div>
+                        <div class="description">Gặp gỡ thân mật với đồ uống và món khai vị</div>
                     </div>
                     <div class="schedule-item">
-                        <div class="day">Saturday, July 25</div>
-                        <div class="activity">Campus Tour - 10:00 AM to 12:00 PM</div>
-                        <div class="description">Visit our old classrooms and see what's changed</div>
+                        <div class="day">Thứ Bảy, 25 tháng 7</div>
+                        <div class="activity">Tham quan Trường - 10:00 đến 12:00</div>
+                        <div class="description">Thăm lại các lớp học cũ và xem những thay đổi</div>
                     </div>
                     <div class="schedule-item">
-                        <div class="day">Saturday, July 25</div>
-                        <div class="activity">Main Event - 6:00 PM to 11:00 PM</div>
-                        <div class="description">Dinner, dancing, and awards ceremony</div>
+                        <div class="day">Thứ Bảy, 25 tháng 7</div>
+                        <div class="activity">Sự Kiện Chính - 18:00 đến 23:00</div>
+                        <div class="description">Bữa tối, khiêu vũ và lễ trao giải</div>
                     </div>
                     <div class="schedule-item">
-                        <div class="day">Sunday, July 26</div>
-                        <div class="activity">Farewell Brunch - 10:00 AM to 1:00 PM</div>
-                        <div class="description">One last chance to say goodbye</div>
+                        <div class="day">Chủ Nhật, 26 tháng 7</div>
+                        <div class="activity">Brunch Chia Tay - 10:00 đến 13:00</div>
+                        <div class="description">Cơ hội cuối để tạm biệt</div>
                     </div>
                 </div>
                 
                 <div class="venue">
-                    <h3>Venue Information</h3>
-                    <p>Grand Central Hotel<br>123 Main Street<br>Downtown, City, State 12345</p>
+                    <h3>Thông Tin Địa Điểm</h3>
+                    <p>Khách sạn Grand Central<br>123 Đường Chính<br>Trung tâm, Thành phố, 12345</p>
                     <div id="map" class="map"></div>
                 </div>
                 
                 <div class="accommodation">
-                    <h3>Accommodation</h3>
-                    <p>Special rates available at the Grand Central Hotel. Use code "CHS2005" when booking.</p>
-                    <p>Alternative options:</p>
+                    <h3>Chỗ Ở</h3>
+                    <p>Có giá đặc biệt tại Khách sạn Grand Central. Sử dụng mã "CHS2005" khi đặt phòng.</p>
+                    <p>Các lựa chọn thay thế:</p>
                     <ul>
-                        <li>Downtown Inn & Suites - 0.5 miles from venue</li>
-                        <li>City Center Hotel - 1 mile from venue</li>
+                        <li>Downtown Inn & Suites - Cách địa điểm 0.5 dặm</li>
+                        <li>City Center Hotel - Cách địa điểm 1 dặm</li>
                     </ul>
                 </div>
                 
                 <div class="dress-code">
                     <h3>Dress Code</h3>
-                    <p>Friday: Casual<br>Saturday: Semi-formal<br>Sunday: Casual</p>
+                    <p>Thứ Sáu: Casual<br>Thứ Bảy: Semi-formal<br>Chủ Nhật: Casual</p>
                 </div>
             </div>
         </section>
-
-        <!-- Memory Lane Section -->
-        <section id="memory-lane" class="memory-lane">
-            <div class="container">
-                <h2>Memory Lane</h2>
-                <div class="photo-gallery">
-                    <h3>Remember When...</h3>
-                    <div class="gallery-container">
-                        <!-- Images will be dynamically loaded here -->
-                    </div>
-                </div>
-                
-                <div class="back-then">
-                    <h3>Where We Were Then</h3>
-                    <div class="then-items">
-                        <div class="then-item">
-                            <i class="fas fa-music"></i>
-                            <h4>Top Songs</h4>
-                            <p>We were dancing to "Hollaback Girl" and "Gold Digger"</p>
-                        </div>
-                        <div class="then-item">
-                            <i class="fas fa-film"></i>
-                            <h4>Movies</h4>
-                            <p>We were watching "Star Wars: Revenge of the Sith" and "Batman Begins"</p>
-                        </div>
-                        <div class="then-item">
-                            <i class="fas fa-tv"></i>
-                            <h4>TV Shows</h4>
-                            <p>We were binging "Grey's Anatomy" and "Lost"</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="school-achievements">
-                    <h3>Our Achievements</h3>
-                    <ul>
-                        <li>State Champions in Basketball</li>
-                        <li>National Science Fair Winners</li>
-                        <li>Record-breaking fundraiser for local charity</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Voting Section (NEW) -->
-        <section id="voting" class="voting">
-            <div class="container">
-                <h2>Event Voting</h2>
-                <div class="date-voting">
-                    <h3>Vote for Reunion Date</h3>
-                    <p>We want to make sure as many classmates as possible can attend. Please vote for your preferred date:</p>
-                    
-                    <form id="date-vote-form">
-                        <div class="form-group">
-                            <label for="vote-name">Name</label>
-                            <input type="text" id="vote-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="vote-email">Email</label>
-                            <input type="email" id="vote-email" name="email" required>
-                        </div>
-                        
-                        <div class="vote-options">
-                            <div class="vote-option">
-                                <label>
-                                    <input type="radio" name="dateVote" value="July 25-27, 2025">
-                                    July 25-27, 2025
-                                </label>
-                            </div>
-                            <div class="vote-option">
-                                <label>
-                                    <input type="radio" name="dateVote" value="August 15-17, 2025">
-                                    August 15-17, 2025
-                                </label>
-                            </div>
-                            <div class="vote-option">
-                                <label>
-                                    <input type="radio" name="dateVote" value="September 5-7, 2025">
-                                    September 5-7, 2025
-                                </label>
-                            </div>
-                            <div class="vote-option">
-                                <label>
-                                    <input type="radio" name="dateVote" value="September 26-28, 2025">
-                                    September 26-28, 2025
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div id="vote-status" class="vote-status"></div>
-                        
-                        <button type="submit" class="secondary-button">Submit Vote</button>
-                    </form>
-                    
-                    <div class="vote-results-container">
-                        <h4 class="vote-results-title">Current Voting Results</h4>
-                        <div id="vote-results">
-                            <!-- Results will be loaded here -->
-                            <p>Loading results...</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="budget-voting">
-                    <h3>Budget Planning</h3>
-                    <div class="budget-description">
-                        <p>We want to make this reunion affordable for everyone. Please indicate what budget per person you are comfortable with and whether you would be willing to sponsor classmates who may need financial assistance.</p>
-                    </div>
-                    
-                    <form id="budget-vote-form">
-                        <div class="form-group">
-                            <label for="budget-name">Name</label>
-                            <input type="text" id="budget-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="budget-email">Email</label>
-                            <input type="email" id="budget-email" name="email" required>
-                        </div>
-                        
-                        <div class="budget-form-group">
-                            <label for="budget-amount">What is your comfortable budget per person? ($)</label>
-                            <input type="number" id="budget-amount" name="budgetAmount" min="0" placeholder="e.g., 100">
-                        </div>
-                        
-                        <div class="budget-form-group">
-                            <label for="sponsor-amount">Optional: Amount you can contribute to sponsor others ($)</label>
-                            <input type="number" id="sponsor-amount" name="sponsorAmount" min="0" placeholder="e.g., 50">
-                        </div>
-                        
-                        <div id="budget-status" class="vote-status"></div>
-                        
-                        <button type="submit" class="secondary-button">Submit Budget Info</button>
-                    </form>
-                    
-                    <div class="vote-results-container">
-                        <h4 class="vote-results-title">Current Budget Results</h4>
-                        <div id="budget-results">
-                            <!-- Results will be loaded here -->
-                            <p>Loading results...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dashboard Section (NEW) -->
-        <section id="dashboard" class="dashboard">
-            <div class="container">
-                <h2>Reunion Dashboard</h2>
-                <div class="dashboard-cards">
-                    <div class="dashboard-card">
-                        <div class="card-icon"><i class="fas fa-users"></i></div>
-                        <div class="card-title">Registrations</div>
-                        <div class="card-value" id="registration-count">0</div>
-                    </div>
-                    <div class="dashboard-card">
-                        <div class="card-icon"><i class="fas fa-eye"></i></div>
-                        <div class="card-title">Website Visitors</div>
-                        <div class="card-value" id="visitor-count">0</div>
-                    </div>
-                    <div class="dashboard-card">
-                        <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
-                        <div class="card-title">Total Budget</div>
-                        <div class="card-value" id="total-budget">$0</div>
-                    </div>
-                    <div class="dashboard-card">
-                        <div class="card-icon"><i class="fas fa-hand-holding-heart"></i></div>
-                        <div class="card-title">Sponsorships</div>
-                        <div class="card-value" id="sponsorship-amount">$0</div>
-                    </div>
-                </div>
-                
-                <div class="dashboard-charts">
-                    <div class="chart-container">
-                        <h3>Registration Progress</h3>
-                        <canvas id="registration-chart" class="dashboard-chart"></canvas>
-                    </div>
-                    <div class="chart-container">
-                        <h3>Budget Sources</h3>
-                        <canvas id="budget-chart" class="dashboard-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        
         <!-- Get Involved Section -->
         <section id="get-involved" class="get-involved">
             <div class="container">
-                <h2>Get Involved</h2>
+                <h2>Tham Gia</h2>
                 <div class="committee">
-                    <h3>Reunion Committee</h3>
-                    <p>Have questions? Contact our reunion committee:</p>
+                    <h3>Ban Tổ Chức Hội Ngộ</h3>
+                    <p>Có câu hỏi? Liên hệ với ban tổ chức hội ngộ của chúng tôi:</p>
                     <ul>
-                        <li>Sarah Johnson - Chair - <a href="mailto:sarah@example.com">sarah@example.com</a></li>
-                        <li>Mike Peterson - Treasurer - <a href="mailto:mike@example.com">mike@example.com</a></li>
-                        <li>Jessica Lee - Events - <a href="mailto:jessica@example.com">jessica@example.com</a></li>
+                        <li>Sarah Johnson - Trưởng Ban - <a href="mailto:sarah@example.com">sarah@example.com</a></li>
+                        <li>Mike Peterson - Thủ quỹ - <a href="mailto:mike@example.com">mike@example.com</a></li>
+                        <li>Jessica Lee - Sự kiện - <a href="mailto:jessica@example.com">jessica@example.com</a></li>
                     </ul>
                 </div>
                 
                 <div class="volunteer">
-                    <h3>Volunteer Opportunities</h3>
-                    <p>We need help with:</p>
+                    <h3>Cơ Hội Tình Nguyện</h3>
+                    <p>Chúng tôi cần sự giúp đỡ với:</p>
                     <ul>
-                        <li>Setting up decorations</li>
-                        <li>Registration table</li>
-                        <li>Photography</li>
-                        <li>Music and AV</li>
+                        <li>Trang trí</li>
+                        <li>Bàn đăng ký</li>
+                        <li>Chụp ảnh</li>
+                        <li>Âm nhạc và thiết bị AV</li>
                     </ul>
-                    <button class="secondary-button" id="volunteer-btn">Sign Up to Volunteer</button>
+                    <button class="secondary-button" id="volunteer-btn">Đăng Ký Tình Nguyện Viên</button>
                 </div>
                 
                 <div class="memorabilia">
-                    <h3>Share Your Memorabilia</h3>
-                    <p>Have yearbooks, photos, or other school memorabilia? We'd love to display them!</p>
-                    <button class="secondary-button" id="memorabilia-btn">Submit Memorabilia Info</button>
-                </div>
-                
-                <div class="photo-submission">
-                    <h3>Photo Submission</h3>
-                    <p>Share your photos for our reunion slideshow</p>
-                    <form id="photo-form" class="photo-form">
-                        <div class="form-group">
-                            <label for="photo-name">Your Name</label>
-                            <input type="text" id="photo-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="photo-email">Your Email</label>
-                            <input type="email" id="photo-email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="photo-caption">Photo Caption (Optional)</label>
-                            <textarea id="photo-caption" name="caption"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="photo-upload">Select Photos</label>
-                            <div class="file-input-group">
-                                <input type="file" id="photo-upload" name="photos" accept="image/*" multiple>
-                                <label for="photo-upload" class="upload-label">Choose Files</label>
-                                <span class="file-name"></span>
-                            </div>
-                        </div>
-                        <button type="submit" class="secondary-button">Upload Photos</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- Registration Section -->
-        <section id="register" class="register">
-            <div class="container">
-                <h2>Registration</h2>
-                <div class="pricing">
-                    <h3>Ticket Options</h3>
-                    <div class="price-cards">
-                        <div class="price-card">
-                            <h4>Early Bird</h4>
-                            <div class="price">$85</div>
-                            <div class="deadline">Until June 1, 2025</div>
-                            <ul>
-                                <li>All weekend events</li>
-                                <li>Commemorative gift</li>
-                                <li>1 drink ticket per event</li>
-                            </ul>
-                        </div>
-                        <div class="price-card featured">
-                            <h4>Regular Registration</h4>
-                            <div class="price">$120</div>
-                            <div class="deadline">June 2 - August 31, 2025</div>
-                            <ul>
-                                <li>All weekend events</li>
-                                <li>Commemorative gift</li>
-                                <li>1 drink ticket per event</li>
-                            </ul>
-                        </div>
-                        <div class="price-card">
-                            <h4>Guest Ticket</h4>
-                            <div class="price">$95</div>
-                            <div class="deadline">Anytime</div>
-                            <ul>
-                                <li>All weekend events</li>
-                                <li>1 drink ticket per event</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="registration-form">
-                    <h3>Sign Up Now</h3>
-                    <form id="registration-form">
-                        <div class="form-group">
-                            <label for="name">Full Name (including maiden name if applicable)</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone">
-                        </div>
-                        <div class="form-group">
-                            <label for="ticket-type">Ticket Type</label>
-                            <select id="ticket-type" name="ticketType" required>
-                                <option value="">Select a ticket option</option>
-                                <option value="early">Early Bird - $85</option>
-                                <option value="regular">Regular - $120</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="guest-ticket">Guest Tickets</label>
-                            <select id="guest-ticket" name="guestTickets">
-                                <option value="0">No guests</option>
-                                <option value="1">1 guest - $95</option>
-                                <option value="2">2 guests - $190</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="dietary">Dietary Restrictions</label>
-                            <textarea id="dietary" name="dietary"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="cta-button">Complete Registration</button>
-                        </div>
-                    </form>
+                    <h3>Chia Sẻ Kỷ Vật</h3>
+                    <p>Bạn có kỷ yếu, ảnh, hoặc các kỷ vật khác từ thời học sinh? Chúng tôi muốn trưng bày chúng!</p>
+                    <button class="secondary-button" id="memorabilia-btn">Gửi Thông Tin Kỷ Vật</button>
                 </div>
             </div>
         </section>
@@ -451,39 +544,35 @@
         <!-- FAQ Section -->
         <section id="faq" class="faq">
             <div class="container">
-                <h2>Frequently Asked Questions</h2>
+                <h2>Câu Hỏi Thường Gặp</h2>
                 <div class="faq-items">
                     <div class="faq-item">
-                        <div class="question">What's included in my registration fee?</div>
-                        <div class="answer">Your registration includes admission to all weekend events, a commemorative gift, and one drink ticket per event.</div>
+                        <div class="question">Phí đăng ký bao gồm những gì?</div>
+                        <div class="answer">Phí đăng ký bao gồm tham dự tất cả các sự kiện cuối tuần, quà lưu niệm, và một phiếu đồ uống cho mỗi sự kiện.</div>
                     </div>
                     <div class="faq-item">
-                        <div class="question">Can I bring my spouse/partner?</div>
-                        <div class="answer">Absolutely! You can purchase a guest ticket during registration.</div>
+                        <div class="question">Tôi có thể đưa vợ/chồng/bạn đời đi cùng không?</div>
+                        <div class="answer">Tất nhiên! Bạn có thể mua vé cho người đi cùng trong quá trình đăng ký.</div>
                     </div>
                     <div class="faq-item">
-                        <div class="question">Is there a dress code?</div>
-                        <div class="answer">Friday is casual, Saturday evening is semi-formal, and Sunday brunch is casual.</div>
+                        <div class="question">Có quy định về trang phục không?</div>
+                        <div class="answer">Thứ Sáu là trang phục thường ngày, tối thứ Bảy là bán trang trọng, và brunch Chủ Nhật là trang phục thường ngày.</div>
                     </div>
                     <div class="faq-item">
-                        <div class="question">What if I can't attend all events?</div>
-                        <div class="answer">Unfortunately, we aren't offering separate tickets for individual events, but you're welcome to attend as many as you can!</div>
+                        <div class="question">Nếu tôi không thể tham gia tất cả các sự kiện thì sao?</div>
+                        <div class="answer">Rất tiếc chúng tôi không cung cấp vé riêng cho từng sự kiện, nhưng bạn có thể tham dự các sự kiện mà bạn có thể!</div>
                     </div>
                     <div class="faq-item">
-                        <div class="question">Can I get a refund if I can't attend?</div>
-                        <div class="answer">Refunds are available up to June 1, 2025, minus a $25 processing fee.</div>
+                        <div class="question">Tôi có thể được hoàn tiền nếu không tham dự được không?</div>
+                        <div class="answer">Hoàn tiền được chấp nhận cho đến ngày 1 tháng 6 năm 2025, trừ phí xử lý 500,000 VND.</div>
                     </div>
                     <div class="faq-item">
-                        <div class="question">Why are we voting on dates?</div>
-                        <div class="answer">We want to ensure the maximum number of classmates can attend, so we're letting the class vote on the best weekend!</div>
+                        <div class="question">Tại sao chúng ta bình chọn ngày?</div>
+                        <div class="answer">Chúng tôi muốn đảm bảo số lượng lớn nhất các bạn cùng lớp có thể tham dự, vì vậy chúng tôi để lớp bình chọn cuối tuần tốt nhất!</div>
                     </div>
                     <div class="faq-item">
-                        <div class="question">Why are we voting on dates?</div>
-                        <div class="answer">We want to ensure the maximum number of classmates can attend, so we're letting the class vote on the best weekend!</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="question">How can I contribute to the budget?</div>
-                        <div class="answer">You can indicate your comfortable budget and sponsorship amount in the Event Voting section. This helps us plan an inclusive event for everyone.</div>
+                        <div class="question">Làm thế nào tôi có thể đóng góp cho ngân sách?</div>
+                        <div class="answer">Bạn có thể chỉ định mức ngân sách phù hợp và số tiền tài trợ trong phần Bình Chọn Sự Kiện. Điều này giúp chúng tôi lên kế hoạch cho một sự kiện phù hợp với tất cả mọi người.</div>
                     </div>
                 </div>
             </div>
@@ -497,8 +586,8 @@
                 <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
             </div>
-            <p>Class of 2005 Reunion | Contact: <a href="mailto:reunion@classof2005.com">reunion@classof2005.com</a></p>
-            <p>&copy; 2025 Class of 2005 Reunion Committee. All rights reserved.</p>
+            <p>Hội Ngộ Lớp Toán 2005 | Liên hệ: <a href="mailto:reunion@classof2005.com">reunion@classof2005.com</a></p>
+            <p>&copy; 2025 Ban Tổ Chức Hội Ngộ Lớp Toán 2005. Tất cả các quyền được bảo lưu.</p>
         </div>
     </footer>
 

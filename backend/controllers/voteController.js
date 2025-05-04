@@ -9,7 +9,7 @@ exports.submitVote = async (req, res) => {
     if (!name || !email) {
       return res.status(400).json({
         success: false,
-        message: 'Name and email are required'
+        message: 'Tên và email là bắt buộc'
       });
     }
     
@@ -17,11 +17,26 @@ exports.submitVote = async (req, res) => {
     let vote = await Vote.findOne({ email });
     
     if (vote) {
-      // Update existing vote
-      vote.name = name;
-      if (dateVote) vote.dateVote = dateVote;
-      if (budgetAmount !== undefined) vote.budgetAmount = parseFloat(budgetAmount) || 0;
-      if (sponsorAmount !== undefined) vote.sponsorAmount = parseFloat(sponsorAmount) || 0;
+      // Prepare update fields
+      const updatedFields = {};
+      if (name) updatedFields.name = name;
+      if (dateVote) updatedFields.dateVote = dateVote;
+      if (budgetAmount !== undefined) updatedFields.budgetAmount = parseFloat(budgetAmount) || 0;
+      if (sponsorAmount !== undefined) updatedFields.sponsorAmount = parseFloat(sponsorAmount) || 0;
+      
+      // Track changes before updating
+      vote.trackChanges(updatedFields);
+      
+      // Update fields
+      Object.assign(vote, updatedFields);
+      
+      await vote.save();
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Bình chọn đã được cập nhật thành công',
+        data: vote
+      });
     } else {
       // Create new vote
       vote = new Vote({
@@ -31,21 +46,20 @@ exports.submitVote = async (req, res) => {
         budgetAmount: parseFloat(budgetAmount) || 0,
         sponsorAmount: parseFloat(sponsorAmount) || 0
       });
+    
+      await vote.save();
+      
+      return res.status(201).json({
+        success: true,
+        message: 'Bình chọn đã được gửi thành công',
+        data: vote
+      });
     }
-    
-    await vote.save();
-    
-    res.status(200).json({
-      success: true,
-      message: vote.isNew ? 'Vote submitted successfully' : 'Vote updated successfully',
-      data: vote
-    });
-    
   } catch (err) {
-    console.error('Vote submission error:', err.message);
+    console.error('Lỗi khi gửi bình chọn:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -61,7 +75,7 @@ exports.getVoteByEmail = async (req, res) => {
     if (!vote) {
       return res.status(404).json({
         success: false,
-        message: 'No vote found for this email'
+        message: 'Không tìm thấy bình chọn cho email này'
       });
     }
     
@@ -71,10 +85,10 @@ exports.getVoteByEmail = async (req, res) => {
     });
     
   } catch (err) {
-    console.error('Get vote error:', err.message);
+    console.error('Lỗi khi lấy bình chọn:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -91,10 +105,10 @@ exports.getVoteStats = async (req, res) => {
     });
     
   } catch (err) {
-    console.error('Get vote stats error:', err.message);
+    console.error('Lỗi khi lấy thống kê bình chọn:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -113,10 +127,43 @@ exports.getAllVotes = async (req, res) => {
     });
     
   } catch (err) {
-    console.error('Get all votes error:', err.message);
+    console.error('Lỗi khi lấy tất cả bình chọn:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
+      error: process.env.NODE_ENV === 'production' ? {} : err
+    });
+  }
+};
+
+// Get vote history (for tracking changes)
+exports.getVoteHistory = async (req, res) => {
+  try {
+    const { email } = req.params;
+    
+    const vote = await Vote.findOne({ email });
+    
+    if (!vote) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy bình chọn cho email này'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      data: {
+        id: vote._id,
+        email: vote.email,
+        changes: vote.changes || []
+      }
+    });
+    
+  } catch (err) {
+    console.error('Lỗi khi lấy lịch sử bình chọn:', err.message);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }

@@ -20,9 +20,9 @@ router.get('/payment-status/:id', registrationController.getPaymentStatus);
 
 // Photo upload routes
 router.post('/upload-photos', upload.array('photos', 10), photoController.uploadPhotos);
-router.get('/photos', photoController.getAllApprovedPhotos);
-router.get('/photos/pending', photoController.getPendingPhotos);
-router.put('/photo/:id/approve', photoController.approvePhoto);
+router.get('/photos', photoController.getAllPhotos);
+router.post('/photo/:photoId/like', photoController.likePhoto);
+router.post('/photo/:photoId/comment', photoController.addComment);
 router.delete('/photo/:id', photoController.deletePhoto);
 
 // Vote routes
@@ -30,6 +30,7 @@ router.post('/vote', voteController.submitVote);
 router.get('/vote/:email', voteController.getVoteByEmail);
 router.get('/vote-stats', voteController.getVoteStats);
 router.get('/votes', voteController.getAllVotes);
+router.get('/vote-history/:email', voteController.getVoteHistory);
 
 // Stats routes
 router.post('/record-visitor', statsController.recordVisitor);
@@ -43,11 +44,11 @@ router.post('/volunteer', (req, res) => {
   // In a real application, you would save this to the database
   // and perhaps send notification emails
   
-  console.log('New volunteer:', { name, email, phone, role });
+  console.log('Đã nhận đăng ký tình nguyện viên mới:', { name, email, phone, role });
   
   res.status(200).json({ 
     success: true, 
-    message: 'Volunteer information received successfully' 
+    message: 'Thông tin tình nguyện viên đã được nhận thành công' 
   });
 });
 
@@ -58,11 +59,11 @@ router.post('/memorabilia', (req, res) => {
   // In a real application, you would save this to the database
   // and perhaps send notification emails
   
-  console.log('Memorabilia submission:', { name, email, description });
+  console.log('Thông tin kỷ vật đã nhận:', { name, email, description });
   
   res.status(200).json({ 
     success: true, 
-    message: 'Memorabilia information received successfully' 
+    message: 'Thông tin kỷ vật đã được nhận thành công' 
   });
 });
 
@@ -71,7 +72,7 @@ router.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ 
     success: false, 
-    message: 'Server error',
+    message: 'Lỗi máy chủ',
     error: process.env.NODE_ENV === 'production' ? {} : err
   });
 });

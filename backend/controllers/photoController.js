@@ -9,7 +9,7 @@ exports.uploadPhotos = async (req, res) => {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'No files uploaded'
+        message: 'Không có tệp nào được tải lên'
       });
     }
     
@@ -19,7 +19,7 @@ exports.uploadPhotos = async (req, res) => {
     if (!name || !email) {
       return res.status(400).json({
         success: false,
-        message: 'Name and email are required'
+        message: 'Tên và email là bắt buộc'
       });
     }
     
@@ -36,36 +36,37 @@ exports.uploadPhotos = async (req, res) => {
         mimetype: file.mimetype,
         size: file.size,
         caption: caption || '',
-        year: year || 2005
+        year: year || 2005,
+        // Skip approval process
+        approved: true,
+        likes: 0,
+        comments: []
       });
       
       await photo.save();
       uploadedPhotos.push(photo);
     }
     
-    // Send notification email to admin (in production)
-    // sendPhotoUploadNotification(uploadedPhotos);
-    
     res.status(201).json({
       success: true,
-      message: `${uploadedPhotos.length} photo(s) uploaded successfully`,
+      message: `Đã tải lên thành công ${uploadedPhotos.length} ảnh`,
       data: uploadedPhotos
     });
     
   } catch (err) {
-    console.error('Photo upload error:', err.message);
+    console.error('Lỗi khi tải ảnh lên:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
 };
 
-// Get all approved photos
-exports.getAllApprovedPhotos = async (req, res) => {
+// Get all photos (no approval filtering needed)
+exports.getAllPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find({ approved: true })
+    const photos = await Photo.find()
       .sort({ uploadDate: -1 });
     
     res.status(200).json({
@@ -75,64 +76,134 @@ exports.getAllApprovedPhotos = async (req, res) => {
     });
     
   } catch (err) {
-    console.error('Get photos error:', err.message);
+    console.error('Lỗi khi lấy ảnh:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
 };
 
-// Get pending photos (admin only)
-exports.getPendingPhotos = async (req, res) => {
+// Like a photo
+exports.likePhoto = async (req, res) => {
   try {
-    const photos = await Photo.find({ approved: false })
-      .sort({ uploadDate: -1 });
+    const { photoId } = req.params;
+    const { email } = req.body;
     
-    res.status(200).json({
-      success: true,
-      count: photos.length,
-      data: photos
-    });
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email là bắt buộc'
+      });
+    }
     
-  } catch (err) {
-    console.error('Get pending photos error:', err.message);
-    res.status(500).json({
-      success: false,
-      message: 'Server error',
-      error: process.env.NODE_ENV === 'production' ? {} : err
-    });
-  }
-};
-
-// Approve a photo (admin only)
-exports.approvePhoto = async (req, res) => {
-  try {
-    const photo = await Photo.findById(req.params.id);
+    const photo = await Photo.findById(photoId);
     
     if (!photo) {
       return res.status(404).json({
         success: false,
-        message: 'Photo not found'
+        message: 'Không tìm thấy ảnh'
       });
     }
     
-    photo.approved = true;
+    // Check if user already liked the photo
+    if (!photo.likedBy) {
+      photo.likedBy = [];
+    }
+    
+    const alreadyLiked = photo.likedBy.includes(email);
+    
+    if (alreadyLiked) {
+      // Unlike the photo
+      photo.likedBy = photo.likedBy.filter(likedEmail => likedEmail !== email);
+      photo.likes = photo.likedBy.length;
+      
+      await photo.save();
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Đã bỏ thích ảnh',
+        data: {
+          likes: photo.likes,
+          liked: false
+        }
+      });
+    } else {
+      // Like the photo
+      photo.likedBy.push(email);
+      photo.likes = photo.likedBy.length;
+      
+      await photo.save();
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Đã thích ảnh',
+        data: {
+          likes: photo.likes,
+          liked: true
+        }
+      });
+    }
+  } catch (err) {
+    console.error('Lỗi khi thích ảnh:', err.message);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi máy chủ',
+      error: process.env.NODE_ENV === 'production' ? {} : err
+    });
+  }
+};
+
+// Add a comment to a photo
+exports.addComment = async (req, res) => {
+  try {
+    const { photoId } = req.params;
+    const { name, email, text } = req.body;
+    
+    if (!name || !email || !text) {
+      return res.status(400).json({
+        success: false,
+        message: 'Tên, email và nội dung bình luận là bắt buộc'
+      });
+    }
+    
+    const photo = await Photo.findById(photoId);
+    
+    if (!photo) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy ảnh'
+      });
+    }
+    
+    // Add comment
+    if (!photo.comments) {
+      photo.comments = [];
+    }
+    
+    const comment = {
+      name,
+      email,
+      text,
+      createdAt: new Date()
+    };
+    
+    photo.comments.push(comment);
+    
     await photo.save();
     
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      message: 'Photo approved',
-      data: photo
+      message: 'Đã thêm bình luận',
+      data: comment
     });
     
   } catch (err) {
-    console.error('Approve photo error:', err.message);
-    
+    console.error('Lỗi khi thêm bình luận:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -146,7 +217,7 @@ exports.deletePhoto = async (req, res) => {
     if (!photo) {
       return res.status(404).json({
         success: false,
-        message: 'Photo not found'
+        message: 'Không tìm thấy ảnh'
       });
     }
     
@@ -158,15 +229,15 @@ exports.deletePhoto = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      message: 'Photo deleted'
+      message: 'Đã xóa ảnh'
     });
     
   } catch (err) {
-    console.error('Delete photo error:', err.message);
+    console.error('Lỗi khi xóa ảnh:', err.message);
     
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }

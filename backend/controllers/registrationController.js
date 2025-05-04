@@ -4,14 +4,59 @@ const User = require('../models/User');
 // Register a new attendee
 exports.register = async (req, res) => {
   try {
-    const { name, email, phone, ticketType, guestTickets, dietary } = req.body;
+    const { 
+      name, 
+      email, 
+      phone, 
+      adultTickets, 
+      childTickets, 
+      infantTickets, 
+      comments 
+    } = req.body;
+    
+    // Validation
+    if (!name || !email || !adultTickets) {
+      return res.status(400).json({
+        success: false,
+        message: 'Tên, email và số lượng người lớn là bắt buộc'
+      });
+    }
     
     // Check if user already registered
     const existingUser = await User.findOne({ email });
+    
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'This email is already registered'
+      // Update existing registration if already exists
+      const updatedFields = {
+        name,
+        phone,
+        adultTickets: parseInt(adultTickets) || 1,
+        childTickets: parseInt(childTickets) || 0,
+        infantTickets: parseInt(infantTickets) || 0,
+        comments
+      };
+      
+      // Track changes
+      const hasChanges = existingUser.trackChanges(updatedFields);
+      
+      // Update fields
+      Object.assign(existingUser, updatedFields);
+      
+      await existingUser.save();
+      
+      // Send update confirmation email (in production)
+      // sendUpdateConfirmationEmail(existingUser);
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Thông tin đăng ký đã được cập nhật',
+        data: {
+          userId: existingUser._id,
+          name: existingUser.name,
+          totalAmount: existingUser.paymentAmount,
+          paymentStatus: existingUser.paymentStatus,
+          isUpdate: true
+        }
       });
     }
     
@@ -20,9 +65,10 @@ exports.register = async (req, res) => {
       name,
       email,
       phone,
-      ticketType,
-      guestTickets: guestTickets || 0,
-      dietary
+      adultTickets: parseInt(adultTickets) || 1,
+      childTickets: parseInt(childTickets) || 0,
+      infantTickets: parseInt(infantTickets) || 0,
+      comments
     });
     
     await user.save();
@@ -32,20 +78,21 @@ exports.register = async (req, res) => {
     
     res.status(201).json({
       success: true,
-      message: 'Registration successful',
+      message: 'Đăng ký thành công',
       data: {
         userId: user._id,
-        ticketType: user.ticketType,
+        name: user.name,
         totalAmount: user.paymentAmount,
-        paymentStatus: user.paymentStatus
+        paymentStatus: user.paymentStatus,
+        isUpdate: false
       }
     });
     
   } catch (err) {
-    console.error('Registration error:', err.message);
+    console.error('Lỗi đăng ký:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -64,10 +111,10 @@ exports.getAllRegistrations = async (req, res) => {
     });
     
   } catch (err) {
-    console.error('Get registrations error:', err.message);
+    console.error('Lỗi khi lấy đăng ký:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -81,7 +128,7 @@ exports.getRegistrationById = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Registration not found'
+        message: 'Không tìm thấy đăng ký'
       });
     }
     
@@ -91,11 +138,11 @@ exports.getRegistrationById = async (req, res) => {
     });
     
   } catch (err) {
-    console.error('Get registration error:', err.message);
+    console.error('Lỗi khi lấy đăng ký:', err.message);
     
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -104,7 +151,16 @@ exports.getRegistrationById = async (req, res) => {
 // Update registration
 exports.updateRegistration = async (req, res) => {
   try {
-    const { name, email, phone, ticketType, guestTickets, dietary, paymentStatus } = req.body;
+    const { 
+      name, 
+      email, 
+      phone, 
+      adultTickets, 
+      childTickets, 
+      infantTickets, 
+      comments, 
+      paymentStatus 
+    } = req.body;
     
     // Find registration
     let user = await User.findById(req.params.id);
@@ -112,33 +168,41 @@ exports.updateRegistration = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Registration not found'
+        message: 'Không tìm thấy đăng ký'
       });
     }
     
+    // Prepare updated fields
+    const updatedFields = {};
+    if (name) updatedFields.name = name;
+    if (email) updatedFields.email = email;
+    if (phone) updatedFields.phone = phone;
+    if (adultTickets !== undefined) updatedFields.adultTickets = parseInt(adultTickets);
+    if (childTickets !== undefined) updatedFields.childTickets = parseInt(childTickets);
+    if (infantTickets !== undefined) updatedFields.infantTickets = parseInt(infantTickets);
+    if (comments) updatedFields.comments = comments;
+    if (paymentStatus) updatedFields.paymentStatus = paymentStatus;
+    
+    // Track changes
+    const hasChanges = user.trackChanges(updatedFields);
+    
     // Update fields
-    if (name) user.name = name;
-    if (email) user.email = email;
-    if (phone) user.phone = phone;
-    if (ticketType) user.ticketType = ticketType;
-    if (guestTickets !== undefined) user.guestTickets = guestTickets;
-    if (dietary) user.dietary = dietary;
-    if (paymentStatus) user.paymentStatus = paymentStatus;
+    Object.assign(user, updatedFields);
     
     await user.save();
     
     res.status(200).json({
       success: true,
-      message: 'Registration updated',
+      message: 'Đăng ký đã được cập nhật',
       data: user
     });
     
   } catch (err) {
-    console.error('Update registration error:', err.message);
+    console.error('Lỗi khi cập nhật đăng ký:', err.message);
     
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -152,7 +216,7 @@ exports.deleteRegistration = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Registration not found'
+        message: 'Không tìm thấy đăng ký'
       });
     }
     
@@ -160,15 +224,15 @@ exports.deleteRegistration = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      message: 'Registration deleted'
+      message: 'Đăng ký đã bị xóa'
     });
     
   } catch (err) {
-    console.error('Delete registration error:', err.message);
+    console.error('Lỗi khi xóa đăng ký:', err.message);
     
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -185,7 +249,7 @@ exports.processPayment = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Registration not found'
+        message: 'Không tìm thấy đăng ký'
       });
     }
     
@@ -193,7 +257,7 @@ exports.processPayment = async (req, res) => {
     if (amount !== user.paymentAmount) {
       return res.status(400).json({
         success: false,
-        message: 'Payment amount mismatch'
+        message: 'Số tiền thanh toán không đúng'
       });
     }
     
@@ -209,19 +273,19 @@ exports.processPayment = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      message: 'Payment processed successfully',
+      message: 'Thanh toán thành công',
       data: {
-        paymentId: 'DEMO-' + Date.now(),
+        paymentId: 'DEMO-' + Date.now().toString().slice(-6),
         amount: user.paymentAmount,
         status: 'completed'
       }
     });
     
   } catch (err) {
-    console.error('Payment processing error:', err.message);
+    console.error('Lỗi xử lý thanh toán:', err.message);
     res.status(500).json({
       success: false,
-      message: 'Server error',
+      message: 'Lỗi máy chủ',
       error: process.env.NODE_ENV === 'production' ? {} : err
     });
   }
@@ -249,7 +313,7 @@ exports.getPaymentStatus = async (req, res) => {
     });
     
   } catch (err) {
-    console.error('Get payment status error:', err.message);
+    console.error('Lỗi khi lấy trạng thái thanh toán:', err.message);
     
     res.status(500).json({
       success: false,

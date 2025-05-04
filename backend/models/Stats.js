@@ -50,6 +50,12 @@ StatsSchema.statics.getDashboardStats = async function() {
   // Get users
   const users = await User.find();
   
+  // Calculate attendance counts
+  const adultCount = users.reduce((sum, user) => sum + (user.adultTickets || 0), 0);
+  const childCount = users.reduce((sum, user) => sum + (user.childTickets || 0), 0);
+  const infantCount = users.reduce((sum, user) => sum + (user.infantTickets || 0), 0);
+  const totalAttendees = adultCount + childCount + infantCount;
+  
   // Get vote statistics
   const voteStats = await Vote.getStats();
   
@@ -59,6 +65,10 @@ StatsSchema.statics.getDashboardStats = async function() {
   return {
     visitors: stats.visitors,
     registrations: users.length,
+    adultCount,
+    childCount,
+    infantCount,
+    totalAttendees,
     totalRegistrationBudget,
     totalVoteBudget: voteStats.totalBudget,
     totalSponsorshipBudget: voteStats.totalSponsorship,
