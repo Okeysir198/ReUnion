@@ -6,7 +6,6 @@ const dotenv = require('dotenv');
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const { connectDB } = require('./config/db');
-const { connectDB } = require('./config/db');
 
 // Load environment variables
 dotenv.config();
