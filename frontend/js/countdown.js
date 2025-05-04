@@ -1,7 +1,7 @@
 // Countdown Timer for Reunion Website
 
 // Set the reunion date - July 25, 2025
-const reunionDate = new Date('July 25, 2025 18:00:00').getTime();
+const reunionDate = new Date('July 4, 2025 18:00:00').getTime();
 
 // Update the countdown every second
 const countdownTimer = setInterval(function() {
