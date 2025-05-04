@@ -111,7 +111,7 @@ function recordVisitor() {
 // Initialize venue map
 function initMap() {
     // Create a map centered at venue location
-    const venueLocation = [21.0285, 105.8542]; // Hanoi coordinates
+    const venueLocation = [10.779168232835389, 106.69733093173164]; 
     const map = L.map('map').setView(venueLocation, 15);
     
     // Add OpenStreetMap tiles
@@ -122,7 +122,7 @@ function initMap() {
     // Add marker for venue
     L.marker(venueLocation)
         .addTo(map)
-        .bindPopup('Khách sạn Grand Central<br>123 Đường Chính')
+        .bindPopup('Sẽ cập nhật địa điểm cụ thể sau.')
         .openPopup();
 }
 

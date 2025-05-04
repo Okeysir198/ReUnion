@@ -48,7 +48,7 @@
                         <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
                         <div class="card-content">
                             <h3>Total Revenue</h3>
-                            <div class="card-value" id="total-revenue">$0</div>
+                            <div class="card-value" id="total-revenue">₫0</div>
                         </div>
                     </div>
                     <div class="dashboard-card">
@@ -63,6 +63,31 @@
                         <div class="card-content">
                             <h3>Website Visitors</h3>
                             <div class="card-value" id="total-visitors">0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Attendee Breakdown</h3>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-user"></i></div>
+                        <div class="card-content">
+                            <h3>Adults</h3>
+                            <div class="card-value" id="adult-count">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-child"></i></div>
+                        <div class="card-content">
+                            <h3>Children (5-12)</h3>
+                            <div class="card-value" id="child-count">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon"><i class="fas fa-baby"></i></div>
+                        <div class="card-content">
+                            <h3>Infants (under 5)</h3>
+                            <div class="card-value" id="infant-count">0</div>
                         </div>
                     </div>
                 </div>
@@ -96,8 +121,9 @@
                         </select>
                         <select id="ticket-filter">
                             <option value="all">All Tickets</option>
-                            <option value="early">Early Bird</option>
-                            <option value="regular">Regular</option>
+                            <option value="adult">Adult Tickets</option>
+                            <option value="child">Child Tickets</option>
+                            <option value="infant">Infant Tickets</option>
                         </select>
                     </div>
                     <button id="export-csv" class="secondary-button"><i class="fas fa-download"></i> Export CSV</button>
@@ -110,11 +136,13 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Ticket Type</th>
-                                <th>Guests</th>
                                 <th>Total</th>
-                                <th>Payment Status</th>
-                                <th>Date Registered</th>
+                                <th>Adults</th>
+                                <th>Children</th>
+                                <th>Infants</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -156,6 +184,13 @@
                             <p><strong>Uploader:</strong> <span id="preview-uploader"></span></p>
                             <p><strong>Caption:</strong> <span id="preview-caption"></span></p>
                             <p><strong>Date Uploaded:</strong> <span id="preview-date"></span></p>
+                            <p><strong>Social:</strong> <span id="preview-likes">0 likes</span></p>
+                        </div>
+                        <div id="preview-comments" class="photo-comments">
+                            <h4>Comments</h4>
+                            <div class="comments-list">
+                                <!-- Comments will be populated here -->
+                            </div>
                         </div>
                         <div class="photo-actions">
                             <button id="approve-photo" class="cta-button">Approve Photo</button>
@@ -165,7 +200,7 @@
                 </div>
             </section>
 
-            <!-- Votes Section (NEW) -->
+            <!-- Votes Section -->
             <section id="votes" class="admin-section">
                 <h2>Voting Results</h2>
                 <div class="votes-summary">
@@ -176,11 +211,11 @@
                         </div>
                         <div class="summary-stat">
                             <span class="stat-label">Average Budget Per Person:</span>
-                            <span class="stat-value" id="average-budget">$0</span>
+                            <span class="stat-value" id="average-budget">₫0</span>
                         </div>
                         <div class="summary-stat">
                             <span class="stat-label">Total Sponsorship Offered:</span>
-                            <span class="stat-value" id="total-sponsorship">$0</span>
+                            <span class="stat-value" id="total-sponsorship">₫0</span>
                         </div>
                     </div>
                     
@@ -319,16 +354,16 @@
                                 <input type="date" id="early-bird-date">
                             </div>
                             <div class="form-group">
-                                <label for="early-bird-price">Early Bird Price ($)</label>
-                                <input type="number" id="early-bird-price">
+                                <label for="early-bird-price">Adult Price (VND)</label>
+                                <input type="number" id="early-bird-price" placeholder="Example: 2000000">
                             </div>
                             <div class="form-group">
-                                <label for="regular-price">Regular Price ($)</label>
-                                <input type="number" id="regular-price">
+                                <label for="regular-price">Child Price (VND)</label>
+                                <input type="number" id="regular-price" placeholder="Example: 1400000">
                             </div>
                             <div class="form-group">
-                                <label for="guest-price">Guest Ticket Price ($)</label>
-                                <input type="number" id="guest-price">
+                                <label for="guest-price">Infant Price (VND)</label>
+                                <input type="number" id="guest-price" placeholder="Example: 0">
                             </div>
                             <button type="submit" class="cta-button">Save Website Settings</button>
                         </form>

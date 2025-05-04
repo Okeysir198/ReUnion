@@ -95,9 +95,14 @@ function loadDashboardData() {
                 
                 // Update card values
                 document.getElementById('total-registrations').textContent = stats.registrations;
-                document.getElementById('total-revenue').textContent = `$${stats.totalBudget}`;
+                document.getElementById('total-revenue').textContent = formatCurrency(stats.totalBudget);
                 document.getElementById('pending-photos').textContent = document.querySelector('#photo-status-filter').value === 'pending' ? document.querySelectorAll('.photo-card').length : '0';
                 document.getElementById('total-visitors').textContent = stats.visitors;
+                
+                // Update attendee counts
+                document.getElementById('adult-count').textContent = stats.adultCount || 0;
+                document.getElementById('child-count').textContent = stats.childCount || 0;
+                document.getElementById('infant-count').textContent = stats.infantCount || 0;
                 
                 // Initialize charts with real data
                 initRegistrationChart(stats);
@@ -117,13 +122,27 @@ function loadDashboardData() {
 function useMockDashboardData() {
     // Update card values with mock data
     document.getElementById('total-registrations').textContent = '87';
-    document.getElementById('total-revenue').textContent = '$9,380';
+    document.getElementById('total-revenue').textContent = formatCurrency(9380000);
     document.getElementById('pending-photos').textContent = '12';
     document.getElementById('total-visitors').textContent = '245';
+    
+    // Update attendee counts with mock data
+    document.getElementById('adult-count').textContent = '103';
+    document.getElementById('child-count').textContent = '24';
+    document.getElementById('infant-count').textContent = '11';
     
     // Initialize charts with mock data
     initRegistrationChartMock();
     initTicketChartMock();
+}
+
+// Format currency in Vietnamese format (VND)
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+        maximumFractionDigits: 0
+    }).format(amount);
 }
 
 // Initialize registration timeline chart with real data
@@ -188,6 +207,20 @@ function initBudgetChart(stats) {
                 title: {
                     display: true,
                     text: 'Budget Sources'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += formatCurrency(context.parsed.y);
+                            }
+                            return label;
+                        }
+                    }
                 }
             },
             scales: {
@@ -195,7 +228,7 @@ function initBudgetChart(stats) {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value;
+                            return formatCurrency(value);
                         }
                     }
                 }
@@ -245,10 +278,10 @@ function initTicketChartMock() {
     
     // Sample data
     const ticketData = {
-        labels: ['Early Bird', 'Regular', 'Guest'],
+        labels: ['Adult', 'Child (5-12)', 'Infant (under 5)'],
         datasets: [{
-            label: 'Ticket Types',
-            data: [45, 28, 14],
+            label: 'Attendee Types',
+            data: [103, 24, 11],
             backgroundColor: [
                 'rgba(59, 89, 152, 0.7)',
                 'rgba(59, 89, 152, 0.5)',
@@ -315,13 +348,18 @@ function displayRegistrations(registrations) {
         // Create status badge class
         const statusClass = `status-${reg.paymentStatus}`;
         
+        // Calculate total attendees
+        const totalAttendees = (reg.adultTickets || 0) + (reg.childTickets || 0) + (reg.infantTickets || 0);
+        
         row.innerHTML = `
             <td>${reg.name}</td>
             <td>${reg.email}</td>
             <td>${reg.phone || 'N/A'}</td>
-            <td>${reg.ticketType === 'early' ? 'Early Bird' : 'Regular'}</td>
-            <td>${reg.guestTickets}</td>
-            <td>$${reg.paymentAmount}</td>
+            <td>${totalAttendees}</td>
+            <td>${reg.adultTickets || 0}</td>
+            <td>${reg.childTickets || 0}</td>
+            <td>${reg.infantTickets || 0}</td>
+            <td>${formatCurrency(reg.paymentAmount)}</td>
             <td><span class="payment-status ${statusClass}">${capitalizeFirst(reg.paymentStatus)}</span></td>
             <td>${formattedDate}</td>
             <td>
@@ -358,9 +396,10 @@ function displayMockRegistrations() {
             name: 'John Smith',
             email: 'john@example.com',
             phone: '(555) 123-4567',
-            ticketType: 'early',
-            guestTickets: 1,
-            paymentAmount: 180,
+            adultTickets: 2,
+            childTickets: 1,
+            infantTickets: 0,
+            paymentAmount: 5400000,
             paymentStatus: 'completed',
             createdAt: '2025-04-15T14:30:00'
         },
@@ -369,9 +408,10 @@ function displayMockRegistrations() {
             name: 'Lisa Johnson',
             email: 'lisa@example.com',
             phone: '(555) 987-6543',
-            ticketType: 'early',
-            guestTickets: 0,
-            paymentAmount: 85,
+            adultTickets: 1,
+            childTickets: 0,
+            infantTickets: 0,
+            paymentAmount: 2000000,
             paymentStatus: 'completed',
             createdAt: '2025-04-18T09:15:00'
         },
@@ -380,9 +420,10 @@ function displayMockRegistrations() {
             name: 'Michael Brown',
             email: 'michael@example.com',
             phone: '(555) 456-7890',
-            ticketType: 'regular',
-            guestTickets: 1,
-            paymentAmount: 215,
+            adultTickets: 2,
+            childTickets: 1,
+            infantTickets: 1,
+            paymentAmount: 5400000,
             paymentStatus: 'pending',
             createdAt: '2025-04-20T16:45:00'
         },
@@ -391,9 +432,10 @@ function displayMockRegistrations() {
             name: 'Sarah Wilson',
             email: 'sarah@example.com',
             phone: '(555) 555-5555',
-            ticketType: 'early',
-            guestTickets: 2,
-            paymentAmount: 275,
+            adultTickets: 2,
+            childTickets: 2,
+            infantTickets: 0,
+            paymentAmount: 6800000,
             paymentStatus: 'completed',
             createdAt: '2025-04-22T11:20:00'
         },
@@ -402,9 +444,10 @@ function displayMockRegistrations() {
             name: 'David Lee',
             email: 'david@example.com',
             phone: '(555) 333-4444',
-            ticketType: 'regular',
-            guestTickets: 0,
-            paymentAmount: 120,
+            adultTickets: 1,
+            childTickets: 0,
+            infantTickets: 0,
+            paymentAmount: 2000000,
             paymentStatus: 'failed',
             createdAt: '2025-04-23T13:10:00'
         }
@@ -465,6 +508,10 @@ function displayPhotos(photos, filterType) {
                 <span class="status-badge status-${photo.approved ? 'approved' : 'pending'}">
                     ${photo.approved ? 'Approved' : 'Pending'}
                 </span>
+                <div class="social-stats">
+                    <span class="likes-count"><i class="fas fa-heart"></i> ${photo.likes || 0}</span>
+                    <span class="comments-count"><i class="fas fa-comment"></i> ${photo.comments ? photo.comments.length : 0}</span>
+                </div>
             </div>
             <div class="photo-info">
                 <div class="photo-uploader">${photo.uploaderName}</div>
@@ -492,7 +539,12 @@ function displayMockPhotos(filterType) {
             uploaderEmail: 'john@example.com',
             caption: 'Graduation day 2005',
             uploadDate: '2025-04-15T14:30:00',
-            approved: false
+            approved: false,
+            likes: 5,
+            comments: [
+                { name: 'Lisa Johnson', email: 'lisa@example.com', text: 'Great memories!', createdAt: '2025-04-16T10:15:00' },
+                { name: 'Michael Brown', email: 'michael@example.com', text: 'I remember this day!', createdAt: '2025-04-16T14:30:00' }
+            ]
         },
         {
             _id: '2',
@@ -502,7 +554,11 @@ function displayMockPhotos(filterType) {
             uploaderEmail: 'lisa@example.com',
             caption: 'Football game vs. Central High',
             uploadDate: '2025-04-18T09:15:00',
-            approved: true
+            approved: true,
+            likes: 8,
+            comments: [
+                { name: 'John Smith', email: 'john@example.com', text: 'We won this game!', createdAt: '2025-04-19T11:20:00' }
+            ]
         },
         {
             _id: '3',
@@ -512,7 +568,9 @@ function displayMockPhotos(filterType) {
             uploaderEmail: 'michael@example.com',
             caption: 'Senior prom group photo',
             uploadDate: '2025-04-20T16:45:00',
-            approved: false
+            approved: false,
+            likes: 12,
+            comments: []
         },
         {
             _id: '4',
@@ -522,7 +580,13 @@ function displayMockPhotos(filterType) {
             uploaderEmail: 'sarah@example.com',
             caption: 'School trip to Washington D.C.',
             uploadDate: '2025-04-22T11:20:00',
-            approved: true
+            approved: true,
+            likes: 15,
+            comments: [
+                { name: 'David Lee', email: 'david@example.com', text: 'Best trip ever!', createdAt: '2025-04-23T09:45:00' },
+                { name: 'Lisa Johnson', email: 'lisa@example.com', text: 'I miss those days!', createdAt: '2025-04-23T14:30:00' },
+                { name: 'John Smith', email: 'john@example.com', text: 'Great memories!', createdAt: '2025-04-24T10:15:00' }
+            ]
         },
         {
             _id: '5',
@@ -532,7 +596,11 @@ function displayMockPhotos(filterType) {
             uploaderEmail: 'david@example.com',
             caption: 'Spirit week costume day',
             uploadDate: '2025-04-23T13:10:00',
-            approved: false
+            approved: false,
+            likes: 7,
+            comments: [
+                { name: 'Michael Brown', email: 'michael@example.com', text: 'You looked ridiculous!', createdAt: '2025-04-24T15:45:00' }
+            ]
         }
     ];
     
@@ -554,6 +622,23 @@ function showPhotoPreview(photo) {
     const approveBtn = document.getElementById('approve-photo');
     const rejectBtn = document.getElementById('reject-photo');
     
+    // Create comments section if not exists
+    if (!document.getElementById('preview-comments')) {
+        const commentsSection = document.createElement('div');
+        commentsSection.id = 'preview-comments';
+        commentsSection.className = 'photo-comments';
+        commentsSection.innerHTML = `
+            <h4>Comments</h4>
+            <div class="comments-list"></div>
+        `;
+        
+        // Insert before photo actions
+        document.querySelector('.photo-actions').before(commentsSection);
+    }
+    
+    // Get comments list
+    const commentsList = document.querySelector('#preview-comments .comments-list');
+    
     // Set preview data - Use Cloudinary URL
     previewImage.src = photo.cloudinaryUrl;
     previewUploader.textContent = `${photo.uploaderName} (${photo.uploaderEmail})`;
@@ -567,6 +652,44 @@ function showPhotoPreview(photo) {
         hour: '2-digit',
         minute: '2-digit'
     });
+    
+    // Add likes info
+    document.getElementById('preview-likes').textContent = `${photo.likes || 0} likes`;
+    
+    // Show comments
+    commentsList.innerHTML = '';
+    if (photo.comments && photo.comments.length > 0) {
+        photo.comments.forEach(comment => {
+            const commentDate = new Date(comment.createdAt);
+            const formattedCommentDate = commentDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            const commentItem = document.createElement('div');
+            commentItem.className = 'comment-item';
+            commentItem.innerHTML = `
+                <div class="comment-author">${comment.name}</div>
+                <div class="comment-text">${comment.text}</div>
+                <div class="comment-date">${formattedCommentDate}</div>
+                <button class="delete-comment-btn" data-id="${photo._id}" data-comment-index="${photo.comments.indexOf(comment)}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            commentsList.appendChild(commentItem);
+        });
+        
+        // Add event listeners to delete comment buttons
+        document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteComment(btn.getAttribute('data-id'), btn.getAttribute('data-comment-index'));
+            });
+        });
+    } else {
+        commentsList.innerHTML = '<p>No comments yet.</p>';
+    }
     
     // Show/hide approve button based on approval status
     if (photo.approved) {
@@ -593,6 +716,45 @@ function showPhotoPreview(photo) {
             modal.style.display = 'none';
         }
     };
+}
+
+// Delete a comment
+function deleteComment(photoId, commentIndex) {
+    if (confirm('Are you sure you want to delete this comment?')) {
+        fetch(`/api/photo/${photoId}/comment/${commentIndex}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Comment deleted successfully!');
+                // Reload photo preview
+                fetch(`/api/photo/${photoId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showPhotoPreview(data.data);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching photo details:', error));
+            } else {
+                alert('Error deleting comment: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting comment:', error);
+            
+            // For demo purposes, just reload the photo preview with the comment removed
+            const commentItem = document.querySelector(`.delete-comment-btn[data-comment-index="${commentIndex}"]`).closest('.comment-item');
+            commentItem.remove();
+            
+            // Update comment count
+            const commentsCount = document.querySelectorAll('.comment-item').length;
+            if (commentsCount === 0) {
+                document.querySelector('#preview-comments .comments-list').innerHTML = '<p>No comments yet.</p>';
+            }
+        });
+    }
 }
 
 // Approve photo
@@ -768,8 +930,8 @@ function displayVotes(votes) {
             <td>${vote.name}</td>
             <td>${vote.email}</td>
             <td>${vote.dateVote || 'Not voted'}</td>
-            <td>$${vote.budgetAmount || 0}</td>
-            <td>$${vote.sponsorAmount || 0}</td>
+            <td>${formatCurrency(vote.budgetAmount || 0)}</td>
+            <td>${formatCurrency(vote.sponsorAmount || 0)}</td>
             <td>${new Date(vote.createdAt).toLocaleDateString()}</td>
         `;
         
@@ -784,15 +946,15 @@ function displayMockVotes() {
             name: 'John Smith',
             email: 'john@example.com',
             dateVote: 'July 25-27, 2025',
-            budgetAmount: 100,
-            sponsorAmount: 50,
+            budgetAmount: 2500000,
+            sponsorAmount: 1000000,
             createdAt: '2025-04-15T14:30:00'
         },
         {
             name: 'Lisa Johnson',
             email: 'lisa@example.com',
             dateVote: 'September 5-7, 2025',
-            budgetAmount: 120,
+            budgetAmount: 3500000,
             sponsorAmount: 0,
             createdAt: '2025-04-18T09:15:00'
         },
@@ -800,23 +962,23 @@ function displayMockVotes() {
             name: 'Michael Brown',
             email: 'michael@example.com',
             dateVote: 'July 25-27, 2025',
-            budgetAmount: 85,
-            sponsorAmount: 25,
+            budgetAmount: 2500000,
+            sponsorAmount: 500000,
             createdAt: '2025-04-20T16:45:00'
         },
         {
             name: 'Sarah Wilson',
             email: 'sarah@example.com',
             dateVote: 'August 15-17, 2025',
-            budgetAmount: 150,
-            sponsorAmount: 100,
+            budgetAmount: 5000000,
+            sponsorAmount: 2000000,
             createdAt: '2025-04-22T11:20:00'
         },
         {
             name: 'David Lee',
             email: 'david@example.com',
             dateVote: 'September 26-28, 2025',
-            budgetAmount: 90,
+            budgetAmount: 3500000,
             sponsorAmount: 0,
             createdAt: '2025-04-23T13:10:00'
         }
@@ -893,12 +1055,26 @@ function displayVoteStats(stats) {
                         beginAtZero: true,
                         ticks: {
                             callback: function(value) {
-                                return '$' + value;
+                                return formatCurrency(value);
                             }
                         }
                     }
                 },
                 plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += formatCurrency(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    },
                     title: {
                         display: true,
                         text: 'Budget Information'
@@ -910,8 +1086,8 @@ function displayVoteStats(stats) {
     
     // Update statistics text
     document.getElementById('total-votes').textContent = stats.voteCount || 0;
-    document.getElementById('average-budget').textContent = `$${Math.round((stats.totalBudget / stats.voteCount) || 0)}`;
-    document.getElementById('total-sponsorship').textContent = `$${stats.totalSponsorship || 0}`;
+    document.getElementById('average-budget').textContent = formatCurrency(Math.round((stats.totalBudget / stats.voteCount) || 0));
+    document.getElementById('total-sponsorship').textContent = formatCurrency(stats.totalSponsorship || 0);
 }
 
 // Display mock vote statistics if API fails
@@ -966,7 +1142,7 @@ function displayMockVoteStats() {
                 labels: ['Average Budget', 'Total Sponsorship'],
                 datasets: [{
                     label: 'Budget Information',
-                    data: [110, 1750],
+                    data: [3500000, 17500000],
                     backgroundColor: [
                         'rgba(59, 89, 152, 0.7)',
                         'rgba(248, 199, 64, 0.7)'
@@ -984,12 +1160,26 @@ function displayMockVoteStats() {
                         beginAtZero: true,
                         ticks: {
                             callback: function(value) {
-                                return '$' + value;
+                                return formatCurrency(value);
                             }
                         }
                     }
                 },
                 plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += formatCurrency(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    },
                     title: {
                         display: true,
                         text: 'Budget Information'
@@ -1001,8 +1191,8 @@ function displayMockVoteStats() {
     
     // Update statistics text with mock data
     document.getElementById('total-votes').textContent = '40';
-    document.getElementById('average-budget').textContent = '$110';
-    document.getElementById('total-sponsorship').textContent = '$1,750';
+    document.getElementById('average-budget').textContent = formatCurrency(3500000);
+    document.getElementById('total-sponsorship').textContent = formatCurrency(17500000);
 }
 
 // Load settings
@@ -1018,9 +1208,9 @@ function loadSettings() {
     document.getElementById('reunion-date').value = '2025-07-25';
     document.getElementById('reunion-start-time').value = '18:00';
     document.getElementById('early-bird-date').value = '2025-06-01';
-    document.getElementById('early-bird-price').value = '85';
-    document.getElementById('regular-price').value = '120';
-    document.getElementById('guest-price').value = '95';
+    document.getElementById('early-bird-price').value = '2000000';
+    document.getElementById('regular-price').value = '3000000';
+    document.getElementById('guest-price').value = '1400000';
     
     // Add form submission handlers
     document.getElementById('admin-password-form').addEventListener('submit', updateAdminPassword);
@@ -1069,12 +1259,20 @@ function applyRegistrationFilters() {
     const tableRows = document.querySelectorAll('#registrations-table tbody tr');
     
     tableRows.forEach(row => {
-        const ticketType = row.cells[3].textContent.toLowerCase();
-        const paymentStatus = row.cells[6].querySelector('.payment-status').textContent.toLowerCase();
+        const adultTickets = parseInt(row.cells[4].textContent);
+        const childTickets = parseInt(row.cells[5].textContent);
+        const infantTickets = parseInt(row.cells[6].textContent);
+        const paymentStatus = row.cells[8].querySelector('.payment-status').textContent.toLowerCase();
         
-        const ticketMatch = ticketFilter === 'all' || 
-            (ticketFilter === 'early' && ticketType.includes('early')) ||
-            (ticketFilter === 'regular' && ticketType.includes('regular'));
+        let ticketMatch = true;
+        
+        if (ticketFilter === 'adult') {
+            ticketMatch = adultTickets > 0;
+        } else if (ticketFilter === 'child') {
+            ticketMatch = childTickets > 0;
+        } else if (ticketFilter === 'infant') {
+            ticketMatch = infantTickets > 0;
+        }
             
         const paymentMatch = paymentFilter === 'all' || paymentStatus === paymentFilter;
         
@@ -1093,7 +1291,7 @@ function exportRegistrationsToCSV() {
     const rows = table.querySelectorAll('tbody tr');
     
     // Create CSV header
-    let csv = 'Name,Email,Phone,Ticket Type,Guests,Total,Payment Status,Date Registered\n';
+    let csv = 'Name,Email,Phone,Total Attendees,Adults,Children,Infants,Total Amount,Payment Status,Date Registered\n';
     
     // Add each row of data
     rows.forEach(row => {
@@ -1101,16 +1299,18 @@ function exportRegistrationsToCSV() {
             const name = row.cells[0].textContent;
             const email = row.cells[1].textContent;
             const phone = row.cells[2].textContent;
-            const ticketType = row.cells[3].textContent;
-            const guests = row.cells[4].textContent;
-            const total = row.cells[5].textContent;
-            const paymentStatus = row.cells[6].textContent.trim();
-            const dateRegistered = row.cells[7].textContent;
+            const totalAttendees = row.cells[3].textContent;
+            const adults = row.cells[4].textContent;
+            const children = row.cells[5].textContent;
+            const infants = row.cells[6].textContent;
+            const totalAmount = row.cells[7].textContent;
+            const paymentStatus = row.cells[8].textContent.trim();
+            const dateRegistered = row.cells[9].textContent;
             
             // Escape fields that might contain commas
             const formatField = (field) => `"${field.replace(/"/g, '""')}"`;
             
-            csv += `${formatField(name)},${formatField(email)},${formatField(phone)},${formatField(ticketType)},${guests},${total},${formatField(paymentStatus)},${formatField(dateRegistered)}\n`;
+            csv += `${formatField(name)},${formatField(email)},${formatField(phone)},${totalAttendees},${adults},${children},${infants},${formatField(totalAmount)},${formatField(paymentStatus)},${formatField(dateRegistered)}\n`;
         }
     });
     
@@ -1143,8 +1343,22 @@ function viewRegistration(id) {
             console.error('Error fetching registration details:', error);
             alert('There was an error retrieving the registration details. Please try again.');
             
-            // For demo purposes, just show an alert
-            alert(`Viewing registration details for ID: ${id}`);
+            // For demo purposes, create mock data
+            const mockRegistration = {
+                _id: id,
+                name: 'John Smith',
+                email: 'john@example.com',
+                phone: '(555) 123-4567',
+                adultTickets: 2,
+                childTickets: 1,
+                infantTickets: 0,
+                comments: 'Please seat us with the Johnson family if possible.',
+                paymentAmount: 5400000,
+                paymentStatus: 'completed',
+                createdAt: '2025-04-15T14:30:00'
+            };
+            
+            displayRegistrationDetails(mockRegistration);
         });
 }
 
@@ -1159,10 +1373,12 @@ function displayRegistrationDetails(registration) {
                 <p><strong>Name:</strong> ${registration.name}</p>
                 <p><strong>Email:</strong> ${registration.email}</p>
                 <p><strong>Phone:</strong> ${registration.phone || 'N/A'}</p>
-                <p><strong>Ticket Type:</strong> ${registration.ticketType === 'early' ? 'Early Bird' : 'Regular'}</p>
-                <p><strong>Guest Tickets:</strong> ${registration.guestTickets}</p>
-                <p><strong>Dietary Restrictions:</strong> ${registration.dietary || 'None'}</p>
-                <p><strong>Payment Amount:</strong> $${registration.paymentAmount}</p>
+                <p><strong>Adult Tickets:</strong> ${registration.adultTickets || 0}</p>
+                <p><strong>Child Tickets (5-12):</strong> ${registration.childTickets || 0}</p>
+                <p><strong>Infant Tickets (under 5):</strong> ${registration.infantTickets || 0}</p>
+                <p><strong>Total Attendees:</strong> ${(registration.adultTickets || 0) + (registration.childTickets || 0) + (registration.infantTickets || 0)}</p>
+                <p><strong>Comments:</strong> ${registration.comments || 'None'}</p>
+                <p><strong>Payment Amount:</strong> ${formatCurrency(registration.paymentAmount)}</p>
                 <p><strong>Payment Status:</strong> ${capitalizeFirst(registration.paymentStatus)}</p>
                 <p><strong>Registration Date:</strong> ${new Date(registration.createdAt).toLocaleString()}</p>
             </div>
@@ -1218,8 +1434,22 @@ function editRegistration(id) {
             console.error('Error fetching registration for edit:', error);
             alert('There was an error retrieving the registration. Please try again.');
             
-            // For demo purposes, just show an alert
-            alert(`Editing registration with ID: ${id}`);
+            // For demo purposes, create mock data
+            const mockRegistration = {
+                _id: id,
+                name: 'John Smith',
+                email: 'john@example.com',
+                phone: '(555) 123-4567',
+                adultTickets: 2,
+                childTickets: 1,
+                infantTickets: 0,
+                comments: 'Please seat us with the Johnson family if possible.',
+                paymentAmount: 5400000,
+                paymentStatus: 'completed',
+                createdAt: '2025-04-15T14:30:00'
+            };
+            
+            displayEditRegistrationForm(mockRegistration);
         });
 }
 
@@ -1249,25 +1479,44 @@ function displayEditRegistrationForm(registration) {
                 </div>
                 
                 <div class="form-group">
-                    <label for="edit-ticket-type">Ticket Type</label>
-                    <select id="edit-ticket-type" required>
-                        <option value="early" ${registration.ticketType === 'early' ? 'selected' : ''}>Early Bird - $85</option>
-                        <option value="regular" ${registration.ticketType === 'regular' ? 'selected' : ''}>Regular - $120</option>
+                    <label for="edit-adult-tickets">Adult Tickets</label>
+                    <select id="edit-adult-tickets" required>
+                        <option value="0" ${registration.adultTickets === 0 ? 'selected' : ''}>0</option>
+                        <option value="1" ${registration.adultTickets === 1 ? 'selected' : ''}>1</option>
+                        <option value="2" ${registration.adultTickets === 2 ? 'selected' : ''}>2</option>
+                        <option value="3" ${registration.adultTickets === 3 ? 'selected' : ''}>3</option>
+                        <option value="4" ${registration.adultTickets === 4 ? 'selected' : ''}>4</option>
+                        <option value="5" ${registration.adultTickets === 5 ? 'selected' : ''}>5</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="edit-guest-tickets">Guest Tickets</label>
-                    <select id="edit-guest-tickets">
-                        <option value="0" ${registration.guestTickets === 0 ? 'selected' : ''}>No guests</option>
-                        <option value="1" ${registration.guestTickets === 1 ? 'selected' : ''}>1 guest - $95</option>
-                        <option value="2" ${registration.guestTickets === 2 ? 'selected' : ''}>2 guests - $190</option>
+                    <label for="edit-child-tickets">Child Tickets (5-12)</label>
+                    <select id="edit-child-tickets">
+                        <option value="0" ${registration.childTickets === 0 ? 'selected' : ''}>0</option>
+                        <option value="1" ${registration.childTickets === 1 ? 'selected' : ''}>1</option>
+                        <option value="2" ${registration.childTickets === 2 ? 'selected' : ''}>2</option>
+                        <option value="3" ${registration.childTickets === 3 ? 'selected' : ''}>3</option>
+                        <option value="4" ${registration.childTickets === 4 ? 'selected' : ''}>4</option>
+                        <option value="5" ${registration.childTickets === 5 ? 'selected' : ''}>5</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="edit-dietary">Dietary Restrictions</label>
-                    <textarea id="edit-dietary">${registration.dietary || ''}</textarea>
+                    <label for="edit-infant-tickets">Infant Tickets (under 5)</label>
+                    <select id="edit-infant-tickets">
+                        <option value="0" ${registration.infantTickets === 0 ? 'selected' : ''}>0</option>
+                        <option value="1" ${registration.infantTickets === 1 ? 'selected' : ''}>1</option>
+                        <option value="2" ${registration.infantTickets === 2 ? 'selected' : ''}>2</option>
+                        <option value="3" ${registration.infantTickets === 3 ? 'selected' : ''}>3</option>
+                        <option value="4" ${registration.infantTickets === 4 ? 'selected' : ''}>4</option>
+                        <option value="5" ${registration.infantTickets === 5 ? 'selected' : ''}>5</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-comments">Comments</label>
+                    <textarea id="edit-comments">${registration.comments || ''}</textarea>
                 </div>
                 
                 <div class="form-group">
@@ -1324,9 +1573,10 @@ function saveRegistrationChanges() {
         name: document.getElementById('edit-name').value,
         email: document.getElementById('edit-email').value,
         phone: document.getElementById('edit-phone').value,
-        ticketType: document.getElementById('edit-ticket-type').value,
-        guestTickets: parseInt(document.getElementById('edit-guest-tickets').value),
-        dietary: document.getElementById('edit-dietary').value,
+        adultTickets: parseInt(document.getElementById('edit-adult-tickets').value),
+        childTickets: parseInt(document.getElementById('edit-child-tickets').value),
+        infantTickets: parseInt(document.getElementById('edit-infant-tickets').value),
+        comments: document.getElementById('edit-comments').value,
         paymentStatus: document.getElementById('edit-payment-status').value
     };
     

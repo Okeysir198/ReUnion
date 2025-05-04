@@ -1114,3 +1114,58 @@ footer a:hover {
     font-weight: bold;
     color: var(--primary-color);
 }
+
+
+
+.enhanced-hero {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Adjust the ratios as needed */
+    gap: 20px; /* Optional gap between columns */
+    align-items: center; /* Vertically align items in the grid */
+    padding: 40px; /* Adjust padding as needed */
+}
+
+.hero-image-left,
+.hero-image-right {
+    width: 100%; /* Make images fill their container */
+    height: auto; /* Maintain aspect ratio */
+    overflow: hidden; /* Clip any overflowing image content */
+}
+
+.hero-image-left img,
+.hero-image-right img {
+    display: block; /* Remove extra space below inline images */
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensure images cover the container without distortion (may crop) */
+    object-position: center; /* Center the image within the container */
+}
+
+.hero-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Center text within the content block */
+}
+
+.hero-content {
+    margin-bottom: 30px; /* Add some space between text and countdown */
+}
+
+/* You might need to adjust the styling for .hero-content and .countdown-container further */
+
+/* Responsive adjustments (optional) */
+@media (max-width: 768px) {
+    .enhanced-hero {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+
+    .hero-image-left,
+    .hero-image-right {
+        display: none; /* Optionally hide images on smaller screens */
+    }
+
+    .hero-content-wrapper {
+        width: 100%; /* Take full width on smaller screens */
+    }
+}
