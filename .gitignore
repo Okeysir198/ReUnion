@@ -32,7 +32,7 @@ pids
 
 # Build files
 /frontend/dist
-/frontend/images/photos/*
+# /frontend/images/photos/*
 /dist
 /build
 test.ipynb
