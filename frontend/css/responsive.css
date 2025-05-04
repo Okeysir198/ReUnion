@@ -118,7 +118,10 @@
     
     /* Price Cards */
     .price-card {
-        min-width: 100%;
+        min-width: 80%;
+    }
+    .chart-container {
+        width: 80%;
     }
 }
 
