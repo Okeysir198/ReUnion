@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const { connectDB } = require('./config/db');
+// Add Cloudinary configuration
+const { cloudinary } = require('./config/cloudinary');
 
 // Load environment variables
 dotenv.config();
