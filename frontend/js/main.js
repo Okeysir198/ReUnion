@@ -285,9 +285,9 @@ function setupBudgetVoting() {
                         // Check the appropriate radio button based on budget amount
                         const budgetAmount = data.data.budgetAmount || 0;
                         if (budgetAmount >= 2000000 && budgetAmount < 3000000) {
-                            document.querySelector('input[name="budgetAmount"][value="2500000"]').checked = true;
+                            document.querySelector('input[name="budgetAmount"][value="3000000"]').checked = true;
                         } else if (budgetAmount >= 3000000 && budgetAmount < 4000000) {
-                            document.querySelector('input[name="budgetAmount"][value="3500000"]').checked = true;
+                            document.querySelector('input[name="budgetAmount"][value="4000000"]').checked = true;
                         } else if (budgetAmount >= 4000000) {
                             document.querySelector('input[name="budgetAmount"][value="5000000"]').checked = true;
                         }
@@ -641,7 +641,7 @@ function initDashboardCharts() {
                         labels: ['Đã đăng ký', 'Dự kiến'],
                         datasets: [{
                             label: 'Số lượng đăng ký',
-                            data: [stats.registrations, 100 - stats.registrations], // Assuming 100 expected attendees
+                            data: [stats.registrations, 60 - stats.registrations], // Assuming 100 expected attendees
                             backgroundColor: [
                                 '#3b5998',
                                 '#f0f0f0'
@@ -749,7 +749,7 @@ function setupFormSubmissions() {
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('Đăng ký thành công! Kiểm tra email của bạn để xác nhận.');
+                    alert('Đăng ký thành công!');
                     registrationForm.reset();
                     
                     // Update dashboard counts immediately
@@ -1025,3 +1025,34 @@ function setupPhotoSocialFeatures() {
         });
     });
 }
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const moneyInput = document.getElementById('sponsor-amount');
+    
+    // Set input type to text and inputmode to numeric
+    moneyInput.setAttribute('inputmode', 'numeric');
+    
+    // Format when value changes
+    moneyInput.addEventListener('input', function() {
+      // Remove non-digits and format
+      const value = this.value.replace(/\D/g, '');
+      // Format the number with commas
+      if (value) {
+        // this.value = new Intl.NumberFormat('vi-VN').format(value);
+        this.value = new Intl.NumberFormat('en-US').format(parseInt(value) || 0);
+      }
+    });
+    
+    // Handle form submission (if needed)
+    const form = moneyInput.closest('form');
+    if (form) {
+      form.addEventListener('submit', function() {
+        // Remove commas before submitting
+        moneyInput.value = moneyInput.value.replace(/,/g, '');
+        alert('Số tiền đã được gửi: ' + moneyInput.value);
+      });
+    }
+    
+  });

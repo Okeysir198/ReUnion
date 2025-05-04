@@ -56,8 +56,8 @@ const UserSchema = new mongoose.Schema({
 // Calculate payment amount based on tickets
 UserSchema.pre('save', function(next) {
   // Adult: 2,000,000 VND, Child (5-12): 1,400,000 VND (70% of adult), Infant (under 5): Free
-  const adultPrice = 2000000;
-  const childPrice = 1400000;
+  const adultPrice = 4000000;
+  const childPrice = 2800000;
   const infantPrice = 0;
   
   // Calculate total cost
