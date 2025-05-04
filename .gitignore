@@ -35,7 +35,7 @@ pids
 /frontend/images/photos/*
 /dist
 /build
-
+/test.ipynb
 # Coverage directory used by tools like istanbul
 coverage
 
