@@ -311,7 +311,7 @@ function setupBudgetVoting() {
         const name = document.getElementById('budget-name').value.trim();
         const email = document.getElementById('budget-email').value.trim();
         const budgetAmount = document.querySelector('input[name="budgetAmount"]:checked')?.value;
-        const sponsorAmount = document.getElementById('sponsor-amount').value;
+        const sponsorAmount = parseInt(document.getElementById('sponsor-amount').value.replace(/,/g, '')) || 0;
         
         if (!name || !email) {
             alert('Vui lòng cung cấp tên và email của bạn để gửi thông tin ngân sách.');
@@ -588,16 +588,26 @@ function loadClassmateSpotlights() {
 }
 
 // Setup photo upload preview
+// Photo upload preview
 function setupPhotoUploadPreview() {
     const photoUpload = document.getElementById('photo-upload');
     const previewContainer = document.getElementById('photo-preview-container');
+    const fileNameDisplay = document.getElementById('file-name-display');
     
     if (photoUpload && previewContainer) {
         photoUpload.addEventListener('change', function() {
             // Clear previous previews
             previewContainer.innerHTML = '';
             
+            // Update file name display
             if (this.files && this.files.length > 0) {
+                if (this.files.length === 1) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = `${this.files.length} tệp đã được chọn`;
+                }
+                
+                // Create previews for each file
                 for (let i = 0; i < this.files.length; i++) {
                     const file = this.files[i];
                     
@@ -614,6 +624,8 @@ function setupPhotoUploadPreview() {
                         reader.readAsDataURL(file);
                     }
                 }
+            } else {
+                fileNameDisplay.textContent = 'Chưa có tệp nào được chọn';
             }
         });
     }
@@ -1051,7 +1063,6 @@ document.addEventListener('DOMContentLoaded', function() {
       form.addEventListener('submit', function() {
         // Remove commas before submitting
         moneyInput.value = moneyInput.value.replace(/,/g, '');
-        alert('Số tiền đã được gửi: ' + moneyInput.value);
       });
     }
     
