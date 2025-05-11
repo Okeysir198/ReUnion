@@ -71,6 +71,9 @@ VoteSchema.methods.trackChanges = function(updatedFields) {
 VoteSchema.statics.getStats = async function() {
   const votes = await this.find();
   
+  // Filter votes with budgetAmount > 0
+  const validVotes = votes.filter(vote => vote.budgetAmount > 0);
+
   // Count votes for each date option
   const dateVotes = {};
   votes.forEach(vote => {
@@ -87,7 +90,7 @@ VoteSchema.statics.getStats = async function() {
     dateVotes,
     totalBudget,
     totalSponsorship,
-    voteCount: votes.length
+    voteCount: validVotes.length
   };
 };
 

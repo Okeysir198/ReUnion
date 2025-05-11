@@ -385,7 +385,7 @@ function loadBudgetResults() {
                 
                 // Create results display
                 const averageBudget = totalVotes > 0 ? Math.round(totalBudget / totalVotes) : 0;
-                
+                console.log(data);
                 const budgetSummary = document.createElement('div');
                 budgetSummary.className = 'budget-summary';
                 budgetSummary.innerHTML = `
