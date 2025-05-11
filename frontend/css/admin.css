@@ -985,3 +985,94 @@ body {
 .close-modal:hover {
     color: #333;
 }
+
+/* Responsive Mobile Styling */
+@media screen and (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+    
+    .admin-sidebar {
+        width: 100%;
+        padding: 10px 0;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .admin-sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .admin-sidebar a {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .admin-sidebar a i {
+        margin-right: 5px;
+    }
+    
+    .admin-content {
+        padding: 15px 10px;
+    }
+    
+    .admin-header {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+        padding: 10px;
+    }
+    
+    .admin-header h1 {
+        width: 100%;
+        margin: 10px 0;
+        font-size: 1.5rem;
+    }
+    
+    .admin-user {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .dashboard-cards,
+    .dashboard-charts,
+    .votes-charts {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        min-height: 300px;
+    }
+    
+    .admin-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-box {
+        margin-bottom: 15px;
+        width: 100%;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+    
+    .filter-controls {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .data-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+}
