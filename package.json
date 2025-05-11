@@ -24,9 +24,19 @@
     "mongoose": "^7.1.0",
     "multer": "^1.4.4",
     "multer-storage-cloudinary": "^4.0.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Okeysir198/ReUnion.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Okeysir198/ReUnion/issues"
+  },
+  "homepage": "https://github.com/Okeysir198/ReUnion#readme"
 }
