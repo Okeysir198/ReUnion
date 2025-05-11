@@ -25,10 +25,7 @@
             <ul>
                 <li><a href="#dashboard" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#registrations" data-section="registrations"><i class="fas fa-users"></i> Registrations</a></li>
-                <!-- <li><a href="#photos" data-section="photos"><i class="fas fa-images"></i> Photos</a></li> -->
                 <li><a href="#votes" data-section="votes"><i class="fas fa-vote-yea"></i> Votes</a></li>
-                <!-- <li><a href="#volunteers" data-section="volunteers"><i class="fas fa-hands-helping"></i> Volunteers</a></li>
-                <li><a href="#settings" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li> -->
             </ul>
         </nav>
 
@@ -142,6 +139,7 @@
                                 <th>Infants</th>
                                 <th>Amount</th>
                                 <th>Status</th>
+                                <th>Comments</th>
                                 <th>Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -159,46 +157,7 @@
                 </div>
             </section>
 
-            <!-- Photos Section -->
-            <section id="photos" class="admin-section">
-                <h2>Photo Management</h2>
-                <div class="admin-controls">
-                    <div class="filter-controls">
-                        <select id="photo-status-filter">
-                            <option value="pending">Pending Approval</option>
-                            <option value="approved">Approved Photos</option>
-                            <option value="all">All Photos</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="photos-grid" id="photos-container">
-                    <!-- Photos will be populated here -->
-                </div>
-                
-                <div class="photo-preview-modal" id="photo-preview-modal">
-                    <div class="modal-content">
-                        <span class="close-modal">&times;</span>
-                        <img id="preview-image" src="" alt="Photo preview">
-                        <div class="photo-info">
-                            <p><strong>Uploader:</strong> <span id="preview-uploader"></span></p>
-                            <p><strong>Caption:</strong> <span id="preview-caption"></span></p>
-                            <p><strong>Date Uploaded:</strong> <span id="preview-date"></span></p>
-                            <p><strong>Social:</strong> <span id="preview-likes">0 likes</span></p>
-                        </div>
-                        <div id="preview-comments" class="photo-comments">
-                            <h4>Comments</h4>
-                            <div class="comments-list">
-                                <!-- Comments will be populated here -->
-                            </div>
-                        </div>
-                        <div class="photo-actions">
-                            <button id="approve-photo" class="cta-button">Approve Photo</button>
-                            <button id="reject-photo" class="danger-button">Reject & Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+ 
 
             <!-- Votes Section -->
             <section id="votes" class="admin-section">
@@ -249,123 +208,7 @@
                         </tbody>
                     </table>
                 </div>
-            </section>
-
-            <!-- Volunteers Section -->
-            <!-- <section id="volunteers" class="admin-section">
-                <h2>Volunteer Management</h2>
-                <div class="admin-controls">
-                    <button id="assign-tasks" class="secondary-button"><i class="fas fa-tasks"></i> Assign Tasks</button>
-                    <button id="email-volunteers" class="secondary-button"><i class="fas fa-envelope"></i> Email All</button>
-                </div>
-                
-                <div class="volunteer-roles">
-                    <div class="role-card">
-                        <h3>Decorations</h3>
-                        <div class="volunteers-list" data-role="decorations">
-                        </div>
-                    </div>
-                    <div class="role-card">
-                        <h3>Registration Table</h3>
-                        <div class="volunteers-list" data-role="registration">
-                        </div>
-                    </div>
-                    <div class="role-card">
-                        <h3>Photography</h3>
-                        <div class="volunteers-list" data-role="photography">
-                        </div>
-                    </div>
-                    <div class="role-card">
-                        <h3>Music and AV</h3>
-                        <div class="volunteers-list" data-role="music">
-                        </div>
-                    </div>
-                </div>
-            </section> -->
-
-            <!-- Settings Section -->
-            <!-- <section id="settings" class="admin-section">
-                <h2>Settings</h2>
-                <div class="settings-container">
-                    <div class="settings-card">
-                        <h3>Admin Account</h3>
-                        <form id="admin-password-form">
-                            <div class="form-group">
-                                <label for="current-password">Current Password</label>
-                                <input type="password" id="current-password" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="new-password">New Password</label>
-                                <input type="password" id="new-password" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm-password">Confirm New Password</label>
-                                <input type="password" id="confirm-password" required>
-                            </div>
-                            <button type="submit" class="cta-button">Update Password</button>
-                        </form>
-                    </div>
-                    
-                    <div class="settings-card">
-                        <h3>Email Settings</h3>
-                        <form id="email-settings-form">
-                            <div class="form-group">
-                                <label for="smtp-host">SMTP Host</label>
-                                <input type="text" id="smtp-host">
-                            </div>
-                            <div class="form-group">
-                                <label for="smtp-port">SMTP Port</label>
-                                <input type="number" id="smtp-port">
-                            </div>
-                            <div class="form-group">
-                                <label for="smtp-user">SMTP Username</label>
-                                <input type="text" id="smtp-user">
-                            </div>
-                            <div class="form-group">
-                                <label for="smtp-pass">SMTP Password</label>
-                                <input type="password" id="smtp-pass">
-                            </div>
-                            <div class="form-group">
-                                <label for="from-email">From Email</label>
-                                <input type="email" id="from-email">
-                            </div>
-                            <button type="submit" class="cta-button">Save Email Settings</button>
-                            <button type="button" id="test-email" class="secondary-button">Send Test Email</button>
-                        </form>
-                    </div>
-                    
-                    <div class="settings-card">
-                        <h3>Website Settings</h3>
-                        <form id="website-settings-form">
-                            <div class="form-group">
-                                <label for="reunion-date">Reunion Date</label>
-                                <input type="date" id="reunion-date">
-                            </div>
-                            <div class="form-group">
-                                <label for="reunion-start-time">Start Time</label>
-                                <input type="time" id="reunion-start-time">
-                            </div>
-                            <div class="form-group">
-                                <label for="early-bird-date">Early Bird Deadline</label>
-                                <input type="date" id="early-bird-date">
-                            </div>
-                            <div class="form-group">
-                                <label for="early-bird-price">Adult Price (VND)</label>
-                                <input type="number" id="early-bird-price" placeholder="Example: 2000000">
-                            </div>
-                            <div class="form-group">
-                                <label for="regular-price">Child Price (VND)</label>
-                                <input type="number" id="regular-price" placeholder="Example: 1400000">
-                            </div>
-                            <div class="form-group">
-                                <label for="guest-price">Infant Price (VND)</label>
-                                <input type="number" id="guest-price" placeholder="Example: 0">
-                            </div>
-                            <button type="submit" class="cta-button">Save Website Settings</button>
-                        </form>
-                    </div>
-                </div>
-            </section> -->
+            
         </div>
     </main>
 

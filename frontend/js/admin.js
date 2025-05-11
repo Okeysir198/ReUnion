@@ -361,12 +361,12 @@ function displayRegistrations(registrations) {
             <td>${reg.infantTickets || 0}</td>
             <td>${formatCurrency(reg.paymentAmount)}</td>
             <td><span class="payment-status ${statusClass}">${capitalizeFirst(reg.paymentStatus)}</span></td>
+            <td>${reg.comments ? (reg.comments.length > 20 ? reg.comments.substring(0, 20) + '...' : reg.comments) : 'No comments'}</td>
             <td>${formattedDate}</td>
             <td>
                 <div class="action-buttons">
                     <button class="view-btn" data-id="${reg._id}" title="View Details"><i class="fas fa-eye"></i></button>
                     <button class="edit-btn" data-id="${reg._id}" title="Edit"><i class="fas fa-edit"></i></button>
-                    <button class="delete-btn" data-id="${reg._id}" title="Delete"><i class="fas fa-trash"></i></button>
                 </div>
             </td>
         `;
