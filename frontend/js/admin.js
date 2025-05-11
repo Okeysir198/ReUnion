@@ -96,7 +96,13 @@ function loadDashboardData() {
                 // Update card values
                 document.getElementById('total-registrations').textContent = stats.registrations;
                 document.getElementById('total-revenue').textContent = formatCurrency(stats.totalBudget);
-                document.getElementById('pending-photos').textContent = document.querySelector('#photo-status-filter').value === 'pending' ? document.querySelectorAll('.photo-card').length : '0';
+                // Safely handle pending photos count when filter may not exist yet
+                const pendingPhotosElement = document.getElementById('pending-photos');
+                if (pendingPhotosElement) {
+                    const photoFilter = document.querySelector('#photo-status-filter');
+                    pendingPhotosElement.textContent = photoFilter && photoFilter.value === 'pending' ? 
+                        document.querySelectorAll('.photo-card').length : stats.pendingPhotos || '0';
+                }
                 document.getElementById('total-visitors').textContent = stats.visitors;
                 
                 // Update attendee counts
@@ -123,7 +129,13 @@ function useMockDashboardData() {
     // Update card values with mock data
     document.getElementById('total-registrations').textContent = '87';
     document.getElementById('total-revenue').textContent = formatCurrency(9380000);
-    document.getElementById('pending-photos').textContent = '12';
+    
+    // Safely update pending photos count
+    const pendingPhotosElement = document.getElementById('pending-photos');
+    if (pendingPhotosElement) {
+        pendingPhotosElement.textContent = '12';
+    }
+    
     document.getElementById('total-visitors').textContent = '245';
     
     // Update attendee counts with mock data
@@ -133,7 +145,7 @@ function useMockDashboardData() {
     
     // Initialize charts with mock data
     initRegistrationChartMock();
-    initTicketChartMock();
+    initBudgetChartMock();
 }
 
 // Format currency in Vietnamese format (VND)
@@ -272,7 +284,71 @@ function initRegistrationChartMock() {
     });
 }
 
-// Initialize ticket types chart with mock data
+// Initialize budget chart with mock data
+function initBudgetChartMock() {
+    const ctx = document.getElementById('ticket-chart').getContext('2d');
+    
+    // Sample data for budget sources
+    const budgetData = {
+        labels: ['Registration Fees', 'Sponsorships'],
+        datasets: [{
+            label: 'Budget Sources',
+            data: [6800000, 2500000],
+            backgroundColor: [
+                'rgba(59, 89, 152, 0.7)',
+                'rgba(248, 199, 64, 0.7)'
+            ],
+            borderColor: [
+                'rgba(59, 89, 152, 1)',
+                'rgba(248, 199, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: budgetData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Budget Sources'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += formatCurrency(context.parsed.y);
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return formatCurrency(value);
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Initialize attendee types chart with mock data
 function initTicketChartMock() {
     const ctx = document.getElementById('ticket-chart').getContext('2d');
     
